@@ -1,0 +1,42 @@
+{
+  "name": "uat-untangled",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test src/lib/*.test.ts src/lib/ai/*.test.ts",
+    "seed": "tsx --env-file=.env.local scripts/seed.ts",
+    "db:push": "sh -c 'set -a; . ./.env.local; set +a; supabase db push --db-url \"$DATABASE_URL\"'",
+    "analyse:pending": "tsx --env-file=.env.local scripts/analyse-pending.ts",
+    "check:batch": "tsx --env-file=.env.local scripts/check-batch.ts",
+    "snapshot": "tsx --env-file=.env.local scripts/snapshot-analyses.ts",
+    "smoke": "tsx --env-file=.env.local scripts/smoke-decide.ts",
+    "eval": "tsx --env-file=.env.local scripts/eval.ts",
+    "eval:holdout": "DATASET=holdout tsx --env-file=.env.local scripts/eval.ts",
+    "eval:step": "tsx --env-file=.env.local scripts/eval-step.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.3.0",
+    "@headlessui/react": "^2.2.10",
+    "@supabase/supabase-js": "^2.118.0",
+    "next": "16.4.3",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/turbopack": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.3",
+    "tailwindcss": "^4",
+    "tsx": "^4.23.15",
+    "typescript": "^5"
+  }
+}

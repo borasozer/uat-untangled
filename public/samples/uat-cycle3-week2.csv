@@ -1,0 +1,33 @@
+ID,Tester,Test Step,Result,Comments,Date
+IMP-01,Daniel Okafor,TS-05.1,Fail,"Imported EML-11 - the email says 'pt developed a widespread rash 3 days after starting Corvalix' but no adverse event banner appeared.",2026-11-02
+IMP-02,Aoife Byrne,TS-05.1,Fail,"AE banner missing when the side effect is only described in the attached PDF letter, not in the email body.",2026-11-02
+IMP-03,Tom Hughes,TS-05.1,Fail,"No AE flag on test email 11. The patient had a rash!",2026-11-02
+IMP-04,Priya Nair,TS-04.5,Fail,"Left the draft open while I took a call (~12 min). When I came back and typed, I got logged out and my edits since the last save were gone.",2026-11-02
+IMP-05,Hannah Clarke,TS-04.5,Fail,"lost my work!!",2026-11-02
+IMP-06,Sofia Martins,TS-04.5,Fail,"Session timed out after about 10 minutes of inactivity while editing; unsaved changes lost. The step says work should still be there after 15 min.",2026-11-02
+IMP-07,Priya Nair,TS-04.4,Fail,"After deleting the 2nd paragraph, the citations go [1], [3], [4] - they don't renumber.",2026-11-02
+IMP-08,Dr James Whitfield,TS-04.4,Fail,"Citation numbering is out of order after editing the draft, [2] is missing.",2026-11-02
+IMP-09,Aoife Byrne,TS-02.2,Fail,"Imported EML-07 - the Name field says 'St James's Hospital' and Institution is empty. Name should be Dr Ciara Walsh.",2026-11-02
+IMP-10,Tom Hughes,TS-02.2,Fail,"HCP title 'Dr' not picked up from the email signature; name field has the hospital name.",2026-11-02
+IMP-11,Dr James Whitfield,TS-07.1,Fail,"Exported the approved response to Word - the dosing table became plain text with tabs and the bullet points are gone.",2026-11-03
+IMP-12,Marek Nowak,TS-07.3,Fail,"Audit trail: approval step recorded as 'system'. Need the named approver for compliance.",2026-11-03
+IMP-13,Sofia Martins,TS-01.4,Fail,"When I go back to the inbox from an enquiry, my 'Assigned to me' view and product filter reset.",2026-11-03
+IMP-14,Hannah Clarke,TS-01.4,Pass,"Pass, but my filters reset every time I open an enquiry, which is annoying.",2026-11-03
+IMP-15,Daniel Okafor,TS-05.3,Fail,"Deadline on safety referral is wrong (5h later than it should be).",2026-11-03
+IMP-16,Priya Nair,TS-04.3,Fail,"Citation links open the PDF at the start rather than the cited page.",2026-11-03
+IMP-17,Aoife Byrne,TS-04.1,Fail,"Long enquiry - draft cut off halfway through.",2026-11-03
+IMP-18,Tom Hughes,TS-06.3,Fail,"Reviewer comments lost after editing.",2026-11-03
+IMP-19,Sofia Martins,TS-03.3,Pass,"Pass - large PDFs are slow to open (~20s) but they do open.",2026-11-03
+IMP-20,Hannah Clarke,TS-01.1,Fail,"Can't sign in on Safari, it keeps looping.",2026-11-03
+IMP-21,Priya Nair,TS-04.2,Pass,"Pass. Idea: show similar past enquiries and the approved responses we sent, so we can reuse wording.",2026-11-03
+IMP-22,Dr James Whitfield,TS-06.2,Pass,"Pass. Keyboard shortcuts for next/previous comment would make reviewing much faster.",2026-11-03
+IMP-23,Tom Hughes,TS-04.2,Pass,"Pass - would be great to have saved snippets for our standard closing paragraph.",2026-11-03
+IMP-24,Aoife Byrne,TS-04.2,Pass,"Pass. A patient-friendly version of the answer would be useful for patient enquiries.",2026-11-03
+IMP-25,Marek Nowak,TS-06.5,Fail,"There is no option to send the response by post. Some HCPs still ask for letters.",2026-11-03
+IMP-26,Hannah Clarke,TS-04.2,Fail,"The draft added an off-label statement at the end even though I didn't ask for it.",2026-11-03
+IMP-27,Daniel Okafor,TS-05.2,Fail,"doesn't work",2026-11-03
+IMP-28,Dr James Whitfield,TS-04.1,Pass,"Works well, much faster than the old process!",2026-11-03
+IMP-29,Priya Nair,TS-06.4,Fail,"Approve button cut off at the bottom of the screen on my laptop.",2026-11-03
+IMP-30,Tom Hughes,TS-07.2,Fail,"PDF export looks fine but the Word export loses the table formatting.",2026-11-03
+IMP-31,Sofia Martins,TS-03.1,Pass,"Dates in the document list are in American format (10/28/2026) - confusing for UK/IE users.",2026-11-03
+IMP-32,Aoife Byrne,TS-02.3,Pass,"Pass. Product and category detected correctly.",2026-11-03

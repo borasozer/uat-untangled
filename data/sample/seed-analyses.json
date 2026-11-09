@@ -1,0 +1,1756 @@
+{
+  "_about": "AI analyses of the seed's pending reports, restored by resetDemo() so demos start with suggestions ready.",
+  "analyses": {
+    "FB-021": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "triage-v4",
+      "suggestion": {
+        "match": {
+          "target": null,
+          "relation": "none",
+          "differences": [],
+          "shared_signals": []
+        },
+        "rule_id": null,
+        "category": "bug",
+        "evidence": {
+          "known": [
+            "audit trail step TS-07.3",
+            "enquiry MI-20431",
+            "'Approved' entry shows 'system'",
+            "expected approver Dr Whitfield"
+          ],
+          "missing": [],
+          "quality": "complete"
+        },
+        "explanation": "Audit trail attributes approval to 'system' instead of the reviewer; a compliance record error with no matching ticket.",
+        "draft_ticket": {
+          "title": "Audit trail records 'system' instead of approver for approvals",
+          "actual": "The 'Approved' entry shows user = 'system'.",
+          "summary": "In the audit trail, the 'Approved' entry shows user = 'system' rather than the medical reviewer who approved the response. GxP requires the actual approver to be recorded.",
+          "expected": "The 'Approved' entry shows the reviewer who approved it (e.g. Dr Whitfield), what changed and when.",
+          "severity": "high",
+          "steps_to_reproduce": [
+            "As reviewer, approve a response (e.g. MI-20431)",
+            "Open the audit trail for the enquiry",
+            "Check the 'Approved' entry's user"
+          ]
+        },
+        "tester_reply": "Thanks Tom, this is logged as {ticket} so the approver is correctly recorded in the audit trail.",
+        "confidence_self": 90,
+        "other_candidates": [],
+        "suggested_action": "create_ticket",
+        "follow_up_question": null
+      },
+      "samples": [
+        {
+          "match": {
+            "target": null,
+            "relation": "none",
+            "differences": [],
+            "shared_signals": []
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "step TS-07.3",
+              "enquiry MI-20431",
+              "'Approved' entry shows 'system'",
+              "expected approver Dr Whitfield"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "New defect: audit trail attributes approval to 'system', a compliance record error; no existing ticket covers audit trail attribution.",
+          "draft_ticket": {
+            "title": "Audit trail records approver as 'system' instead of the reviewer",
+            "actual": "The 'Approved' entry shows user = 'system'.",
+            "summary": "In the enquiry audit trail, the 'Approved' entry shows user = 'system' rather than the medical reviewer who approved the response. GxP requires the actual approver to be recorded.",
+            "expected": "The 'Approved' entry shows the reviewer who approved it, what changed and when.",
+            "severity": "high",
+            "steps_to_reproduce": [
+              "Approve a response as a medical reviewer (e.g. MI-20431, Dr Whitfield)",
+              "Open the audit trail for the enquiry",
+              "Check the user shown on the 'Approved' entry"
+            ]
+          },
+          "tester_reply": "Thanks Tom, this is now logged as {ticket}: the audit trail shows 'system' instead of the approver on the 'Approved' entry.",
+          "confidence_self": 88,
+          "other_candidates": [],
+          "suggested_action": "create_ticket",
+          "follow_up_question": null
+        },
+        {
+          "match": {
+            "target": null,
+            "relation": "none",
+            "differences": [],
+            "shared_signals": []
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "audit trail step TS-07.3",
+              "enquiry MI-20431",
+              "'Approved' entry shows 'system'",
+              "expected approver Dr Whitfield"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "Audit trail attributes approval to 'system' instead of the reviewer; a compliance record error with no matching ticket.",
+          "draft_ticket": {
+            "title": "Audit trail records 'system' instead of approver for approvals",
+            "actual": "The 'Approved' entry shows user = 'system'.",
+            "summary": "In the audit trail, the 'Approved' entry shows user = 'system' rather than the medical reviewer who approved the response. GxP requires the actual approver to be recorded.",
+            "expected": "The 'Approved' entry shows the reviewer who approved it (e.g. Dr Whitfield), what changed and when.",
+            "severity": "high",
+            "steps_to_reproduce": [
+              "As reviewer, approve a response (e.g. MI-20431)",
+              "Open the audit trail for the enquiry",
+              "Check the 'Approved' entry's user"
+            ]
+          },
+          "tester_reply": "Thanks Tom, this is logged as {ticket} so the approver is correctly recorded in the audit trail.",
+          "confidence_self": 90,
+          "other_candidates": [],
+          "suggested_action": "create_ticket",
+          "follow_up_question": null
+        },
+        {
+          "match": {
+            "target": null,
+            "relation": "none",
+            "differences": [],
+            "shared_signals": []
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "step TS-07.3",
+              "enquiry MI-20431",
+              "'Approved' entry shows 'system'",
+              "expected approver Dr Whitfield"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "New defect: audit trail records 'system' instead of the approver, a compliance record error; no existing ticket covers audit trail.",
+          "draft_ticket": {
+            "title": "Audit trail records 'system' as user for approval action",
+            "actual": "The 'Approved' entry shows user = 'system'.",
+            "summary": "In the audit trail, the 'Approved' entry shows user = 'system' instead of the medical reviewer who approved. The approver identity is required for GxP compliance.",
+            "expected": "The 'Approved' entry shows the reviewer who approved (e.g. Dr Whitfield), what changed and when.",
+            "severity": "high",
+            "steps_to_reproduce": [
+              "As reviewer, approve a response (e.g. MI-20431)",
+              "Open the audit trail for the enquiry",
+              "Check the 'Approved' entry"
+            ]
+          },
+          "tester_reply": "Thanks Tom, this is logged as {ticket} so the approver is recorded correctly in the audit trail.",
+          "confidence_self": 90,
+          "other_candidates": [],
+          "suggested_action": "create_ticket",
+          "follow_up_question": null
+        }
+      ],
+      "confidence": 0.95,
+      "confidence_detail": {
+        "raw": 0.95,
+        "samples": 3,
+        "agreeing": 3,
+        "evidence": "complete",
+        "agreement": 1,
+        "calibrated": 1,
+        "alternatives": [],
+        "self_reported": 0.89,
+        "calibration_note": "On 57 labelled sample reports, suggestions in the 85-95% range were right 36 of 36 times."
+      },
+      "latency_ms": 5092,
+      "usage": {
+        "cost_usd": 0.0598408,
+        "input_tokens": 6810,
+        "output_tokens": 1457,
+        "cache_read_input_tokens": 17304,
+        "cache_creation_input_tokens": 0
+      }
+    },
+    "FB-022": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "triage-v4",
+      "suggestion": {
+        "match": {
+          "target": "MIA-101",
+          "relation": "exact_duplicate",
+          "differences": [
+            "text pasted from a letter"
+          ],
+          "shared_signals": [
+            "long enquiry",
+            "generate draft never finishes",
+            "matches 'spins forever' report"
+          ]
+        },
+        "rule_id": null,
+        "category": "bug",
+        "evidence": {
+          "known": [
+            "step TS-04.1",
+            "enquiry MI-20460",
+            "long enquiry text",
+            "draft never finishes"
+          ],
+          "missing": [],
+          "quality": "complete"
+        },
+        "explanation": "Endless draft generation on a long enquiry is the exact symptom described in MIA-101, which is in progress.",
+        "draft_ticket": null,
+        "tester_reply": "Thanks Sofia. This matches MIA-101, draft generation failing for long enquiries, which is being worked on; I've added your report and MI-20460 to it.",
+        "confidence_self": 93,
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "follow_up_question": null
+      },
+      "samples": [
+        {
+          "match": {
+            "target": "MIA-101",
+            "relation": "exact_duplicate",
+            "differences": [
+              "text pasted from a letter"
+            ],
+            "shared_signals": [
+              "long enquiry",
+              "generate draft never finishes",
+              "same step TS-04.1"
+            ]
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "step TS-04.1",
+              "enquiry MI-20460",
+              "long enquiry text",
+              "draft never finishes"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "Endless draft generation on a long enquiry matches MIA-101's spinner symptom exactly.",
+          "draft_ticket": null,
+          "tester_reply": "Thanks Sofia. This matches MIA-101, where draft generation fails for long enquiries; we have added your report and MI-20460 to it.",
+          "confidence_self": 92,
+          "other_candidates": [],
+          "suggested_action": "link_to_ticket",
+          "follow_up_question": null
+        },
+        {
+          "match": {
+            "target": "MIA-101",
+            "relation": "exact_duplicate",
+            "differences": [
+              "text pasted from a letter"
+            ],
+            "shared_signals": [
+              "long enquiry",
+              "generate draft never finishes",
+              "matches 'spins forever' report"
+            ]
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "step TS-04.1",
+              "enquiry MI-20460",
+              "long enquiry text",
+              "draft never finishes"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "Endless draft generation on a long enquiry is the exact symptom described in MIA-101, which is in progress.",
+          "draft_ticket": null,
+          "tester_reply": "Thanks Sofia. This matches MIA-101, draft generation failing for long enquiries, which is being worked on; I've added your report and MI-20460 to it.",
+          "confidence_self": 93,
+          "other_candidates": [],
+          "suggested_action": "link_to_ticket",
+          "follow_up_question": null
+        },
+        {
+          "match": {
+            "target": "MIA-101",
+            "relation": "exact_duplicate",
+            "differences": [
+              "text pasted from a letter"
+            ],
+            "shared_signals": [
+              "long enquiry",
+              "generation never finishes",
+              "step TS-04.1"
+            ]
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "step TS-04.1",
+              "enquiry MI-20460",
+              "long enquiry text",
+              "draft never finishes"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "Endless generation on a long enquiry is the spinner symptom already described in MIA-101.",
+          "draft_ticket": null,
+          "tester_reply": "Thanks Sofia, this matches MIA-101 (draft generation fails for long enquiries), which is in progress. I've added your report and MI-20460 to it.",
+          "confidence_self": 92,
+          "other_candidates": [],
+          "suggested_action": "link_to_ticket",
+          "follow_up_question": null
+        }
+      ],
+      "confidence": 0.96,
+      "confidence_detail": {
+        "raw": 0.96,
+        "samples": 3,
+        "agreeing": 3,
+        "evidence": "complete",
+        "agreement": 1,
+        "calibrated": 1,
+        "alternatives": [],
+        "self_reported": 0.92,
+        "calibration_note": "On 57 labelled sample reports, suggestions in the 95-100% range were right 20 of 20 times."
+      },
+      "latency_ms": 4166,
+      "usage": {
+        "cost_usd": 0.0482488,
+        "input_tokens": 6732,
+        "output_tokens": 893,
+        "cache_read_input_tokens": 17304,
+        "cache_creation_input_tokens": 0
+      }
+    },
+    "FB-023": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "triage-v4",
+      "suggestion": {
+        "match": {
+          "target": null,
+          "relation": "none",
+          "differences": [],
+          "shared_signals": []
+        },
+        "rule_id": null,
+        "category": "bug",
+        "evidence": {
+          "known": [
+            "step TS-05.1",
+            "marked Fail",
+            "EML-11 import"
+          ],
+          "missing": [
+            "whether import completed",
+            "whether banner was missing",
+            "any error message"
+          ],
+          "quality": "insufficient"
+        },
+        "explanation": "'Nothing happened' does not say whether the import failed or the adverse event banner was missing; a missed banner would be critical.",
+        "draft_ticket": null,
+        "tester_reply": "Hannah, did EML-11 import and open the enquiry form but without the red 'Possible adverse event' banner, or did the import itself not start?",
+        "confidence_self": 85,
+        "other_candidates": [],
+        "suggested_action": "ask_tester",
+        "follow_up_question": "Did EML-11 import and open the enquiry form but without the red 'Possible adverse event' banner, or did the import itself not start?"
+      },
+      "samples": [
+        {
+          "match": {
+            "target": null,
+            "relation": "none",
+            "differences": [],
+            "shared_signals": []
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "step TS-05.1",
+              "marked Fail",
+              "EML-11 import"
+            ],
+            "missing": [
+              "whether import completed",
+              "whether banner was missing",
+              "any error message"
+            ],
+            "quality": "insufficient"
+          },
+          "explanation": "'Nothing happened' does not say whether the import failed or the adverse event banner was missing; a missed banner would be critical.",
+          "draft_ticket": null,
+          "tester_reply": "Hannah, did EML-11 import and open the enquiry form but without the red 'Possible adverse event' banner, or did the import itself not start?",
+          "confidence_self": 85,
+          "other_candidates": [],
+          "suggested_action": "ask_tester",
+          "follow_up_question": "Did EML-11 import and open the enquiry form but without the red 'Possible adverse event' banner, or did the import itself not start?"
+        },
+        {
+          "match": {
+            "target": null,
+            "relation": "none",
+            "differences": [],
+            "shared_signals": []
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "step TS-05.1",
+              "EML-11 import",
+              "marked Fail"
+            ],
+            "missing": [
+              "whether import worked",
+              "whether banner appeared",
+              "any error message"
+            ],
+            "quality": "insufficient"
+          },
+          "explanation": "'Nothing happened' could mean failed import or missing AE banner; the latter would be critical, so clarify quickly. No existing ticket matches.",
+          "draft_ticket": null,
+          "tester_reply": "Hannah, when you imported EML-11, did the enquiry form open without the red 'Possible adverse event' banner, or did the import itself not open anything?",
+          "confidence_self": 80,
+          "other_candidates": [],
+          "suggested_action": "ask_tester",
+          "follow_up_question": "When you imported EML-11, did the enquiry form open without the red 'Possible adverse event' banner, or did the import itself not open anything?"
+        },
+        {
+          "match": {
+            "target": null,
+            "relation": "none",
+            "differences": [],
+            "shared_signals": []
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "step TS-05.1",
+              "marked Fail",
+              "import of EML-11"
+            ],
+            "missing": [
+              "whether import succeeded",
+              "whether banner was missing",
+              "any error message"
+            ],
+            "quality": "insufficient"
+          },
+          "explanation": "'Nothing happened' could mean a failed import or a missed adverse event banner (potentially critical); no existing ticket covers either.",
+          "draft_ticket": null,
+          "tester_reply": "Hannah, did EML-11 import but the red 'Possible adverse event' banner did not appear, or did the import itself not open the enquiry form?",
+          "confidence_self": 80,
+          "other_candidates": [],
+          "suggested_action": "ask_tester",
+          "follow_up_question": "Did EML-11 import but the red 'Possible adverse event' banner did not appear, or did the import itself not open the enquiry form?"
+        }
+      ],
+      "confidence": 0.91,
+      "confidence_detail": {
+        "raw": 0.91,
+        "samples": 3,
+        "agreeing": 3,
+        "evidence": "insufficient",
+        "agreement": 1,
+        "calibrated": 1,
+        "alternatives": [],
+        "self_reported": 0.82,
+        "calibration_note": "On 57 labelled sample reports, suggestions in the 85-95% range were right 36 of 36 times."
+      },
+      "latency_ms": 4517,
+      "usage": {
+        "cost_usd": 0.048932800000000005,
+        "input_tokens": 6693,
+        "output_tokens": 935,
+        "cache_read_input_tokens": 17304,
+        "cache_creation_input_tokens": 0
+      }
+    },
+    "FB-024": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "triage-v4",
+      "suggestion": {
+        "match": {
+          "target": null,
+          "relation": "none",
+          "differences": [],
+          "shared_signals": []
+        },
+        "rule_id": null,
+        "category": "bug",
+        "evidence": {
+          "known": [
+            "13-inch laptop screen",
+            "Approve button off-screen",
+            "page does not scroll",
+            "zoom to 80% works"
+          ],
+          "missing": [
+            "browser and resolution"
+          ],
+          "quality": "complete"
+        },
+        "explanation": "New layout defect: Approve button unreachable on small screens with no scrolling; zoom workaround exists, so medium. No matching ticket.",
+        "draft_ticket": {
+          "title": "Approve button hidden below screen on small laptops; page won't scroll",
+          "actual": "The Approve button is below the bottom of the screen and the page does not scroll; zooming out to 80% is needed to click it.",
+          "summary": "On a 13-inch laptop the Approve button on the review page sits below the visible area and the page does not scroll, so reviewers cannot reach it. Zooming out to 80% is a workaround.",
+          "expected": "The Approve button is visible or reachable by scrolling, so the reviewer can approve the response.",
+          "severity": "medium",
+          "steps_to_reproduce": [
+            "Open a draft that is in review, as reviewer, on a 13-inch laptop",
+            "Go to the approval view (TS-06.4)",
+            "Try to scroll to the Approve button"
+          ]
+        },
+        "tester_reply": "Thanks James, we have logged this as {ticket}. Zooming out to 80% is a reasonable workaround for now.",
+        "confidence_self": 85,
+        "other_candidates": [],
+        "suggested_action": "create_ticket",
+        "follow_up_question": null
+      },
+      "samples": [
+        {
+          "match": {
+            "target": null,
+            "relation": "none",
+            "differences": [],
+            "shared_signals": []
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "13-inch laptop screen",
+              "Approve button off-screen",
+              "page does not scroll",
+              "zoom to 80% works"
+            ],
+            "missing": [
+              "browser and resolution"
+            ],
+            "quality": "complete"
+          },
+          "explanation": "New layout defect: Approve button unreachable on small screens with no scrolling; zoom workaround exists, so medium. No matching ticket.",
+          "draft_ticket": {
+            "title": "Approve button hidden below screen on small laptops; page won't scroll",
+            "actual": "The Approve button is below the bottom of the screen and the page does not scroll; zooming out to 80% is needed to click it.",
+            "summary": "On a 13-inch laptop the Approve button on the review page sits below the visible area and the page does not scroll, so reviewers cannot reach it. Zooming out to 80% is a workaround.",
+            "expected": "The Approve button is visible or reachable by scrolling, so the reviewer can approve the response.",
+            "severity": "medium",
+            "steps_to_reproduce": [
+              "Open a draft that is in review, as reviewer, on a 13-inch laptop",
+              "Go to the approval view (TS-06.4)",
+              "Try to scroll to the Approve button"
+            ]
+          },
+          "tester_reply": "Thanks James, we have logged this as {ticket}. Zooming out to 80% is a reasonable workaround for now.",
+          "confidence_self": 85,
+          "other_candidates": [],
+          "suggested_action": "create_ticket",
+          "follow_up_question": null
+        },
+        {
+          "match": {
+            "target": null,
+            "relation": "none",
+            "differences": [],
+            "shared_signals": []
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "which step",
+              "Approve button off-screen",
+              "page does not scroll",
+              "zoom-out workaround"
+            ],
+            "missing": [
+              "browser used",
+              "screen resolution"
+            ],
+            "quality": "partial"
+          },
+          "explanation": "New layout defect on the review screen with a zoom-out workaround; no existing ticket covers non-scrolling pages or hidden buttons.",
+          "draft_ticket": {
+            "title": "Approve button hidden below screen on small laptops; page won't scroll",
+            "actual": "The Approve button is below the bottom of the screen and the page does not scroll; zooming out to 80% was needed to click it.",
+            "summary": "On a 13-inch laptop the Approve button on the review screen sits below the visible area and the page does not scroll to reach it. Zooming out to 80% is the only workaround.",
+            "expected": "The Approve button is visible or reachable by scrolling, so the reviewer can approve the response.",
+            "severity": "medium",
+            "steps_to_reproduce": [
+              "Sign in as reviewer on a 13-inch laptop at 100% zoom",
+              "Open a draft that is 'In review'",
+              "Try to scroll to the Approve button"
+            ]
+          },
+          "tester_reply": "Thank you, James. We have logged the hidden Approve button on smaller screens as {ticket}; zooming out remains the workaround for now.",
+          "confidence_self": 85,
+          "other_candidates": [],
+          "suggested_action": "create_ticket",
+          "follow_up_question": null
+        },
+        {
+          "match": {
+            "target": null,
+            "relation": "none",
+            "differences": [],
+            "shared_signals": []
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "which step",
+              "Approve button off-screen",
+              "page does not scroll",
+              "zoom-out workaround"
+            ],
+            "missing": [
+              "browser used",
+              "screen resolution"
+            ],
+            "quality": "partial"
+          },
+          "explanation": "New layout defect blocking approval on small screens; a zoom-out workaround exists, so medium. No existing ticket covers it.",
+          "draft_ticket": {
+            "title": "Approve button hidden below screen on small laptops, page won't scroll",
+            "actual": "The Approve button is below the bottom of the screen and the page does not scroll; zooming out to 80% is needed to click it.",
+            "summary": "On a 13-inch laptop screen the Approve button on the review page sits below the visible area and the page does not scroll. Zooming out to 80% makes it reachable.",
+            "expected": "The Approve button is visible or reachable by scrolling, so the reviewer can approve the response.",
+            "severity": "medium",
+            "steps_to_reproduce": [
+              "Use a 13-inch laptop at 100% browser zoom",
+              "Open a draft in review as the medical reviewer",
+              "Look for the Approve button",
+              "Try to scroll down the page"
+            ]
+          },
+          "tester_reply": "Thanks James, we have logged this as {ticket}. Zooming out to 80% is a reasonable workaround for now.",
+          "confidence_self": 85,
+          "other_candidates": [],
+          "suggested_action": "create_ticket",
+          "follow_up_question": null
+        }
+      ],
+      "confidence": 0.93,
+      "confidence_detail": {
+        "raw": 0.93,
+        "samples": 3,
+        "agreeing": 3,
+        "evidence": "complete",
+        "agreement": 1,
+        "calibrated": 1,
+        "alternatives": [],
+        "self_reported": 0.85,
+        "calibration_note": "On 57 labelled sample reports, suggestions in the 85-95% range were right 36 of 36 times."
+      },
+      "latency_ms": 5772,
+      "usage": {
+        "cost_usd": 0.061024800000000004,
+        "input_tokens": 6816,
+        "output_tokens": 1515,
+        "cache_read_input_tokens": 17304,
+        "cache_creation_input_tokens": 0
+      }
+    },
+    "FB-025": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "triage-v4",
+      "suggestion": {
+        "match": {
+          "target": null,
+          "relation": "none",
+          "differences": [],
+          "shared_signals": []
+        },
+        "rule_id": null,
+        "category": "idea",
+        "evidence": {
+          "known": [
+            "feature requested",
+            "use case: patient enquiries",
+            "step passed"
+          ],
+          "missing": [],
+          "quality": "complete"
+        },
+        "explanation": "A request for new functionality on a passed step; no existing idea covers patient-friendly drafts.",
+        "draft_ticket": {
+          "title": "Generate plain-English response version for patient enquiries",
+          "actual": "Drafts are written for HCPs only; no plain-English option exists.",
+          "summary": "Let the AI draft produce a plain-English version of the response when the enquirer is a patient rather than an HCP.",
+          "expected": "An option to generate a patient-friendly, plain-English draft with citations kept.",
+          "severity": null,
+          "steps_to_reproduce": [
+            "Open an enquiry from a patient",
+            "Click 'Generate draft'",
+            "Look for an option for a plain-English version"
+          ]
+        },
+        "tester_reply": "Thanks Priya, we have logged your suggestion for a plain-English patient version as {ticket} for the product team to consider.",
+        "confidence_self": 90,
+        "other_candidates": [
+          {
+            "why": "Also a drafting-time improvement, but about saved paragraphs, not patient language.",
+            "target": "IDEA-01",
+            "relation": "related"
+          }
+        ],
+        "suggested_action": "add_to_ideas",
+        "follow_up_question": null
+      },
+      "samples": [
+        {
+          "match": {
+            "target": null,
+            "relation": "none",
+            "differences": [],
+            "shared_signals": []
+          },
+          "rule_id": null,
+          "category": "idea",
+          "evidence": {
+            "known": [
+              "which step",
+              "requested feature",
+              "use case: patient enquiries"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "Feature request for patient-friendly drafts; step passed and no existing idea covers it.",
+          "draft_ticket": {
+            "title": "Plain-English draft version for patient enquiries",
+            "actual": "Only HCP-style drafts can be generated.",
+            "summary": "Allow the tool to generate a plain-English version of the draft response when the enquirer is a patient rather than an HCP.",
+            "expected": "Option to produce a plain-English, patient-friendly version of the response.",
+            "severity": null,
+            "steps_to_reproduce": [
+              "Open an enquiry from a patient",
+              "Click 'Generate draft'",
+              "Note the draft is written for HCPs only"
+            ]
+          },
+          "tester_reply": "Thanks Priya, we have added your plain-English patient version suggestion to the ideas list as {ticket}.",
+          "confidence_self": 88,
+          "other_candidates": [
+            {
+              "why": "Also a drafting aid idea, but about reusable snippets.",
+              "target": "IDEA-01",
+              "relation": "related"
+            }
+          ],
+          "suggested_action": "add_to_ideas",
+          "follow_up_question": null
+        },
+        {
+          "match": {
+            "target": null,
+            "relation": "none",
+            "differences": [],
+            "shared_signals": []
+          },
+          "rule_id": null,
+          "category": "idea",
+          "evidence": {
+            "known": [
+              "feature requested",
+              "use case: patient enquiries",
+              "step passed"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "A request for new functionality on a passed step; no existing idea covers patient-friendly drafts.",
+          "draft_ticket": {
+            "title": "Generate plain-English response version for patient enquiries",
+            "actual": "Drafts are written for HCPs only; no plain-English option exists.",
+            "summary": "Let the AI draft produce a plain-English version of the response when the enquirer is a patient rather than an HCP.",
+            "expected": "An option to generate a patient-friendly, plain-English draft with citations kept.",
+            "severity": null,
+            "steps_to_reproduce": [
+              "Open an enquiry from a patient",
+              "Click 'Generate draft'",
+              "Look for an option for a plain-English version"
+            ]
+          },
+          "tester_reply": "Thanks Priya, we have logged your suggestion for a plain-English patient version as {ticket} for the product team to consider.",
+          "confidence_self": 90,
+          "other_candidates": [
+            {
+              "why": "Also a drafting-time improvement, but about saved paragraphs, not patient language.",
+              "target": "IDEA-01",
+              "relation": "related"
+            }
+          ],
+          "suggested_action": "add_to_ideas",
+          "follow_up_question": null
+        },
+        {
+          "match": {
+            "target": null,
+            "relation": "none",
+            "differences": [],
+            "shared_signals": []
+          },
+          "rule_id": null,
+          "category": "idea",
+          "evidence": {
+            "known": [
+              "plain-English patient version",
+              "for patient enquiries",
+              "step passed"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "Step passed; tester requests a new capability (patient-friendly draft) not covered by any existing ticket or idea.",
+          "draft_ticket": {
+            "title": "Generate a plain-English response version for patient enquiries",
+            "actual": "Drafts are written for HCPs only; no patient-friendly version is available.",
+            "summary": "Let the AI draft produce a plain-English version of the response when the enquirer is a patient rather than an HCP.",
+            "expected": "Option to generate a plain-English version of the response suitable for patients.",
+            "severity": null,
+            "steps_to_reproduce": [
+              "Open an enquiry from a patient",
+              "Click 'Generate draft'",
+              "Look for a plain-English or patient version option"
+            ]
+          },
+          "tester_reply": "Thanks Priya, we have added your suggestion of a plain-English patient version to the ideas list as {ticket}.",
+          "confidence_self": 88,
+          "other_candidates": [
+            {
+              "why": "Also a drafting time-saver, but about reusable snippets, not patient versions.",
+              "target": "IDEA-01",
+              "relation": "related"
+            }
+          ],
+          "suggested_action": "add_to_ideas",
+          "follow_up_question": null
+        }
+      ],
+      "confidence": 0.94,
+      "confidence_detail": {
+        "raw": 0.94,
+        "samples": 3,
+        "agreeing": 3,
+        "evidence": "complete",
+        "agreement": 1,
+        "calibrated": 1,
+        "alternatives": [],
+        "self_reported": 0.89,
+        "calibration_note": "On 57 labelled sample reports, suggestions in the 85-95% range were right 36 of 36 times."
+      },
+      "latency_ms": 5274,
+      "usage": {
+        "cost_usd": 0.0570968,
+        "input_tokens": 6744,
+        "output_tokens": 1333,
+        "cache_read_input_tokens": 17304,
+        "cache_creation_input_tokens": 0
+      }
+    },
+    "FB-026": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "triage-v4",
+      "suggestion": {
+        "match": {
+          "target": null,
+          "relation": "none",
+          "differences": [],
+          "shared_signals": []
+        },
+        "rule_id": null,
+        "category": "bug",
+        "evidence": {
+          "known": [
+            "enquiry MI-20475",
+            "citation [3]",
+            "correct page opened",
+            "wrong passage highlighted"
+          ],
+          "missing": [],
+          "quality": "complete"
+        },
+        "explanation": "Page navigation works here but the highlight targets the wrong paragraph, a different defect from MIA-102's page-1 opening without highlight.",
+        "draft_ticket": {
+          "title": "Citation highlights the wrong passage on the correct page",
+          "actual": "The correct page opens, but a different paragraph is highlighted.",
+          "summary": "Clicking a citation opens the correct reference at the correct page, but highlights a different paragraph from the one the draft sentence cites.",
+          "expected": "The reference opens at the cited page and the cited passage is highlighted.",
+          "severity": "medium",
+          "steps_to_reproduce": [
+            "Open enquiry MI-20475 with a generated draft",
+            "Click citation [3] in the draft",
+            "Compare the highlighted passage with the cited sentence"
+          ]
+        },
+        "tester_reply": "Thanks, Aoife. This differs from the page-1 problem in MIA-102, so we have logged it as {ticket}.",
+        "confidence_self": 70,
+        "other_candidates": [
+          {
+            "why": "Same citation feature, but MIA-102 opens page 1 with no highlight.",
+            "target": "MIA-102",
+            "relation": "related"
+          }
+        ],
+        "suggested_action": "create_ticket",
+        "follow_up_question": null
+      },
+      "samples": [
+        {
+          "match": {
+            "target": "MIA-102",
+            "relation": "related",
+            "differences": [
+              "MIA-102 opens at page 1 with no highlight",
+              "here the page is correct but the wrong passage is highlighted"
+            ],
+            "shared_signals": [
+              "step TS-04.3",
+              "clicking a citation in the draft"
+            ]
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "step TS-04.3",
+              "enquiry MI-20475, citation [3]",
+              "correct document and page",
+              "wrong paragraph highlighted"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "Right page opens but wrong paragraph highlighted; MIA-102 is about opening at page 1 with no highlight, a different defect.",
+          "draft_ticket": {
+            "title": "Citation highlights the wrong passage on the correct page",
+            "actual": "The correct page opens, but a different paragraph is highlighted.",
+            "summary": "Clicking a citation opens the correct reference at the correct page, but highlights a different paragraph from the one the cited sentence relies on.",
+            "expected": "The reference opens at the cited page and the cited passage is highlighted.",
+            "severity": "medium",
+            "steps_to_reproduce": [
+              "Open the draft for MI-20475",
+              "Click citation [3]",
+              "Note the page opened and the highlighted paragraph",
+              "Compare with the statement the citation supports"
+            ]
+          },
+          "tester_reply": "Thanks Aoife. This differs from MIA-102 because the page is correct but the highlight is wrong, so we have logged it as {ticket}.",
+          "confidence_self": 68,
+          "other_candidates": [
+            {
+              "why": "Same citation feature, but page navigation works here; highlight is wrong.",
+              "target": "MIA-102",
+              "relation": "related"
+            }
+          ],
+          "suggested_action": "create_ticket",
+          "follow_up_question": null
+        },
+        {
+          "match": {
+            "target": "MIA-102",
+            "relation": "related",
+            "differences": [
+              "MIA-102 opens at page 1; here the page is correct",
+              "Here a highlight appears, but on the wrong paragraph"
+            ],
+            "shared_signals": [
+              "step TS-04.3",
+              "clicking a citation",
+              "highlight not on cited passage"
+            ]
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "citation [3] on MI-20475",
+              "correct PDF and page",
+              "wrong paragraph highlighted"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "Page opens correctly but the wrong paragraph is highlighted; MIA-102 is about opening at page 1 with no highlight, a different defect.",
+          "draft_ticket": {
+            "title": "Citation highlights the wrong paragraph on the correct page",
+            "actual": "The correct page opens, but a different paragraph is highlighted.",
+            "summary": "Clicking a citation opens the correct reference at the correct page, but highlights a different paragraph from the one the cited sentence relies on.",
+            "expected": "The reference opens at the cited page with the cited passage highlighted.",
+            "severity": "medium",
+            "steps_to_reproduce": [
+              "Open the draft for MI-20475",
+              "Click citation [3]",
+              "Note the page that opens and the highlighted passage",
+              "Compare with the sentence that cites [3]"
+            ]
+          },
+          "tester_reply": "Thanks, Aoife. The page is correct but the highlight is wrong, which differs from MIA-102, so this is logged as {ticket}.",
+          "confidence_self": 62,
+          "other_candidates": [],
+          "suggested_action": "create_ticket",
+          "follow_up_question": null
+        },
+        {
+          "match": {
+            "target": null,
+            "relation": "none",
+            "differences": [],
+            "shared_signals": []
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "enquiry MI-20475",
+              "citation [3]",
+              "correct page opened",
+              "wrong passage highlighted"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "Page navigation works here but the highlight targets the wrong paragraph, a different defect from MIA-102's page-1 opening without highlight.",
+          "draft_ticket": {
+            "title": "Citation highlights the wrong passage on the correct page",
+            "actual": "The correct page opens, but a different paragraph is highlighted.",
+            "summary": "Clicking a citation opens the correct reference at the correct page, but highlights a different paragraph from the one the draft sentence cites.",
+            "expected": "The reference opens at the cited page and the cited passage is highlighted.",
+            "severity": "medium",
+            "steps_to_reproduce": [
+              "Open enquiry MI-20475 with a generated draft",
+              "Click citation [3] in the draft",
+              "Compare the highlighted passage with the cited sentence"
+            ]
+          },
+          "tester_reply": "Thanks, Aoife. This differs from the page-1 problem in MIA-102, so we have logged it as {ticket}.",
+          "confidence_self": 70,
+          "other_candidates": [
+            {
+              "why": "Same citation feature, but MIA-102 opens page 1 with no highlight.",
+              "target": "MIA-102",
+              "relation": "related"
+            }
+          ],
+          "suggested_action": "create_ticket",
+          "follow_up_question": null
+        }
+      ],
+      "confidence": 0.83,
+      "confidence_detail": {
+        "raw": 0.83,
+        "samples": 3,
+        "agreeing": 3,
+        "evidence": "complete",
+        "agreement": 1,
+        "calibrated": null,
+        "alternatives": [],
+        "self_reported": 0.67,
+        "calibration_note": null
+      },
+      "latency_ms": 8775,
+      "usage": {
+        "cost_usd": 0.158008,
+        "input_tokens": 7242,
+        "output_tokens": 2126,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 17304
+      }
+    },
+    "FB-027": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "triage-v4",
+      "suggestion": {
+        "match": {
+          "target": "MIA-103",
+          "relation": "different_aspect",
+          "differences": [
+            "deadline changes after a page refresh",
+            "initial value appeared correct"
+          ],
+          "shared_signals": [
+            "deadline five hours later than expected",
+            "safety referral deadline, TS-05.3",
+            "consistent with US Eastern time"
+          ]
+        },
+        "rule_id": null,
+        "category": "bug",
+        "evidence": {
+          "known": [
+            "enquiry MI-20491",
+            "deadline before and after refresh",
+            "five-hour shift"
+          ],
+          "missing": [],
+          "quality": "complete"
+        },
+        "explanation": "Deadline shifted exactly five hours later on refresh, matching MIA-103's US Eastern time offset; refresh behaviour is a new symptom.",
+        "draft_ticket": null,
+        "tester_reply": "Thanks Daniel. This looks like the same five-hour deadline error tracked in MIA-103, so I've added your report there, including the change on refresh.",
+        "confidence_self": 82,
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "follow_up_question": null
+      },
+      "samples": [
+        {
+          "match": {
+            "target": "MIA-103",
+            "relation": "different_aspect",
+            "differences": [
+              "deadline changes after a page refresh",
+              "initial value appeared correct"
+            ],
+            "shared_signals": [
+              "deadline five hours later than expected",
+              "safety referral deadline, TS-05.3",
+              "consistent with US Eastern time"
+            ]
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "enquiry MI-20491",
+              "deadline before and after refresh",
+              "five-hour shift"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "Deadline shifted exactly five hours later on refresh, matching MIA-103's US Eastern time offset; refresh behaviour is a new symptom.",
+          "draft_ticket": null,
+          "tester_reply": "Thanks Daniel. This looks like the same five-hour deadline error tracked in MIA-103, so I've added your report there, including the change on refresh.",
+          "confidence_self": 82,
+          "other_candidates": [],
+          "suggested_action": "link_to_ticket",
+          "follow_up_question": null
+        },
+        {
+          "match": {
+            "target": "MIA-103",
+            "relation": "different_aspect",
+            "differences": [
+              "deadline changes on refresh rather than wrong from start"
+            ],
+            "shared_signals": [
+              "safety referral deadline wrong",
+              "exactly 5 hours later",
+              "step TS-05.3"
+            ]
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "enquiry MI-20491",
+              "deadline before and after",
+              "shifted after page refresh",
+              "five-hour difference"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "Deadline moves five hours later after refresh, matching MIA-103's US Eastern time offset; the refresh behaviour is a new symptom of the same defect.",
+          "draft_ticket": null,
+          "tester_reply": "Thanks Daniel. The five-hour shift matches MIA-103 (deadline calculated in US Eastern time), so we have added your report there, including the change on refresh.",
+          "confidence_self": 80,
+          "other_candidates": [],
+          "suggested_action": "link_to_ticket",
+          "follow_up_question": null
+        },
+        {
+          "match": {
+            "target": "MIA-103",
+            "relation": "different_aspect",
+            "differences": [
+              "Deadline initially correct, shifts after refresh",
+              "Earlier reports saw the wrong deadline immediately"
+            ],
+            "shared_signals": [
+              "TS-05.3 reporting deadline",
+              "deadline five hours later",
+              "consistent with US Eastern time"
+            ]
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "enquiry MI-20491",
+              "deadline before and after refresh",
+              "five-hour shift later"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "Deadline moved exactly five hours later on refresh, matching MIA-103's US Eastern time calculation; the refresh adds a new angle.",
+          "draft_ticket": null,
+          "tester_reply": "Thanks Daniel. The five-hour shift after refreshing matches MIA-103, where the deadline is calculated in US Eastern time; your report has been added to it.",
+          "confidence_self": 82,
+          "other_candidates": [],
+          "suggested_action": "link_to_ticket",
+          "follow_up_question": null
+        }
+      ],
+      "confidence": 0.91,
+      "confidence_detail": {
+        "raw": 0.91,
+        "samples": 3,
+        "agreeing": 3,
+        "evidence": "complete",
+        "agreement": 1,
+        "calibrated": 1,
+        "alternatives": [],
+        "self_reported": 0.81,
+        "calibration_note": "On our 57 labelled sample reports (also used to tune the AI), suggestions at 85–95% were right 36 of 36 times."
+      },
+      "latency_ms": 7489,
+      "usage": {
+        "cost_usd": 0.141736,
+        "input_tokens": 7224,
+        "output_tokens": 1316,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 17304
+      }
+    },
+    "FB-028": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "triage-v4",
+      "suggestion": {
+        "match": {
+          "target": "FB-021",
+          "relation": "exact_duplicate",
+          "differences": [
+            "FB-028 is from the approver himself"
+          ],
+          "shared_signals": [
+            "same enquiry MI-20431",
+            "'Approved' entry shows 'system'",
+            "Dr Whitfield not recorded"
+          ]
+        },
+        "rule_id": null,
+        "category": "bug",
+        "evidence": {
+          "known": [
+            "step TS-07.3",
+            "enquiry MI-20431",
+            "approver shown as 'system'",
+            "actual approver identified"
+          ],
+          "missing": [],
+          "quality": "complete"
+        },
+        "explanation": "FB-021 is listed first and reports the same enquiry MI-20431 with the approval attributed to 'system' instead of Dr Whitfield.",
+        "draft_ticket": null,
+        "tester_reply": "Thank you, James. This is the same problem already reported in FB-021 for MI-20431, so we have linked your report to it.",
+        "confidence_self": 90,
+        "other_candidates": [
+          {
+            "why": "Same 'system' approver defect on other enquiries; also links to FB-021.",
+            "target": "FB-029",
+            "relation": "exact_duplicate"
+          }
+        ],
+        "suggested_action": "link_to_ticket",
+        "follow_up_question": null
+      },
+      "samples": [
+        {
+          "match": {
+            "target": "FB-021",
+            "relation": "exact_duplicate",
+            "differences": [
+              "Reported by the approver himself"
+            ],
+            "shared_signals": [
+              "MI-20431 audit trail",
+              "'Approved' entry shows 'system'",
+              "Dr Whitfield not recorded"
+            ]
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "which step",
+              "enquiry MI-20431",
+              "approver shown as 'system'",
+              "actual approver identified"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "FB-021 is listed first and reports the same MI-20431 audit entry showing 'system' instead of Dr Whitfield.",
+          "draft_ticket": null,
+          "tester_reply": "Thanks, James. This matches FB-021, already reported for MI-20431, so we have linked your report to it.",
+          "confidence_self": 88,
+          "other_candidates": [
+            {
+              "why": "Same 'system' approver issue on other enquiries; listed after FB-021.",
+              "target": "FB-029",
+              "relation": "exact_duplicate"
+            }
+          ],
+          "suggested_action": "link_to_ticket",
+          "follow_up_question": null
+        },
+        {
+          "match": {
+            "target": "FB-021",
+            "relation": "exact_duplicate",
+            "differences": [
+              "FB-028 is from the approver himself"
+            ],
+            "shared_signals": [
+              "same enquiry MI-20431",
+              "'Approved' entry shows 'system'",
+              "Dr Whitfield not recorded"
+            ]
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "step TS-07.3",
+              "enquiry MI-20431",
+              "approver shown as 'system'",
+              "actual approver identified"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "FB-021 is listed first and reports the same enquiry MI-20431 with the approval attributed to 'system' instead of Dr Whitfield.",
+          "draft_ticket": null,
+          "tester_reply": "Thank you, James. This is the same problem already reported in FB-021 for MI-20431, so we have linked your report to it.",
+          "confidence_self": 90,
+          "other_candidates": [
+            {
+              "why": "Same 'system' approver defect on other enquiries; also links to FB-021.",
+              "target": "FB-029",
+              "relation": "exact_duplicate"
+            }
+          ],
+          "suggested_action": "link_to_ticket",
+          "follow_up_question": null
+        },
+        {
+          "match": {
+            "target": "FB-021",
+            "relation": "exact_duplicate",
+            "differences": [
+              "reported by the approver himself"
+            ],
+            "shared_signals": [
+              "same enquiry MI-20431",
+              "'Approved' entry shows 'system'",
+              "Dr Whitfield not recorded"
+            ]
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "step TS-07.3",
+              "enquiry MI-20431",
+              "approver shown as 'system'",
+              "actual approver identified"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "FB-021 is listed first and reports the same MI-20431 audit entry showing 'system' instead of Dr Whitfield.",
+          "draft_ticket": null,
+          "tester_reply": "Thanks, James. This matches an earlier report, FB-021, about the audit trail recording approvals as 'system' instead of the approver; we have linked yours to it.",
+          "confidence_self": 88,
+          "other_candidates": [
+            {
+              "why": "Same 'system' approver issue on other enquiries; listed after FB-021.",
+              "target": "FB-029",
+              "relation": "exact_duplicate"
+            }
+          ],
+          "suggested_action": "link_to_ticket",
+          "follow_up_question": null
+        }
+      ],
+      "confidence": 0.94,
+      "confidence_detail": {
+        "raw": 0.94,
+        "samples": 3,
+        "agreeing": 3,
+        "evidence": "complete",
+        "agreement": 1,
+        "calibrated": 1,
+        "alternatives": [],
+        "self_reported": 0.89,
+        "calibration_note": "On our 57 labelled sample reports (also used to tune the AI), suggestions at 85–95% were right 36 of 36 times."
+      },
+      "latency_ms": 4696,
+      "usage": {
+        "cost_usd": 0.139616,
+        "input_tokens": 7749,
+        "output_tokens": 1105,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 17304
+      }
+    },
+    "FB-029": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "triage-v4",
+      "suggestion": {
+        "match": {
+          "target": "FB-021",
+          "relation": "exact_duplicate",
+          "differences": [
+            "Different enquiries (MI-20433, MI-20438 vs MI-20431)",
+            "Test step not given"
+          ],
+          "shared_signals": [
+            "audit trail 'Approved' entry shows 'system'",
+            "actual approver name missing",
+            "compliance/GxP concern"
+          ]
+        },
+        "rule_id": null,
+        "category": "bug",
+        "evidence": {
+          "known": [
+            "audit log approvals",
+            "approver shown as 'system'",
+            "enquiries MI-20433, MI-20438",
+            "GxP sign-off impact"
+          ],
+          "missing": [],
+          "quality": "complete"
+        },
+        "explanation": "Same defect as FB-021: audit trail approvals recorded as 'system' instead of the reviewer; FB-021 is listed first among pending reports.",
+        "draft_ticket": null,
+        "tester_reply": "Thanks, Marek. This matches FB-021, already reported, where audit trail approvals show 'system' instead of the named approver; we have linked your report to it.",
+        "confidence_self": 88,
+        "other_candidates": [
+          {
+            "why": "Same 'system' approver symptom, but listed after FB-021.",
+            "target": "FB-028",
+            "relation": "exact_duplicate"
+          }
+        ],
+        "suggested_action": "link_to_ticket",
+        "follow_up_question": null
+      },
+      "samples": [
+        {
+          "match": {
+            "target": "FB-021",
+            "relation": "exact_duplicate",
+            "differences": [
+              "Different enquiries (MI-20433, MI-20438)",
+              "Step not given"
+            ],
+            "shared_signals": [
+              "Approved entry shows 'system'",
+              "Audit trail, TS-07.3",
+              "Named approver needed for compliance"
+            ]
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "audit log approvals",
+              "shows 'system' as approver",
+              "enquiry numbers given",
+              "multiple enquiries affected"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "Same defect as FB-021: audit trail records approvals as 'system' instead of the named reviewer; FB-021 is listed first.",
+          "draft_ticket": null,
+          "tester_reply": "Thanks Marek. This matches FB-021, approvals recorded as 'system' in the audit trail, and your examples have been added to it.",
+          "confidence_self": 85,
+          "other_candidates": [
+            {
+              "why": "Same symptom, but later pending report; FB-021 comes first.",
+              "target": "FB-028",
+              "relation": "exact_duplicate"
+            }
+          ],
+          "suggested_action": "link_to_ticket",
+          "follow_up_question": null
+        },
+        {
+          "match": {
+            "target": "FB-021",
+            "relation": "exact_duplicate",
+            "differences": [
+              "Different enquiries (MI-20433, MI-20438 vs MI-20431)",
+              "Test step not given"
+            ],
+            "shared_signals": [
+              "audit trail 'Approved' entry shows 'system'",
+              "actual approver name missing",
+              "compliance/GxP concern"
+            ]
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "audit log approvals",
+              "approver shown as 'system'",
+              "enquiries MI-20433, MI-20438",
+              "GxP sign-off impact"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "Same defect as FB-021: audit trail approvals recorded as 'system' instead of the reviewer; FB-021 is listed first among pending reports.",
+          "draft_ticket": null,
+          "tester_reply": "Thanks, Marek. This matches FB-021, already reported, where audit trail approvals show 'system' instead of the named approver; we have linked your report to it.",
+          "confidence_self": 88,
+          "other_candidates": [
+            {
+              "why": "Same 'system' approver symptom, but listed after FB-021.",
+              "target": "FB-028",
+              "relation": "exact_duplicate"
+            }
+          ],
+          "suggested_action": "link_to_ticket",
+          "follow_up_question": null
+        },
+        {
+          "match": {
+            "target": "FB-021",
+            "relation": "exact_duplicate",
+            "differences": [
+              "Different enquiries (MI-20433, MI-20438 vs MI-20431)",
+              "Step not given; inferred TS-07.3"
+            ],
+            "shared_signals": [
+              "Approved entry shows user 'system'",
+              "named approver needed for compliance",
+              "audit trail (TS-07.3)"
+            ]
+          },
+          "rule_id": null,
+          "category": "bug",
+          "evidence": {
+            "known": [
+              "audit log approvals",
+              "approver shown as 'system'",
+              "enquiries MI-20433, MI-20438",
+              "GxP compliance impact"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "Same defect as FB-021, listed first among pending reports: audit trail records approvals as 'system' instead of the named approver.",
+          "draft_ticket": null,
+          "tester_reply": "Thanks, Marek. This matches an earlier report (FB-021) of approvals recorded under 'system' in the audit trail, so we have linked yours to it.",
+          "confidence_self": 85,
+          "other_candidates": [
+            {
+              "why": "Same 'system' approver symptom, but listed after FB-021.",
+              "target": "FB-028",
+              "relation": "exact_duplicate"
+            }
+          ],
+          "suggested_action": "link_to_ticket",
+          "follow_up_question": null
+        }
+      ],
+      "confidence": 0.93,
+      "confidence_detail": {
+        "raw": 0.93,
+        "samples": 3,
+        "agreeing": 3,
+        "evidence": "complete",
+        "agreement": 1,
+        "calibrated": 1,
+        "alternatives": [],
+        "self_reported": 0.86,
+        "calibration_note": "On our 57 labelled sample reports (also used to tune the AI), suggestions at 85–95% were right 36 of 36 times."
+      },
+      "latency_ms": 5157,
+      "usage": {
+        "cost_usd": 0.141172,
+        "input_tokens": 7668,
+        "output_tokens": 1199,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 17304
+      }
+    },
+    "FB-030": {
+      "model": "claude-opus-5-5",
+      "prompt_version": "triage-v4",
+      "suggestion": {
+        "match": {
+          "target": "MIA-090",
+          "relation": "exact_duplicate",
+          "differences": [],
+          "shared_signals": [
+            "Safari",
+            "sign-in redirects back to itself",
+            "never reaches inbox"
+          ]
+        },
+        "rule_id": "R4",
+        "category": "known_issue",
+        "evidence": {
+          "known": [
+            "step TS-01.1",
+            "Safari browser",
+            "SSO redirect loop"
+          ],
+          "missing": [],
+          "quality": "complete"
+        },
+        "explanation": "Same Safari SSO redirect loop as known issue MIA-090; Safari is unsupported this release under R4.",
+        "draft_ticket": null,
+        "tester_reply": "Thanks Daniel. This is known issue MIA-090: Safari support is planned for v2.4, so please use Chrome or Edge for testing.",
+        "confidence_self": 93,
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "follow_up_question": null
+      },
+      "samples": [
+        {
+          "match": {
+            "target": "MIA-090",
+            "relation": "exact_duplicate",
+            "differences": [],
+            "shared_signals": [
+              "Safari",
+              "sign-in redirects back to itself",
+              "never reaches inbox"
+            ]
+          },
+          "rule_id": "R4",
+          "category": "known_issue",
+          "evidence": {
+            "known": [
+              "step TS-01.1",
+              "Safari browser",
+              "SSO redirect loop"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "Same Safari SSO redirect loop as known issue MIA-090; Safari is unsupported this release under R4.",
+          "draft_ticket": null,
+          "tester_reply": "Thanks Daniel. This is known issue MIA-090: Safari support is planned for v2.4, so please use Chrome or Edge for testing.",
+          "confidence_self": 93,
+          "other_candidates": [],
+          "suggested_action": "link_to_ticket",
+          "follow_up_question": null
+        },
+        {
+          "match": {
+            "target": "MIA-090",
+            "relation": "exact_duplicate",
+            "differences": [],
+            "shared_signals": [
+              "Safari",
+              "sign-in redirects back to itself",
+              "never reaches inbox"
+            ]
+          },
+          "rule_id": "R4",
+          "category": "known_issue",
+          "evidence": {
+            "known": [
+              "step TS-01.1",
+              "Safari browser",
+              "SSO redirect loop"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "Same Safari SSO redirect loop as known issue MIA-090; Safari is unsupported in this release (R4).",
+          "draft_ticket": null,
+          "tester_reply": "Thanks Daniel. This is known issue MIA-090; Safari support is planned for v2.4, so please use Chrome or Edge for testing.",
+          "confidence_self": 93,
+          "other_candidates": [],
+          "suggested_action": "link_to_ticket",
+          "follow_up_question": null
+        },
+        {
+          "match": {
+            "target": "MIA-090",
+            "relation": "exact_duplicate",
+            "differences": [],
+            "shared_signals": [
+              "Safari",
+              "SSO page redirects back to itself",
+              "never reaches the inbox"
+            ]
+          },
+          "rule_id": "R4",
+          "category": "known_issue",
+          "evidence": {
+            "known": [
+              "step TS-01.1",
+              "Safari browser",
+              "SSO redirect loop"
+            ],
+            "missing": [],
+            "quality": "complete"
+          },
+          "explanation": "Same Safari SSO redirect loop as known issue MIA-090; Safari is unsupported until v2.4 (R4).",
+          "draft_ticket": null,
+          "tester_reply": "Thanks Daniel, this is known issue MIA-090; Safari support is planned for v2.4. Please use Chrome or Edge for this cycle.",
+          "confidence_self": 93,
+          "other_candidates": [],
+          "suggested_action": "link_to_ticket",
+          "follow_up_question": null
+        }
+      ],
+      "confidence": 0.97,
+      "confidence_detail": {
+        "raw": 0.97,
+        "samples": 3,
+        "agreeing": 3,
+        "evidence": "complete",
+        "agreement": 1,
+        "calibrated": 1,
+        "alternatives": [],
+        "self_reported": 0.93,
+        "calibration_note": "On our 57 labelled sample reports (also used to tune the AI), suggestions at 95–100% were right 20 of 20 times."
+      },
+      "latency_ms": 4446,
+      "usage": {
+        "cost_usd": 0.134824,
+        "input_tokens": 7761,
+        "output_tokens": 863,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 17304
+      }
+    }
+  }
+}

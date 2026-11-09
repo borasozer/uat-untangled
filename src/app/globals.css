@@ -1,0 +1,364 @@
+@import "tailwindcss";
+
+/* A wide screen used with a mouse or trackpad. Details that open on hover there are shown inline everywhere else. */
+@custom-variant pointer-wide {
+  @media (width >= 64rem) and (hover: hover) {
+    @slot;
+  }
+}
+
+@theme inline {
+  --font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  /* A blue scale in three steps: 70 for links, lines and the outline of main buttons and selected choices; 80 for
+     their text and for filled marks (bars, dots); 90 for the logo. */
+  --color-accent: #0000c9;
+  --color-accent-fill: #00009d;
+  --color-accent-dark: #000067;
+  --color-accent-soft: #e8f2ff;
+  /* The page behind the white boxes, and the boxes' edge, title band and faint shadow, so each box stands off the page. */
+  --color-canvas: #f0f2f5;
+  --color-box-line: #cdd5df;
+  --color-band: #e8edf3;
+  --color-band-line: #d8dfe7;
+  --shadow-box: 0 1px 2px rgb(15 23 42 / 0.06), 0 2px 6px rgb(15 23 42 / 0.04);
+  /* Small details: refs, times, hints. */
+  --text-meta: 0.8125rem;
+  --text-meta--line-height: 1.25rem;
+  /* Every page title. */
+  --text-title: 1.375rem;
+  --text-title--line-height: 1.75rem;
+}
+
+:root {
+  color-scheme: light;
+  /* Header plus footer, for pages that fill exactly one screen. */
+  --chrome-h: 6.125rem;
+}
+
+/* Below a wide screen the header has two rows. */
+@media (width < 64rem) {
+  :root {
+    --chrome-h: 8.75rem;
+  }
+}
+
+/* Review's Approve bar stays at the bottom of a narrow screen: leave room for it under the page. */
+@media (width < 64rem) {
+  body:has([data-approve-bar]) {
+    padding-bottom: 4.5rem;
+  }
+}
+
+/* The one page width: header, pages and footer line up. */
+@utility app-container {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 90rem;
+  padding-inline: 1rem;
+  @media (width >= 40rem) {
+    padding-inline: 1.5rem;
+  }
+}
+
+body {
+  background: var(--color-canvas);
+  color: #0f172a;
+}
+
+/* In the base layer, so a utility such as -outline-offset-2 can still adjust it. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+}
+
+/*
+ * Motion. Short, once per action, never on its own. One curve for things that arrive or move to rest, one for gestures
+ * that go out and come back, one for a press. Nothing moves for a person who asks their system for less motion.
+ */
+:root {
+  --ease-move: cubic-bezier(0.2, 0, 0, 1);
+  --ease-turn: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-press: cubic-bezier(0.4, 0, 1, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@keyframes turn-half {
+  to {
+    transform: rotate(180deg);
+  }
+}
+/* A line drawn from its start (the path has pathLength="1"). */
+@keyframes draw {
+  from {
+    stroke-dasharray: 1 2;
+    stroke-dashoffset: 1.01;
+  }
+  to {
+    stroke-dasharray: 1 2;
+    stroke-dashoffset: 0;
+  }
+}
+/* Plain values inside keyframes (no var()): every browser reads them the same. */
+@keyframes apart-left {
+  40%,
+  60% {
+    transform: translateX(-2px);
+  }
+}
+@keyframes apart-right {
+  40%,
+  60% {
+    transform: translateX(2px);
+  }
+}
+/* Down fast, back up slowing to rest. */
+@keyframes press {
+  30% {
+    transform: translateY(1.5px);
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  }
+}
+@keyframes spread-back {
+  40%,
+  60% {
+    transform: translate(1px, -1px);
+  }
+}
+@keyframes spread-front {
+  40%,
+  60% {
+    transform: translate(-1px, 1px);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes drop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+/* Two names for one tint (accent-soft, written out: no var() in keyframes), so a second copy of the same field plays it
+   again (the class switches between them). */
+@keyframes tint-a {
+  0%,
+  25% {
+    background-color: #e8f2ff;
+  }
+}
+@keyframes tint-b {
+  0%,
+  25% {
+    background-color: #e8f2ff;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* A view's icon, and the logo's line, as a mouse arrives on its link or the keyboard's focus does (nav.tsx,
+     `withGesture`: played to its end); an Overview step's icon when its card is focused from the keyboard. */
+  [data-play] svg[data-role="overview"] {
+    animation: turn-half 500ms var(--ease-turn);
+  }
+  [data-play] .logo-line {
+    animation: draw 700ms var(--ease-turn);
+  }
+  :is([data-play], [data-flow-card]:has(:focus-visible)) {
+    & .ri-tick {
+      animation: draw 400ms var(--ease-move);
+    }
+    & .ri-lt {
+      animation: apart-left 500ms var(--ease-turn);
+    }
+    & .ri-gt {
+      animation: apart-right 500ms var(--ease-turn);
+    }
+    & .ri-stamp {
+      animation: press 450ms var(--ease-press);
+    }
+    & .ri-back {
+      animation: spread-back 500ms var(--ease-turn);
+    }
+    & .ri-front {
+      animation: spread-front 500ms var(--ease-turn);
+    }
+    /* The header's Tour button: its route is drawn from start to end. */
+    & .ri-route {
+      animation: draw 600ms var(--ease-turn);
+    }
+  }
+  /* The same when a mouse points at the card (pointer-wide): once as the pointer arrives. */
+  @media (width >= 64rem) and (hover: hover) {
+    [data-flow-card]:hover {
+      & .ri-tick {
+        animation: draw 400ms var(--ease-move);
+      }
+      & .ri-lt {
+        animation: apart-left 500ms var(--ease-turn);
+      }
+      & .ri-gt {
+        animation: apart-right 500ms var(--ease-turn);
+      }
+      & .ri-stamp {
+        animation: press 450ms var(--ease-press);
+      }
+      & .ri-back {
+        animation: spread-back 500ms var(--ease-turn);
+      }
+      & .ri-front {
+        animation: spread-front 500ms var(--ease-turn);
+      }
+    }
+  }
+
+  /* A tick drawn when something is done: sent, approved, copied (icons.tsx, Check with `draw`). */
+  .tick-draw {
+    animation: draw 320ms var(--ease-move) 80ms both;
+  }
+  /* Something new in place of what was there: the next report, the "Sent" box. */
+  .fade-in {
+    animation: fade-in 150ms ease-out;
+  }
+  /* The notice after a decision. */
+  .drop-in {
+    animation: drop-in 200ms var(--ease-move);
+  }
+  /* A copied field, for a moment. */
+  .tint-a {
+    animation: tint-a 1s ease-out;
+  }
+  .tint-b {
+    animation: tint-b 1s ease-out;
+  }
+
+  /* The "→" after a link moves a little toward where it leads (link-arrow.tsx). */
+  .link-arrow {
+    transition: transform 150ms var(--ease-move);
+  }
+  @media (hover: hover) {
+    :is(a, button):hover .link-arrow {
+      transform: translateX(2px);
+    }
+  }
+}
+/* Its own box, so it can move; the gap is a margin, so a link's underline ends with its words. */
+.link-arrow {
+  display: inline-block;
+  margin-left: 0.25em;
+}
+
+/*
+ * The view switch (nav.tsx): the white mark shows under the current view, or under the view just chosen while its page
+ * is on the way; that view's label looks chosen at once too.
+ */
+.view-mark {
+  opacity: 0;
+}
+[data-views] [aria-current] > .view-mark,
+.view-mark[data-pending] {
+  opacity: 1;
+}
+[data-views]:has(.view-mark[data-pending]) {
+  & [aria-current] > .view-mark:not([data-pending]) {
+    opacity: 0;
+  }
+  & [aria-current]:not(:has(> .view-mark[data-pending])) {
+    color: var(--color-slate-600);
+    font-weight: 400;
+  }
+  & :has(> .view-mark[data-pending]) {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+}
+
+/*
+ * The guided tour (components/tour). The light: a blue edge round the lit box, the page around it dimmed by the edge's
+ * shadow (its spread reaches past any screen's corner); closed to a point in the middle, it dims the whole page. On the
+ * same page the light and the step's box slide together; on the way to another page the light presses the button that
+ * leads there. Plain values in keyframes, as above.
+ */
+.tour-hole {
+  position: fixed;
+  z-index: 60;
+  pointer-events: none;
+  border: 2px solid var(--color-accent);
+  box-shadow: 0 0 0 150vmax rgb(15 23 42 / 0.25);
+  opacity: 0;
+  transition: opacity 150ms ease-out;
+}
+.tour-hole[data-on] {
+  opacity: 1;
+}
+.tour-hole[data-closed] {
+  border-color: transparent;
+}
+.tour-hole[data-moving] {
+  transition:
+    opacity 150ms ease-out,
+    top 320ms var(--ease-move),
+    left 320ms var(--ease-move),
+    width 320ms var(--ease-move),
+    height 320ms var(--ease-move),
+    border-radius 320ms var(--ease-move),
+    border-color 320ms var(--ease-move);
+}
+@keyframes tour-press {
+  50% {
+    transform: scale(0.92);
+  }
+}
+.tour-hole[data-press] {
+  animation: tour-press 160ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+.tour-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 61;
+  pointer-events: none;
+}
+.tour-box[data-shown] {
+  pointer-events: auto;
+}
+.tour-box[data-moving] {
+  transition:
+    transform 320ms var(--ease-move),
+    width 320ms var(--ease-move);
+}
+.tour-card {
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 120ms ease-in,
+    transform 120ms ease-in;
+}
+.tour-box[data-shown] .tour-card {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 240ms var(--ease-move),
+    transform 240ms var(--ease-move);
+}
+/* The Overview's invitation, the first time: lit like a tour step until the first click, key or scroll anywhere. */
+.tour-invite {
+  transition: box-shadow 300ms ease-out;
+}
+.tour-invite[data-lit] {
+  box-shadow:
+    0 0 0 2px var(--color-accent),
+    0 0 0 150vmax rgb(15 23 42 / 0.25);
+}

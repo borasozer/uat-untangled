@@ -1,0 +1,774 @@
+{
+  "model": "claude-opus-5-5",
+  "prompt_version": "triage-v4",
+  "samples": 3,
+  "measured_at": "2026-11-04T17:45:18.759Z",
+  "correct": 15,
+  "n": 15,
+  "cost_usd": 1.1294728000000003,
+  "bins": [
+    {
+      "min": 0,
+      "max": 0.6,
+      "n": 0,
+      "correct": 0
+    },
+    {
+      "min": 0.6,
+      "max": 0.85,
+      "n": 1,
+      "correct": 1
+    },
+    {
+      "min": 0.85,
+      "max": 0.95,
+      "n": 4,
+      "correct": 4
+    },
+    {
+      "min": 0.95,
+      "max": 1,
+      "n": 10,
+      "correct": 10
+    }
+  ],
+  "results": [
+    {
+      "ref": "HO-01",
+      "expected": [
+        "acknowledge"
+      ],
+      "got": "acknowledge",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.98,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "praise",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "which step",
+            "all fields matched",
+            "test email EML-07"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "acknowledge",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks, Aoife. Good to hear the extracted HCP details from EML-07 matched the signature in full.",
+        "explanation": "Tester confirms all HCP fields matched the EML-07 signature and reports no issues; nothing to act on.",
+        "confidence_self": 96
+      },
+      "costUsd": 0.125268,
+      "latencyMs": 4556
+    },
+    {
+      "ref": "HO-02",
+      "expected": [
+        "link_to_ticket:MIA-103"
+      ],
+      "got": "link_to_ticket:MIA-103",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.98,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-05.3",
+            "receipt time 09:31",
+            "deadline shown 14:31",
+            "5 hours late"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": "MIA-103",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "deadline 5 hours later than expected",
+            "UK user, TS-05.3",
+            "24h from receipt miscalculated"
+          ],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks Tom. This matches MIA-103, where the referral deadline is calculated in US Eastern time; your example has been added to that ticket.",
+        "explanation": "Deadline exactly 5 hours late for a UK user on TS-05.3, the same symptom as MIA-103.",
+        "confidence_self": 95
+      },
+      "costUsd": 0.130644,
+      "latencyMs": 4149
+    },
+    {
+      "ref": "HO-03",
+      "expected": [
+        "add_to_ideas"
+      ],
+      "got": "add_to_ideas",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.96,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "idea",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "bulk reassign request",
+            "inbox area",
+            "current one-by-one workaround",
+            "use case: leave cover"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "add_to_ideas",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Bulk reassign enquiries from the inbox",
+          "summary": "Let team leads select several enquiries in the inbox and change the owner in one action, for example to cover annual leave or sickness. Currently each enquiry must be opened and reassigned individually.",
+          "steps_to_reproduce": [
+            "Sign in as a team lead",
+            "Open the Enquiry Inbox",
+            "Try to select several enquiries",
+            "Look for a bulk reassign option"
+          ],
+          "expected": "Multiple enquiries can be selected and reassigned to a new owner in one go.",
+          "actual": "Each enquiry must be opened and its owner changed one at a time.",
+          "severity": null
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Sofia, bulk reassignment from the inbox has been added to the ideas list as {ticket} for the product team to consider.",
+        "explanation": "A request for new bulk-reassign functionality in the inbox; no existing idea or ticket covers it.",
+        "confidence_self": 92
+      },
+      "costUsd": 0.138884,
+      "latencyMs": 6151
+    },
+    {
+      "ref": "HO-04",
+      "expected": [
+        "link_to_ticket:MIA-101"
+      ],
+      "got": "link_to_ticket:MIA-101",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.87,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "enquiry MI-20519, 2,300 characters",
+            "Q3 and Q4 silently omitted",
+            "splitting enquiry fixes it",
+            "draft returned under 10 seconds"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": "MIA-101",
+          "relation": "different_aspect",
+          "shared_signals": [
+            "long enquiry over 1,500 characters",
+            "multi-part question from hospital pharmacist",
+            "short enquiries work fine"
+          ],
+          "differences": [
+            "Draft returns quickly and looks complete, no spinner or error",
+            "Later questions silently dropped rather than cut mid-sentence"
+          ]
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks, Priya. This looks like the same long-enquiry problem as MIA-101, so I've suggested adding your report there, noting that later questions are dropped silently.",
+        "explanation": "Long 2,300-character enquiry with later content lost, fixed by splitting, matches MIA-101's long-enquiry defect with a new silent-omission symptom.",
+        "confidence_self": 75
+      },
+      "costUsd": 0.148104,
+      "latencyMs": 8667
+    },
+    {
+      "ref": "HO-05",
+      "expected": [
+        "ask_tester"
+      ],
+      "got": "ask_tester",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.9,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "insufficient",
+          "known": [
+            "app froze",
+            "closed and signed back in",
+            "happened this afternoon"
+          ],
+          "missing": [
+            "which test step",
+            "what he was doing",
+            "any error message",
+            "lost work or not"
+          ]
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [
+          {
+            "target": "MIA-101",
+            "relation": "related",
+            "why": "Endless spinner on long-enquiry draft generation could look like freezing."
+          }
+        ],
+        "suggested_action": "ask_tester",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": "What were you doing when it froze, for example reviewing or commenting on a draft (TS-06), generating a draft, or opening a reference?",
+        "tester_reply": "James, what were you doing when it froze, for example reviewing or commenting on a draft (TS-06), generating a draft, or opening a reference?",
+        "explanation": "No step, screen or action given, so the freeze cannot be matched or reproduced; MIA-101 is only a loose possibility.",
+        "confidence_self": 82
+      },
+      "costUsd": 0.047440800000000005,
+      "latencyMs": 4274
+    },
+    {
+      "ref": "HO-06",
+      "expected": [
+        "link_to_ticket:MIA-090"
+      ],
+      "got": "link_to_ticket:MIA-090",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.98,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "known_issue",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-01.1",
+            "SSO redirect loop",
+            "Safari on MacBook",
+            "cookies cleared, no change"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": "MIA-090",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "SSO sign-in redirects back to itself",
+            "Safari on macOS",
+            "step TS-01.1"
+          ],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": "R4",
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks Hannah, this is known issue MIA-090: Safari is not supported until v2.4. Please use Chrome or Edge for testing.",
+        "explanation": "Same SSO redirect loop on Safari/macOS as known issue MIA-090; Safari is unsupported this release (R4).",
+        "confidence_self": 95
+      },
+      "costUsd": 0.0485968,
+      "latencyMs": 6348
+    },
+    {
+      "ref": "HO-07",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.95,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-07.3",
+            "approval entry shows service account",
+            "enquiries MI-20463, MI-20470",
+            "other entries correct"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Audit trail records approval by service account, not the reviewer",
+          "summary": "In the enquiry audit trail, the approval entry shows the user as 'svc-mia-workflow' instead of the medical reviewer who approved, so the approver cannot be evidenced. Other entries show the correct user.",
+          "steps_to_reproduce": [
+            "Open an approved enquiry (e.g. MI-20463 or MI-20470)",
+            "Open the audit trail",
+            "Check the approval entry's user"
+          ],
+          "expected": "The approval entry shows the medical reviewer who approved (e.g. Dr Whitfield), what changed and when.",
+          "actual": "The approval entry shows the user as 'svc-mia-workflow'.",
+          "severity": "high"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Marek, this is logged as {ticket}: the audit trail records approvals under the service account instead of the approving reviewer.",
+        "explanation": "New compliance defect: approval entry shows 'svc-mia-workflow' instead of reviewer, reproduced on two enquiries; no existing ticket covers audit trail.",
+        "confidence_self": 90
+      },
+      "costUsd": 0.0607248,
+      "latencyMs": 6351
+    },
+    {
+      "ref": "HO-08",
+      "expected": [
+        "link_to_ticket:MIA-104"
+      ],
+      "got": "link_to_ticket:MIA-104",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": false,
+      "confidence": 0.97,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-03.2",
+            "Region = Ireland filter",
+            "UK documents still listed",
+            "compliance impact stated"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": "MIA-104",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "Region = Ireland filter",
+            "UK documents still shown in results",
+            "same step TS-03.2"
+          ],
+          "differences": [
+            "Adds compliance concern for go-live"
+          ]
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks Aoife. This matches MIA-104 (Region filter 'Ireland' still shows UK-only documents), and your report has been added to it, including the go-live compliance point.",
+        "explanation": "Same symptom as MIA-104: UK documents still listed after filtering Region = Ireland on TS-03.2.",
+        "confidence_self": 95
+      },
+      "costUsd": 0.047392800000000006,
+      "latencyMs": 3630
+    },
+    {
+      "ref": "HO-09",
+      "expected": [
+        "ask_tester"
+      ],
+      "got": "ask_tester",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.84,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "insufficient",
+          "known": [
+            "wrong document opened",
+            "happened more than once",
+            "clicked on something"
+          ],
+          "missing": [
+            "which test step",
+            "what was clicked",
+            "wrong document or wrong page"
+          ]
+        },
+        "match": {
+          "target": "MIA-102",
+          "relation": "related",
+          "shared_signals": [
+            "clicking opens the wrong place",
+            "similar loose wording in MIA-102 reports"
+          ],
+          "differences": [
+            "Tester says wrong document; MIA-102 opens the right document at the wrong page",
+            "Step not given"
+          ]
+        },
+        "other_candidates": [
+          {
+            "target": "MIA-104",
+            "relation": "related",
+            "why": "Could mean an unexpected UK-only document appearing in search results."
+          }
+        ],
+        "suggested_action": "ask_tester",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": "Did you click a draft citation or a search result, and was it a different document or the right one at the wrong page?",
+        "tester_reply": "Tom, did you click a draft citation or a search result, and was it a different document or the right one at the wrong page?",
+        "explanation": "No step or clicked item given; could be MIA-102 (citation opens wrong page) or a new wrong-document defect.",
+        "confidence_self": 70
+      },
+      "costUsd": 0.06422080000000001,
+      "latencyMs": 8495
+    },
+    {
+      "ref": "HO-10",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.95,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "referral IDs SR-30117, SR-30121",
+            "status shows 'AE referred'",
+            "not in safety intake queue",
+            "checked over ~24 hours"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [
+          {
+            "target": "MIA-103",
+            "relation": "related",
+            "why": "Same safety referral area, but deadline time zone, not delivery."
+          }
+        ],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Submitted safety referrals never reach the safety database intake queue",
+          "summary": "After submitting a safety referral, the tool shows an SR ID and 'AE referred', but the referral does not arrive in the safety database intake queue. MI believes the AE was referred when it was not, risking missed 24-hour reporting.",
+          "steps_to_reproduce": [
+            "Import EML-11 and create a safety referral",
+            "Submit the referral",
+            "Note the SR ID and 'AE referred' status",
+            "Check the safety database intake queue",
+            "Referral is absent (e.g. SR-30117, SR-30121)"
+          ],
+          "expected": "The submitted referral appears in the safety database intake queue promptly.",
+          "actual": "The referral never arrives in the intake queue, even after about 24 hours, while MI shows 'AE referred'.",
+          "severity": "critical"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Daniel, we have logged this as {ticket}. The missing referrals SR-30117 and SR-30121 are noted.",
+        "explanation": "Referrals SR-30117 and SR-30121 show as sent but never reach the safety intake queue; missed AE reporting risk, no existing ticket.",
+        "confidence_self": 90
+      },
+      "costUsd": 0.0670608,
+      "latencyMs": 6424
+    },
+    {
+      "ref": "HO-11",
+      "expected": [
+        "answer"
+      ],
+      "got": "answer",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.94,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "not_a_bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "enquiry MI-20528",
+            "off-label paediatric use",
+            "uncited closing paragraph",
+            "step TS-04.2"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "answer",
+        "rule_id": "R2",
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks, Hannah. For off-label enquiries the draft automatically ends with the standard off-label statement by design, so it has no citation and is expected.",
+        "explanation": "Paediatric use outside the adult-only SmPC is off-label; R2 adds the standard off-label statement automatically, which is what the tester saw.",
+        "confidence_self": 90
+      },
+      "costUsd": 0.048056800000000004,
+      "latencyMs": 3847
+    },
+    {
+      "ref": "HO-12",
+      "expected": [
+        "link_to_ticket:IDEA-02"
+      ],
+      "got": "link_to_ticket:IDEA-02",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.96,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "idea",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step passed",
+            "wants re-approval date shown",
+            "search results list"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": "IDEA-02",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "show re-approval/review due date",
+            "avoid citing documents about to lapse",
+            "step TS-03.1"
+          ],
+          "differences": [
+            "Tester also confirms search ordering worked"
+          ]
+        },
+        "other_candidates": [
+          {
+            "target": "MIA-092",
+            "relation": "related",
+            "why": "Same 'Last updated' column, but about date format, not re-approval."
+          }
+        ],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks, Priya. Your suggestion to show each document's re-approval date matches an existing idea, IDEA-02, so we have added your comments there.",
+        "explanation": "Request to show re-approval dates so expiring documents are not cited matches IDEA-02 exactly; the search itself passed.",
+        "confidence_self": 92
+      },
+      "costUsd": 0.0504128,
+      "latencyMs": 4718
+    },
+    {
+      "ref": "HO-13",
+      "expected": [
+        "link_to_ticket:MIA-105"
+      ],
+      "got": "link_to_ticket:MIA-105",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.98,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-06.3",
+            "enquiry MI-20463",
+            "comments vanished after edits",
+            "both users affected"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": "MIA-105",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "unresolved comments vanish after author edits",
+            "gone for both author and reviewer",
+            "same step TS-06.3"
+          ],
+          "differences": [
+            "specific enquiry MI-20463 given"
+          ]
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks James, this matches MIA-105, where unresolved reviewer comments disappear after the author edits the draft. I've added your report, including MI-20463, to that ticket.",
+        "explanation": "Same symptom as MIA-105: unresolved reviewer comments vanish for author and reviewer after the author edits, on step TS-06.3.",
+        "confidence_self": 95
+      },
+      "costUsd": 0.048120800000000005,
+      "latencyMs": 4925
+    },
+    {
+      "ref": "HO-14",
+      "expected": [
+        "link_to_ticket:MIA-091"
+      ],
+      "got": "link_to_ticket:MIA-091",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.98,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "known_issue",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-03.3",
+            "120-page document",
+            "about 25 seconds",
+            "small files open quickly"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": "MIA-091",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "large PDF over 50 pages",
+            "about 25 seconds to open",
+            "120-page document"
+          ],
+          "differences": [
+            "Clinical overview rather than product monograph"
+          ]
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks, Marek. This is known issue MIA-091 (large PDFs open slowly in the viewer); a viewer upgrade is planned for v2.4.",
+        "explanation": "Same symptom as known issue MIA-091: a 120-page PDF takes about 25 seconds while small files open quickly.",
+        "confidence_self": 95
+      },
+      "costUsd": 0.0470328,
+      "latencyMs": 4216
+    },
+    {
+      "ref": "HO-15",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.94,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "Word export step",
+            "table loses structure",
+            "PDF export fine",
+            "enquiry MI-20470"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Word export loses table structure in approved responses",
+          "summary": "Exporting an approved response to Word turns tables into tab-separated lines of text and merges the header row into the first row. Text, citations and the PDF export are unaffected.",
+          "steps_to_reproduce": [
+            "Open approved enquiry MI-20470 with a dose adjustment table",
+            "Export the response to Word",
+            "Open the file in Word 365 desktop",
+            "Check the creatinine clearance table"
+          ],
+          "expected": "Tables keep their rows, columns and header row in the Word export.",
+          "actual": "Each table row becomes a line of text with tab gaps; header merged into first line; columns misaligned.",
+          "severity": "medium"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Sofia, this is logged as {ticket}: tables lose their structure in the Word export. PDF export can be used meanwhile.",
+        "explanation": "Clear, reproducible Word-export table defect on MI-20470 with PDF working as a workaround; no existing ticket covers export.",
+        "confidence_self": 88
+      },
+      "costUsd": 0.0575128,
+      "latencyMs": 5345
+    }
+  ]
+}

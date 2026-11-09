@@ -1,0 +1,21 @@
+# The Vercel CLI does not read .gitignore: everything not listed here is uploaded.
+# Local photos and working notes are not uploaded.
+*.HEIC
+*.heic
+/BRIEF.md
+/DURUM.md
+/PLAN.md
+/TASARIM.md
+/sunum
+
+# Secrets and local state
+.env*
+!.env.example
+/.vercel
+/supabase/.temp
+
+# Not needed to build or run the app
+/node_modules
+/.next
+/data/eval
+/tsconfig.tsbuildinfo

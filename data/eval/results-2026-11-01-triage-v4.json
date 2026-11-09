@@ -1,0 +1,2887 @@
+{
+  "model": "claude-opus-5-5",
+  "prompt_version": "triage-v4",
+  "samples": 3,
+  "measured_at": "2026-11-01T16:08:21.571Z",
+  "correct": 56,
+  "n": 57,
+  "cost_usd": 3.2299960000000008,
+  "bins": [
+    {
+      "min": 0,
+      "max": 0.6,
+      "n": 0,
+      "correct": 0
+    },
+    {
+      "min": 0.6,
+      "max": 0.85,
+      "n": 1,
+      "correct": 0
+    },
+    {
+      "min": 0.85,
+      "max": 0.95,
+      "n": 36,
+      "correct": 36
+    },
+    {
+      "min": 0.95,
+      "max": 1,
+      "n": 20,
+      "correct": 20
+    }
+  ],
+  "results": [
+    {
+      "ref": "FB-001",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.93,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-04.1",
+            "enquiry MI-20417",
+            "spinner over 2 minutes",
+            "long enquiries only"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Draft generation never completes for long enquiries",
+          "summary": "For a long enquiry (about 2,000 characters, several questions), 'Generate draft' shows a spinner for over 2 minutes and no draft appears. Shorter enquiries work within 15 seconds.",
+          "steps_to_reproduce": [
+            "Open enquiry MI-20417 (about 2,000 characters, several questions)",
+            "Attach references as in TS-03",
+            "Click 'Generate draft'",
+            "Wait over 2 minutes"
+          ],
+          "expected": "A draft response appears within 15 seconds (R3).",
+          "actual": "The spinner keeps going for over 2 minutes and no draft appears.",
+          "severity": "high"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Priya, this has been logged as {ticket}. Shorter enquiries working is a useful clue.",
+        "explanation": "Clear, reproducible failure on long enquiry MI-20417 exceeding the 15-second limit; no existing ticket covers draft generation hanging.",
+        "confidence_self": 85
+      },
+      "costUsd": 0.136724,
+      "latencyMs": 5362
+    },
+    {
+      "ref": "FB-002",
+      "expected": [
+        "link_to_ticket:MIA-101"
+      ],
+      "got": "link_to_ticket:MIA-101",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.96,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "partial",
+          "known": [
+            "step TS-04.1",
+            "endless spinner",
+            "long enquiry",
+            "refresh needed"
+          ],
+          "missing": [
+            "enquiry reference number"
+          ]
+        },
+        "match": {
+          "target": "MIA-101",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "spinner never finishes",
+            "long enquiry",
+            "Generate draft at TS-04.1"
+          ],
+          "differences": [
+            "no enquiry length or reference given"
+          ]
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks Aoife. This matches MIA-101, a known defect where draft generation hangs on long enquiries; it is being fixed now.",
+        "explanation": "Endless spinner on a long enquiry at TS-04.1 is the exact symptom already recorded in MIA-101.",
+        "confidence_self": 93
+      },
+      "costUsd": 0.10140560000000001,
+      "latencyMs": 4729
+    },
+    {
+      "ref": "FB-003",
+      "expected": [
+        "link_to_ticket:MIA-101"
+      ],
+      "got": "link_to_ticket:MIA-101",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.96,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-04.1",
+            "exact error message",
+            "long multi-part enquiry",
+            "short enquiries work"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": "MIA-101",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "'Something went wrong' error",
+            "long enquiries fail",
+            "short enquiries are fine"
+          ],
+          "differences": [
+            "no enquiry reference given"
+          ]
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks Tom. This matches MIA-101 (draft generation fails for long enquiries), which is already being fixed; we have added your report to it.",
+        "explanation": "MIA-101 explicitly lists 'Something went wrong' for long enquiries while short ones work, exactly as reported.",
+        "confidence_self": 93
+      },
+      "costUsd": 0.1295,
+      "latencyMs": 4118
+    },
+    {
+      "ref": "FB-004",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.93,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "citation [2] clicked",
+            "opened page 1, not 14",
+            "no highlight shown"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [
+          {
+            "target": "MIA-091",
+            "relation": "related",
+            "why": "Same PDF viewer, but about slow opening, not wrong page."
+          }
+        ],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Citation link opens reference at page 1 without highlighting",
+          "summary": "Clicking a citation in the AI draft opens the reference PDF at page 1 instead of the cited page, and the cited passage is not highlighted.",
+          "steps_to_reproduce": [
+            "Generate a draft with attached references",
+            "Click citation [2] in the draft",
+            "Observe the PDF opens at page 1, not the cited page 14",
+            "Observe no passage is highlighted"
+          ],
+          "expected": "The reference opens at the cited page and the passage is highlighted.",
+          "actual": "The PDF opens at page 1 and nothing is highlighted.",
+          "severity": "medium"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Priya, we have logged this as {ticket}: citations open the reference at page 1 without highlighting the passage.",
+        "explanation": "Citation opened page 1 instead of page 14 with no highlight; no existing ticket covers citation navigation.",
+        "confidence_self": 88
+      },
+      "costUsd": 0.137724,
+      "latencyMs": 5532
+    },
+    {
+      "ref": "FB-005",
+      "expected": [
+        "link_to_ticket:MIA-102"
+      ],
+      "got": "link_to_ticket:MIA-102",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.95,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "partial",
+          "known": [
+            "step TS-04.3",
+            "citation opens wrong place",
+            "must scroll to find passage"
+          ],
+          "missing": [
+            "which citation and page"
+          ]
+        },
+        "match": {
+          "target": "MIA-102",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "citation opens document at wrong place",
+            "same step TS-04.3",
+            "user must find cited page manually"
+          ],
+          "differences": [
+            "does not mention page 1 or highlighting"
+          ]
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks Hannah, this matches MIA-102, where citations open the reference at page 1 instead of the cited page. Your report has been added to that ticket.",
+        "explanation": "Same step and symptom as MIA-102: citation opens the right document but not at the cited page.",
+        "confidence_self": 92
+      },
+      "costUsd": 0.0450208,
+      "latencyMs": 3491
+    },
+    {
+      "ref": "FB-006",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.94,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-05.3",
+            "receipt time 10:47 UK",
+            "deadline shown 15:47 tomorrow",
+            "5-hour offset"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Safety referral deadline shown 5 hours late, possibly US Eastern time",
+          "summary": "The safety referral deadline appears 5 hours later than 24 hours from receipt in UK local time, suggesting a time zone conversion error. Users may believe they have more time than they do to refer an adverse event.",
+          "steps_to_reproduce": [
+            "Import an email with a possible adverse event, received 10:47 UK time",
+            "Click 'Create safety referral'",
+            "Check the reporting deadline"
+          ],
+          "expected": "Deadline shows 10:47 tomorrow (24 hours from receipt, UK local time).",
+          "actual": "Deadline shows 'Due 15:47 tomorrow', 5 hours later than it should.",
+          "severity": "critical"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Daniel, the deadline appearing 5 hours late is logged as {ticket}. We will confirm the time zone handling as part of the fix.",
+        "explanation": "New defect: deadline shown 5 hours later than 24h from receipt, risking missed adverse event reporting; no existing ticket covers it.",
+        "confidence_self": 88
+      },
+      "costUsd": 0.0652408,
+      "latencyMs": 6945
+    },
+    {
+      "ref": "FB-007",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.91,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "which step",
+            "search filter used",
+            "which results wrong",
+            "document header says UK only"
+          ],
+          "missing": [
+            "exact document names"
+          ]
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Region = Ireland filter shows UK-only SmPCs",
+          "summary": "After filtering reference search results by Region = Ireland, documents marked 'UK only' (UK SmPCs) still appear in the list. Specialists could cite references not approved for Ireland.",
+          "steps_to_reproduce": [
+            "Open an enquiry and click 'Find references'",
+            "Search 'renal impairment dosing'",
+            "Filter by Region = Ireland",
+            "Check the 3rd and 4th results"
+          ],
+          "expected": "Only documents approved for Ireland are shown.",
+          "actual": "UK SmPCs marked 'UK only' in the document header appear in the 3rd and 4th positions.",
+          "severity": "high"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Aoife, we have logged this as {ticket}: the Ireland region filter still shows UK-only SmPCs.",
+        "explanation": "Region filter returns documents marked 'UK only'; no existing ticket covers region filtering, and citing unapproved regional documents is a compliance risk.",
+        "confidence_self": 82
+      },
+      "costUsd": 0.0544648,
+      "latencyMs": 5051
+    },
+    {
+      "ref": "FB-008",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.93,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-06.3",
+            "two reviewer comments",
+            "vanished after author edit",
+            "not resolved"
+          ],
+          "missing": [
+            "enquiry reference",
+            "what edit was made"
+          ]
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Unresolved review comments disappear after author edits the draft",
+          "summary": "After the author edits a draft under review, unresolved reviewer comments disappear for both author and reviewer. Comments should stay visible until resolved.",
+          "steps_to_reproduce": [
+            "Submit a draft for medical review",
+            "As reviewer, add two comments on the draft",
+            "As author, edit the draft",
+            "Check comments in author and reviewer views"
+          ],
+          "expected": "Comments stay visible until they are resolved.",
+          "actual": "Both unresolved comments vanished from the author's and reviewer's views.",
+          "severity": "high"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thank you, James. This has been logged as {ticket} for unresolved review comments disappearing after the author edits the draft.",
+        "explanation": "Unresolved reviewer comments lost after author edit is a new review-record defect; no existing ticket covers TS-06.3.",
+        "confidence_self": 85
+      },
+      "costUsd": 0.0694488,
+      "latencyMs": 9070
+    },
+    {
+      "ref": "FB-009",
+      "expected": [
+        "link_to_ticket:MIA-105"
+      ],
+      "got": "link_to_ticket:MIA-105",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.98,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-06.3",
+            "comments disappeared after edit",
+            "edited second paragraph",
+            "reviewer James"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": "MIA-105",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "unresolved reviewer comments vanish",
+            "after author edits the draft",
+            "same step TS-06.3"
+          ],
+          "differences": [
+            "reported from author's view only"
+          ]
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks Priya, this matches MIA-105, where unresolved reviewer comments disappear after the author edits the draft. I've added your report to it.",
+        "explanation": "Same symptom at TS-06.3 as MIA-105: unresolved reviewer comments vanish once the author edits the draft.",
+        "confidence_self": 95
+      },
+      "costUsd": 0.045880800000000006,
+      "latencyMs": 3204
+    },
+    {
+      "ref": "FB-010",
+      "expected": [
+        "link_to_ticket:MIA-090"
+      ],
+      "got": "link_to_ticket:MIA-090",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.98,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "known_issue",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "Safari on Mac",
+            "sign-in redirect loop",
+            "works in Chrome"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": "MIA-090",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "Safari on macOS",
+            "sign-in page redirects to itself",
+            "Chrome works"
+          ],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": "R4",
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks Sofia, this is known issue MIA-090; Safari support is planned for v2.4. Please use Chrome or Edge for this cycle.",
+        "explanation": "Same Safari SSO redirect loop as known issue MIA-090; Safari is unsupported this release under R4.",
+        "confidence_self": 95
+      },
+      "costUsd": 0.044816800000000004,
+      "latencyMs": 2843
+    },
+    {
+      "ref": "FB-011",
+      "expected": [
+        "link_to_ticket:MIA-091"
+      ],
+      "got": "link_to_ticket:MIA-091",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.97,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "known_issue",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "which step",
+            "document size: 120 pages",
+            "load time about 25 seconds"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": "MIA-091",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "PDF over 50 pages",
+            "15-30 second open time",
+            "side viewer at TS-03.3"
+          ],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks, Tom. This is a known issue, MIA-091: PDFs over 50 pages open slowly in the viewer, and a viewer upgrade is planned for v2.4.",
+        "explanation": "A 120-page PDF taking about 25 seconds matches known issue MIA-091 (over 50 pages, 15-30 seconds).",
+        "confidence_self": 95
+      },
+      "costUsd": 0.0452288,
+      "latencyMs": 3430
+    },
+    {
+      "ref": "FB-012",
+      "expected": [
+        "add_to_ideas"
+      ],
+      "got": "add_to_ideas",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.94,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "idea",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "saved standard paragraphs",
+            "insert into drafts",
+            "example: closing statement"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "add_to_ideas",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Save personal standard paragraphs and insert them into drafts",
+          "summary": "Specialists would like to save their own standard paragraphs, such as a usual closing statement, and insert them into AI drafts to save time.",
+          "steps_to_reproduce": [
+            "Open an enquiry with a generated draft",
+            "Look for a way to insert a saved paragraph",
+            "No such option exists"
+          ],
+          "expected": "Users can save reusable paragraphs and insert them into a draft.",
+          "actual": "Standard text must be typed or pasted manually each time.",
+          "severity": null
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Hannah, we have logged saved standard paragraphs as an idea under {ticket} for the product team to consider.",
+        "explanation": "Step passed; the tester requests a new reusable-paragraph feature not covered by any existing ticket or idea.",
+        "confidence_self": 88
+      },
+      "costUsd": 0.0511088,
+      "latencyMs": 4920
+    },
+    {
+      "ref": "FB-013",
+      "expected": [
+        "add_to_ideas"
+      ],
+      "got": "add_to_ideas",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.94,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "idea",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "search results step",
+            "wants re-approval date shown",
+            "reason: avoid expiring documents"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [
+          {
+            "target": "MIA-092",
+            "relation": "related",
+            "why": "Same search results list and date column, but a formatting defect."
+          }
+        ],
+        "suggested_action": "add_to_ideas",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Show re-approval due date for reference documents in search",
+          "summary": "Display when each approved reference document is due for re-approval in the search results, so specialists avoid citing documents about to expire.",
+          "steps_to_reproduce": [
+            "Open an enquiry and click 'Find references'",
+            "Search 'renal impairment dosing'",
+            "Review the listed documents"
+          ],
+          "expected": "Each document shows its re-approval due date, ideally flagging those expiring soon.",
+          "actual": "No re-approval or expiry date is shown in the results.",
+          "severity": null
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks, Sofia. We have added showing re-approval due dates to the ideas list as {ticket}.",
+        "explanation": "Step passed; the tester requests a new feature (re-approval due date display) not covered by any ticket or idea.",
+        "confidence_self": 88
+      },
+      "costUsd": 0.053060800000000005,
+      "latencyMs": 4556
+    },
+    {
+      "ref": "FB-014",
+      "expected": [
+        "answer"
+      ],
+      "got": "answer",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.94,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "question",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "which step",
+            "question about mandatory review",
+            "simple responses slowed"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "answer",
+        "rule_id": "R1",
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Marek, every response must be approved by a medical reviewer before sending, as required by the Medical Information SOP. Review cannot be skipped, even for simple responses.",
+        "explanation": "Tester asks why review cannot be skipped; R1 makes medical review mandatory by SOP, so this is answered, not an idea.",
+        "confidence_self": 90
+      },
+      "costUsd": 0.0423928,
+      "latencyMs": 3636
+    },
+    {
+      "ref": "FB-015",
+      "expected": [
+        "answer"
+      ],
+      "got": "answer",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.94,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "not_a_bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "which step",
+            "draft time about 12 seconds",
+            "draft did appear"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [
+          {
+            "target": "MIA-101",
+            "relation": "related",
+            "why": "Same step, but MIA-101 is failures on long enquiries, not speed."
+          }
+        ],
+        "suggested_action": "answer",
+        "rule_id": "R3",
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks, Tom. Draft generation may take up to 15 seconds, so 12 seconds meets the requirement for this release.",
+        "explanation": "Draft appeared in about 12 seconds, within the 15-second limit set by R3 and the step.",
+        "confidence_self": 90
+      },
+      "costUsd": 0.044312800000000006,
+      "latencyMs": 3572
+    },
+    {
+      "ref": "FB-016",
+      "expected": [
+        "ask_tester"
+      ],
+      "got": "ask_tester",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.93,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "insufficient",
+          "known": [
+            "step TS-04.2",
+            "marked Fail"
+          ],
+          "missing": [
+            "what looked wrong",
+            "missing or wrong citations",
+            "which enquiry"
+          ]
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [
+          {
+            "target": "MIA-101",
+            "relation": "related",
+            "why": "Truncated drafts on long enquiries could look 'weird'."
+          }
+        ],
+        "suggested_action": "ask_tester",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": "What looked wrong in the draft: statements without a citation [n], citations to documents you hadn't attached, or the draft stopping mid-sentence?",
+        "tester_reply": "Hannah, what looked wrong in the draft: statements without a citation [n], citations to documents you hadn't attached, or the draft stopping mid-sentence?",
+        "explanation": "'Draft is weird' does not say what failed; possibly MIA-101 truncation, but the cause cannot be identified without details.",
+        "confidence_self": 85
+      },
+      "costUsd": 0.048828800000000006,
+      "latencyMs": 4309
+    },
+    {
+      "ref": "FB-017",
+      "expected": [
+        "link_to_ticket:MIA-104"
+      ],
+      "got": "ask_tester",
+      "correct": false,
+      "categoryCorrect": true,
+      "evidenceCorrect": false,
+      "confidence": 0.78,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "insufficient",
+          "known": [
+            "step TS-03.2",
+            "Region = Ireland filter",
+            "tester marked Fail"
+          ],
+          "missing": [
+            "what actually appeared",
+            "which documents were wrong"
+          ]
+        },
+        "match": {
+          "target": "MIA-104",
+          "relation": "different_aspect",
+          "shared_signals": [
+            "same step TS-03.2",
+            "Region = Ireland filter not working"
+          ],
+          "differences": [
+            "No symptom given; UK-only documents not mentioned"
+          ]
+        },
+        "other_candidates": [],
+        "suggested_action": "ask_tester",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": "After filtering by Region = Ireland, were UK-only documents still listed, or did something else happen, such as no results?",
+        "tester_reply": "Aoife, after filtering by Region = Ireland, were UK-only documents still listed, or did something else happen, such as no results?",
+        "explanation": "Likely MIA-104 (UK-only documents under Ireland filter), but the report gives no symptom, so confirm before linking.",
+        "confidence_self": 55
+      },
+      "costUsd": 0.0610568,
+      "latencyMs": 6225
+    },
+    {
+      "ref": "FB-018",
+      "expected": [
+        "link_to_ticket:MIA-103"
+      ],
+      "got": "link_to_ticket:MIA-103",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.92,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-05.3",
+            "countdown shows 28h 50m",
+            "shown right after creation",
+            "about 5 hours too long"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": "MIA-103",
+          "relation": "different_aspect",
+          "shared_signals": [
+            "Safety referral reporting deadline",
+            "Deadline about 5 hours too late",
+            "Step TS-05.3"
+          ],
+          "differences": [
+            "Reported via countdown, not the 'Due' time",
+            "No receipt time given"
+          ]
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks Daniel. The extra 5 hours matches MIA-103, where the referral deadline is calculated in US Eastern time, so we have linked your report to it.",
+        "explanation": "Countdown of 28h 50m is 5 hours over the expected ~23h 50m, matching MIA-103's US Eastern time deadline offset.",
+        "confidence_self": 85
+      },
+      "costUsd": 0.056204800000000006,
+      "latencyMs": 5686
+    },
+    {
+      "ref": "FB-019",
+      "expected": [
+        "link_to_ticket:MIA-102"
+      ],
+      "got": "link_to_ticket:MIA-102",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.96,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-04.3",
+            "citation [4] clicked",
+            "right document opens",
+            "wrong page shown"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": "MIA-102",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "opens the correct document",
+            "not at the cited page",
+            "step TS-04.3"
+          ],
+          "differences": [
+            "does not mention the missing highlight"
+          ]
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks, Priya. This matches MIA-102, where citations open the correct document at page 1 instead of the cited page; we have added your report to it.",
+        "explanation": "Same step and symptom as MIA-102: citation opens the right document but not at the cited page.",
+        "confidence_self": 93
+      },
+      "costUsd": 0.044448800000000004,
+      "latencyMs": 3240
+    },
+    {
+      "ref": "FB-020",
+      "expected": [
+        "link_to_ticket:MIA-101"
+      ],
+      "got": "link_to_ticket:MIA-101",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.94,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-04.1",
+            "long enquiry, 4 questions",
+            "draft truncated mid-sentence",
+            "quoted cut-off text"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": "MIA-101",
+          "relation": "different_aspect",
+          "shared_signals": [
+            "long enquiry",
+            "draft stops mid-sentence",
+            "step TS-04.1 Generate draft"
+          ],
+          "differences": [
+            "Truncated draft rather than spinner or error"
+          ]
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks James, this matches MIA-101, where drafts for long enquiries fail or stop mid-sentence. It is already being worked on.",
+        "explanation": "MIA-101 summary explicitly lists drafts stopping mid-sentence for long enquiries; this report adds the truncation symptom.",
+        "confidence_self": 90
+      },
+      "costUsd": 0.0475688,
+      "latencyMs": 3362
+    },
+    {
+      "ref": "FB-021",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.94,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-07.3",
+            "enquiry MI-20431",
+            "'Approved' entry shows 'system'",
+            "expected approver Dr Whitfield"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Audit trail records approval by 'system' instead of the reviewer",
+          "summary": "In the audit trail, the 'Approved' entry shows user = 'system' rather than the medical reviewer who approved the response. GxP requires the actual approver to be recorded.",
+          "steps_to_reproduce": [
+            "Approve a response as medical reviewer (e.g. Dr Whitfield)",
+            "Open the audit trail for the enquiry (e.g. MI-20431)",
+            "Check the 'Approved' entry"
+          ],
+          "expected": "The 'Approved' entry shows the reviewer's name, what changed and when.",
+          "actual": "The 'Approved' entry shows user = 'system'.",
+          "severity": "high"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Tom, this has been logged as {ticket} so the approver is recorded correctly in the audit trail.",
+        "explanation": "New defect: audit trail attributes approval to 'system' instead of the reviewer, a GxP compliance record error; no existing ticket covers it.",
+        "confidence_self": 88
+      },
+      "costUsd": 0.0575128,
+      "latencyMs": 4995
+    },
+    {
+      "ref": "FB-022",
+      "expected": [
+        "link_to_ticket:MIA-101"
+      ],
+      "got": "link_to_ticket:MIA-101",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": false,
+      "confidence": 0.96,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-04.1",
+            "enquiry MI-20460",
+            "long enquiry",
+            "draft never finishes"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": "MIA-101",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "Generate draft never finishes",
+            "long enquiry",
+            "step TS-04.1"
+          ],
+          "differences": [
+            "Text pasted from a letter"
+          ]
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks, Sofia. This matches MIA-101 (draft generation fails for long enquiries), which is already being worked on; I've added your report and MI-20460 to it.",
+        "explanation": "Endless draft generation on a long enquiry at TS-04.1 is the same symptom already reported under MIA-101.",
+        "confidence_self": 93
+      },
+      "costUsd": 0.0460208,
+      "latencyMs": 3324
+    },
+    {
+      "ref": "FB-023",
+      "expected": [
+        "ask_tester"
+      ],
+      "got": "ask_tester",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.93,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "insufficient",
+          "known": [
+            "step TS-05.1",
+            "marked Fail",
+            "import of EML-11"
+          ],
+          "missing": [
+            "whether import completed",
+            "whether banner appeared",
+            "any error message"
+          ]
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "ask_tester",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": "When you imported EML-11, did the enquiry form open without the red 'Possible adverse event' banner, or did the import itself not start?",
+        "tester_reply": "Hannah, when you imported EML-11, did the enquiry form open without the red 'Possible adverse event' banner, or did the import itself not start?",
+        "explanation": "'Nothing happened' could mean a failed import or a missed adverse event banner, which would be critical; clarification needed before ticketing.",
+        "confidence_self": 85
+      },
+      "costUsd": 0.045692800000000006,
+      "latencyMs": 3154
+    },
+    {
+      "ref": "FB-024",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.92,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "13-inch laptop screen",
+            "Approve button below fold",
+            "page does not scroll",
+            "zoom to 80% workaround"
+          ],
+          "missing": [
+            "browser used"
+          ]
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Approve button hidden on small screens; review page does not scroll",
+          "summary": "On a 13-inch laptop the Approve button sits below the visible area and the review page cannot be scrolled, so reviewers cannot approve without zooming out to 80%.",
+          "steps_to_reproduce": [
+            "Open a draft in review as reviewer on a 13-inch laptop",
+            "View the review page at 100% zoom",
+            "Try to scroll to the Approve button"
+          ],
+          "expected": "The Approve button is visible or reachable by scrolling, so the response can be approved.",
+          "actual": "The Approve button is below the screen and the page does not scroll; zooming out to 80% is needed to click it.",
+          "severity": "medium"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks, James. We have logged the hidden Approve button on smaller screens as {ticket}; zooming out remains the workaround for now.",
+        "explanation": "New layout defect blocking approval on small screens, with a zoom workaround; no existing ticket covers it.",
+        "confidence_self": 85
+      },
+      "costUsd": 0.057888800000000004,
+      "latencyMs": 5015
+    },
+    {
+      "ref": "FB-025",
+      "expected": [
+        "add_to_ideas"
+      ],
+      "got": "add_to_ideas",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.94,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "idea",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step passed",
+            "request for lay-language version",
+            "patient enquirers as audience"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [
+          {
+            "target": "IDEA-01",
+            "relation": "related",
+            "why": "Also about draft content options, but reusable snippets, not lay versions."
+          }
+        ],
+        "suggested_action": "add_to_ideas",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Generate plain-English version of response for patient enquirers",
+          "summary": "Allow the AI draft to produce a plain-English (lay language) version of the response when the enquirer is a patient rather than an HCP.",
+          "steps_to_reproduce": [
+            "Open an enquiry from a patient",
+            "Click 'Generate draft'",
+            "Note the draft is written for HCPs only"
+          ],
+          "expected": "Option to generate a plain-English version suitable for patients, with citations kept.",
+          "actual": "Only an HCP-level draft is generated.",
+          "severity": null
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Priya, we have logged your suggestion for a plain-English patient version as {ticket} for consideration.",
+        "explanation": "Step passed; tester requests a new capability (lay-language drafts for patients) not covered by any existing idea or rule.",
+        "confidence_self": 88
+      },
+      "costUsd": 0.054440800000000004,
+      "latencyMs": 5048
+    },
+    {
+      "ref": "IMP-01",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.95,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-05.1",
+            "test email EML-11",
+            "quoted side effect text",
+            "no banner appeared"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [
+          {
+            "target": "MIA-103",
+            "relation": "related",
+            "why": "Same safety area, but deadline time zone, not detection."
+          }
+        ],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "No adverse event banner when importing EML-11 with reported rash",
+          "summary": "Importing test email EML-11, which states 'pt developed a widespread rash 3 days after starting Corvalix', does not show the red 'Possible adverse event' banner. Possible adverse events may be missed and not referred to Safety within 24 hours.",
+          "steps_to_reproduce": [
+            "Click 'New enquiry' > 'Import from email'",
+            "Choose test email EML-11",
+            "Check the enquiry form for the adverse event banner"
+          ],
+          "expected": "A red 'Possible adverse event' banner appears.",
+          "actual": "No adverse event banner appears, although the email describes a rash after starting Corvalix.",
+          "severity": "critical"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Daniel, this is logged as {ticket} as a critical defect, since a missed adverse event banner puts the safety referral at risk.",
+        "explanation": "Clear report of no AE banner for EML-11 with quoted side effect; no existing ticket covers detection, and a missed AE is critical.",
+        "confidence_self": 90
+      },
+      "costUsd": 0.0594608,
+      "latencyMs": 4774
+    },
+    {
+      "ref": "IMP-02",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.93,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-05.1",
+            "banner did not appear",
+            "side effect only in PDF",
+            "email body has no mention"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "AE banner not shown when side effect is only in attachment",
+          "summary": "Adverse event detection does not scan attached PDF letters. When the side effect is described only in the attachment, no 'Possible adverse event' banner appears, so the event could be missed.",
+          "steps_to_reproduce": [
+            "Click 'New enquiry' > 'Import from email'",
+            "Choose test email EML-11 (side effect described only in attached PDF letter)",
+            "Check the enquiry for the red 'Possible adverse event' banner"
+          ],
+          "expected": "A red 'Possible adverse event' banner appears.",
+          "actual": "No banner appears when the side effect is only in the attached PDF.",
+          "severity": "critical"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Aoife. We have logged this as {ticket}, since an adverse event mentioned only in an attachment could be missed.",
+        "explanation": "New defect: AE detection ignores PDF attachments; no existing ticket covers it, and a missed adverse event puts patient safety at risk.",
+        "confidence_self": 88
+      },
+      "costUsd": 0.0679968,
+      "latencyMs": 7430
+    },
+    {
+      "ref": "IMP-03",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": false,
+      "confidence": 0.93,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-05.1",
+            "test email EML-11",
+            "no AE banner shown",
+            "side effect: rash"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [
+          {
+            "target": "MIA-103",
+            "relation": "related",
+            "why": "Same safety area, but a deadline timezone defect, not detection."
+          }
+        ],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Possible adverse event banner missing for EML-11 (rash)",
+          "summary": "Importing test email EML-11, which mentions a rash, does not show the red 'Possible adverse event' banner. Adverse events may go undetected and miss the 24-hour Safety referral.",
+          "steps_to_reproduce": [
+            "Click 'New enquiry' > 'Import from email'",
+            "Choose test email EML-11 (mentions a rash)",
+            "Look for the red 'Possible adverse event' banner"
+          ],
+          "expected": "A red 'Possible adverse event' banner appears.",
+          "actual": "No adverse event banner appears.",
+          "severity": "critical"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Tom, a missing adverse event banner on EML-11 is logged as {ticket}.",
+        "explanation": "No AE banner on EML-11 despite a rash is a missed adverse event; no existing ticket covers detection.",
+        "confidence_self": 88
+      },
+      "costUsd": 0.056780800000000006,
+      "latencyMs": 4873
+    },
+    {
+      "ref": "IMP-04",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.93,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-04.5",
+            "logged out after ~12 minutes",
+            "unsaved edits lost",
+            "happened on typing after idle"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Session times out within 15 minutes, losing unsaved draft edits",
+          "summary": "After about 12 minutes idle on an open draft, typing logs the user out and edits since the last save are lost. The step expects work to remain after 15 minutes.",
+          "steps_to_reproduce": [
+            "Open an enquiry and generate a draft",
+            "Make edits to the draft",
+            "Leave the draft idle for about 12-15 minutes",
+            "Return and start typing"
+          ],
+          "expected": "Work is still there and editing can continue.",
+          "actual": "User is logged out and edits since the last save are lost.",
+          "severity": "high"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Priya, we have logged this as {ticket}: being logged out after about 12 minutes and losing unsaved draft edits.",
+        "explanation": "Logout after ~12 minutes idle with lost edits fails TS-04.5; no existing ticket covers session timeout or data loss.",
+        "confidence_self": 88
+      },
+      "costUsd": 0.0547368,
+      "latencyMs": 4722
+    },
+    {
+      "ref": "IMP-05",
+      "expected": [
+        "ask_tester"
+      ],
+      "got": "ask_tester",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.89,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "insufficient",
+          "known": [
+            "step TS-04.5",
+            "work was lost"
+          ],
+          "missing": [
+            "what happened on return",
+            "any message shown",
+            "which edits were lost"
+          ]
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "ask_tester",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": "After 15 minutes, were you signed out, did an error appear, or did the draft reload without your edits?",
+        "tester_reply": "Hannah, after leaving the draft for 15 minutes, were you signed out, did an error appear, or did the draft reload without your edits?",
+        "explanation": "Report says only 'lost my work!!' with no description of what happened; no existing ticket covers session timeout on TS-04.5.",
+        "confidence_self": 80
+      },
+      "costUsd": 0.046440800000000004,
+      "latencyMs": 4072
+    },
+    {
+      "ref": "IMP-06",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.93,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-04.5",
+            "timeout after ~10 minutes",
+            "unsaved changes lost"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [
+          {
+            "target": "MIA-101",
+            "relation": "related",
+            "why": "Same AI draft area, but a generation failure, not a session timeout."
+          }
+        ],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Session times out after 10 minutes, losing unsaved draft edits",
+          "summary": "While editing an AI draft, the session times out after about 10 minutes of inactivity and unsaved changes are lost. The step expects work to remain after 15 minutes.",
+          "steps_to_reproduce": [
+            "Open an enquiry and generate a draft",
+            "Make some edits to the draft",
+            "Leave the draft idle for 10-15 minutes",
+            "Try to continue editing"
+          ],
+          "expected": "Work is still there and editing can continue after 15 minutes.",
+          "actual": "Session timed out after about 10 minutes; unsaved changes were lost.",
+          "severity": "high"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Sofia, this is logged as {ticket}: the session timing out after about 10 minutes and losing unsaved draft edits.",
+        "explanation": "Clear data loss at TS-04.5 (timeout at ~10 minutes, edits lost); no existing ticket covers session timeouts.",
+        "confidence_self": 88
+      },
+      "costUsd": 0.0558968,
+      "latencyMs": 4634
+    },
+    {
+      "ref": "IMP-07",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.93,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-04.4",
+            "deleted 2nd paragraph",
+            "citations show [1], [3], [4]",
+            "no renumbering"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [
+          {
+            "target": "MIA-102",
+            "relation": "related",
+            "why": "Also about citations, but wrong page on click, not numbering."
+          }
+        ],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Citations do not renumber after deleting a paragraph",
+          "summary": "After deleting a paragraph from an AI draft, the remaining citations keep their old numbers (e.g. [1], [3], [4]) instead of renumbering automatically.",
+          "steps_to_reproduce": [
+            "Generate a draft with several cited paragraphs",
+            "Delete the second paragraph",
+            "Check the citation numbers in the remaining text"
+          ],
+          "expected": "Citations renumber automatically in sequence ([1], [2], [3]).",
+          "actual": "Citations keep their original numbers, leaving a gap ([1], [3], [4]).",
+          "severity": "medium"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Priya, we have logged this as {ticket}: citations not renumbering after a paragraph is deleted.",
+        "explanation": "Clear new defect at TS-04.4: citations stay [1], [3], [4] after deletion; no existing ticket covers renumbering.",
+        "confidence_self": 88
+      },
+      "costUsd": 0.057952800000000006,
+      "latencyMs": 4807
+    },
+    {
+      "ref": "IMP-08",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.92,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "partial",
+          "known": [
+            "which step",
+            "citations not renumbered",
+            "[2] missing after edit"
+          ],
+          "missing": [
+            "whether [2] paragraph was deleted"
+          ]
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [
+          {
+            "target": "MIA-102",
+            "relation": "related",
+            "why": "Also about citations, but opening at wrong page, not numbering."
+          }
+        ],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Citations do not renumber after editing the draft",
+          "summary": "After deleting a paragraph and adding a sentence in the AI draft, citation numbers are not renumbered; numbering is out of order and [2] is missing.",
+          "steps_to_reproduce": [
+            "Generate a draft with several citations",
+            "Delete one paragraph containing a citation",
+            "Add a sentence",
+            "Check citation numbering"
+          ],
+          "expected": "Citations renumber automatically in sequence.",
+          "actual": "Numbering is out of order and [2] is missing.",
+          "severity": "medium"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks James, we have logged this as {ticket}: citations not renumbering after edits.",
+        "explanation": "Citations fail to renumber after editing, contrary to TS-04.4; no existing ticket covers renumbering.",
+        "confidence_self": 85
+      },
+      "costUsd": 0.055488800000000005,
+      "latencyMs": 5078
+    },
+    {
+      "ref": "IMP-09",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.93,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-02.2, email EML-07",
+            "Name shows institution",
+            "Institution field empty",
+            "expected name given"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Email import puts institution in Name field, Institution left empty",
+          "summary": "When importing EML-07, the HCP Name field is filled with 'St James's Hospital' and Institution is empty. Name should be 'Dr Ciara Walsh' and Institution 'St James's Hospital'.",
+          "steps_to_reproduce": [
+            "Click 'New enquiry' > 'Import from email'",
+            "Choose test email EML-07",
+            "Check the extracted HCP details"
+          ],
+          "expected": "Name = Dr Ciara Walsh; Institution = St James's Hospital, matching the email signature.",
+          "actual": "Name = St James's Hospital; Institution is empty.",
+          "severity": "medium"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks, Aoife. We've logged this as {ticket}: the institution is being placed in the Name field when EML-07 is imported.",
+        "explanation": "Clear new extraction defect at TS-02.2 with actual and expected values; no existing ticket covers HCP detail extraction.",
+        "confidence_self": 88
+      },
+      "costUsd": 0.056376800000000005,
+      "latencyMs": 4727
+    },
+    {
+      "ref": "IMP-10",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.93,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-02.2, email EML-07",
+            "title 'Dr' not extracted",
+            "name field holds hospital name"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Email import misreads HCP signature: title missing, hospital in name",
+          "summary": "When importing EML-07, the HCP title 'Dr' is not extracted from the email signature and the name field is filled with the hospital name instead of the HCP's name.",
+          "steps_to_reproduce": [
+            "Click 'New enquiry' > 'Import from email'",
+            "Choose test email EML-07",
+            "Check the extracted HCP title and name fields"
+          ],
+          "expected": "Title, name, institution and country match the email signature.",
+          "actual": "Title is empty and the name field contains the hospital name.",
+          "severity": "medium"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks, Tom. We have logged this as {ticket}: the title and name are not extracted correctly from the EML-07 signature.",
+        "explanation": "Clear extraction defect at TS-02.2 with specific symptoms; no existing ticket covers email intake field extraction.",
+        "confidence_self": 85
+      },
+      "costUsd": 0.054024800000000005,
+      "latencyMs": 4658
+    },
+    {
+      "ref": "IMP-11",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.93,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-07.1",
+            "table becomes tab text",
+            "bullet points lost"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Word export loses tables and bullet points",
+          "summary": "When an approved response is exported to Word, tables become plain text separated by tabs and bullet points are removed. The step expects formatting, tables and citations to be kept.",
+          "steps_to_reproduce": [
+            "Open an approved response containing a dosing table and bullet points",
+            "Export the response to Word",
+            "Open the Word document and check the table and bullets"
+          ],
+          "expected": "Formatting, tables and citations are kept in the Word document.",
+          "actual": "The dosing table is plain text with tabs and the bullet points are missing.",
+          "severity": "medium"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks James. We have logged this as {ticket}.",
+        "explanation": "Clear Word export defect losing tables and bullets at TS-07.1; no existing ticket covers export formatting.",
+        "confidence_self": 85
+      },
+      "costUsd": 0.0518928,
+      "latencyMs": 4081
+    },
+    {
+      "ref": "IMP-12",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": false,
+      "confidence": 0.93,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "partial",
+          "known": [
+            "step TS-07.3",
+            "approval shows 'system'",
+            "named approver missing"
+          ],
+          "missing": [
+            "which enquiry"
+          ]
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Audit trail records approval action as 'system' instead of approver",
+          "summary": "In the enquiry audit trail, the medical review approval is attributed to 'system' rather than the named reviewer, so the compliance record does not show who approved the response.",
+          "steps_to_reproduce": [
+            "Approve a response as medical reviewer (TS-06.4)",
+            "Open the audit trail for the enquiry",
+            "Check the entry for the approval step"
+          ],
+          "expected": "The approval entry shows the named reviewer, what changed and when.",
+          "actual": "The approval entry is recorded as 'system'.",
+          "severity": "high"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Marek. We have raised this as {ticket}: the approval step shows 'system' instead of the named approver in the audit trail.",
+        "explanation": "Audit trail attributes approval to 'system', breaking the TS-07.3 expectation; no existing ticket covers it, and wrong compliance records mean high severity.",
+        "confidence_self": 85
+      },
+      "costUsd": 0.054524800000000005,
+      "latencyMs": 4765
+    },
+    {
+      "ref": "IMP-13",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.94,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-01.4",
+            "view and filter reset",
+            "'Assigned to me' and product"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Inbox view and filters reset after returning from an enquiry",
+          "summary": "After opening an enquiry and returning to the inbox, the 'Assigned to me' view and product filter are reset instead of kept.",
+          "steps_to_reproduce": [
+            "Sign in and open the Enquiry Inbox",
+            "Select 'Assigned to me' and filter Product = Zentrava",
+            "Open any enquiry",
+            "Return to the inbox"
+          ],
+          "expected": "The 'Assigned to me' view and product filter are kept.",
+          "actual": "The view and product filter reset to defaults.",
+          "severity": "medium"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Sofia, this is logged as {ticket}: the inbox view and filters reset after returning from an enquiry.",
+        "explanation": "Clear failure of TS-01.4 expected result; no existing ticket or earlier pending report covers inbox filters resetting.",
+        "confidence_self": 88
+      },
+      "costUsd": 0.053684800000000005,
+      "latencyMs": 4769
+    },
+    {
+      "ref": "IMP-14",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": false,
+      "confidence": 0.92,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "partial",
+          "known": [
+            "which step",
+            "filters reset on return",
+            "happens every time"
+          ],
+          "missing": [
+            "which filters or view"
+          ]
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Inbox filters reset after opening an enquiry and returning",
+          "summary": "After opening an enquiry and returning to the Enquiry Inbox, the applied filters are cleared instead of being kept. The tester reports this happens every time.",
+          "steps_to_reproduce": [
+            "Sign in and open the Enquiry Inbox",
+            "Apply a filter, e.g. Product = Zentrava",
+            "Open any enquiry",
+            "Return to the inbox",
+            "Observe that the filters have been reset"
+          ],
+          "expected": "Filters and view are kept when returning to the inbox.",
+          "actual": "Filters reset every time an enquiry is opened.",
+          "severity": "medium"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks, Hannah. Although marked Pass, filters resetting does not meet the step's expectation, so this is logged as {ticket}.",
+        "explanation": "Step TS-01.4 expects filters kept; tester says they reset every time, despite marking Pass. No existing ticket covers this.",
+        "confidence_self": 85
+      },
+      "costUsd": 0.054476800000000006,
+      "latencyMs": 4587
+    },
+    {
+      "ref": "IMP-15",
+      "expected": [
+        "link_to_ticket:MIA-103"
+      ],
+      "got": "link_to_ticket:MIA-103",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.98,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "partial",
+          "known": [
+            "step TS-05.3",
+            "deadline 5 hours late",
+            "safety referral affected"
+          ],
+          "missing": [
+            "receipt and shown times"
+          ]
+        },
+        "match": {
+          "target": "MIA-103",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "deadline 5 hours later than expected",
+            "safety referral, step TS-05.3"
+          ],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks Daniel. This matches MIA-103, the referral deadline being calculated in US Eastern time, so we have linked your report there.",
+        "explanation": "Same step and same symptom as MIA-103: referral deadline five hours later than it should be.",
+        "confidence_self": 95
+      },
+      "costUsd": 0.044388800000000006,
+      "latencyMs": 3631
+    },
+    {
+      "ref": "IMP-16",
+      "expected": [
+        "link_to_ticket:MIA-102"
+      ],
+      "got": "link_to_ticket:MIA-102",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.98,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-04.3",
+            "opens at start",
+            "not cited page"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": "MIA-102",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "citation opens PDF at page 1",
+            "not at the cited page",
+            "step TS-04.3"
+          ],
+          "differences": [
+            "highlight not mentioned"
+          ]
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks Priya. This matches MIA-102, where citations open the reference at page 1 instead of the cited page; your report has been linked to it.",
+        "explanation": "Same symptom as MIA-102 on the same step: citation opens the PDF at the start, not the cited page.",
+        "confidence_self": 95
+      },
+      "costUsd": 0.0442608,
+      "latencyMs": 3096
+    },
+    {
+      "ref": "IMP-17",
+      "expected": [
+        "link_to_ticket:MIA-101"
+      ],
+      "got": "link_to_ticket:MIA-101",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.95,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "partial",
+          "known": [
+            "step TS-04.1",
+            "long enquiry",
+            "draft cut off mid-way"
+          ],
+          "missing": [
+            "enquiry reference"
+          ]
+        },
+        "match": {
+          "target": "MIA-101",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "long enquiry",
+            "draft stops mid-sentence",
+            "Generate draft step TS-04.1"
+          ],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks, Aoife. This matches MIA-101, where drafts for long enquiries fail or stop mid-sentence; it is being worked on.",
+        "explanation": "MIA-101 already lists truncated drafts for long enquiries as one of its symptoms at TS-04.1.",
+        "confidence_self": 90
+      },
+      "costUsd": 0.0447648,
+      "latencyMs": 3583
+    },
+    {
+      "ref": "IMP-18",
+      "expected": [
+        "link_to_ticket:MIA-105"
+      ],
+      "got": "link_to_ticket:MIA-105",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.95,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "partial",
+          "known": [
+            "step TS-06.3",
+            "comments lost after editing"
+          ],
+          "missing": [
+            "whether comments were unresolved"
+          ]
+        },
+        "match": {
+          "target": "MIA-105",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "same step TS-06.3",
+            "reviewer comments vanish after author edits"
+          ],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks, Tom. This matches MIA-105, where unresolved reviewer comments disappear after the author edits the draft, and is linked there.",
+        "explanation": "Same step and symptom as MIA-105: reviewer comments disappear once the author edits the draft.",
+        "confidence_self": 90
+      },
+      "costUsd": 0.044768800000000004,
+      "latencyMs": 3820
+    },
+    {
+      "ref": "IMP-19",
+      "expected": [
+        "link_to_ticket:MIA-091"
+      ],
+      "got": "link_to_ticket:MIA-091",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": false,
+      "confidence": 0.95,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "known_issue",
+        "evidence": {
+          "quality": "partial",
+          "known": [
+            "step TS-03.3",
+            "large PDFs slow",
+            "about 20 seconds to open"
+          ],
+          "missing": [
+            "document page count"
+          ]
+        },
+        "match": {
+          "target": "MIA-091",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "large PDFs slow in side viewer",
+            "15-30 seconds to open",
+            "step TS-03.3"
+          ],
+          "differences": [
+            "page count not stated"
+          ]
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks Sofia. This is known issue MIA-091 (slow viewer for large PDFs); a viewer upgrade is planned for v2.4.",
+        "explanation": "Large PDFs taking about 20 seconds matches known issue MIA-091 (15-30 seconds for documents over 50 pages), despite the Pass mark.",
+        "confidence_self": 90
+      },
+      "costUsd": 0.046932800000000004,
+      "latencyMs": 3957
+    },
+    {
+      "ref": "IMP-20",
+      "expected": [
+        "link_to_ticket:MIA-090"
+      ],
+      "got": "link_to_ticket:MIA-090",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": false,
+      "confidence": 0.97,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "known_issue",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "Safari browser",
+            "SSO sign-in loops",
+            "step TS-01.1"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": "MIA-090",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "Safari",
+            "sign-in keeps looping/redirecting",
+            "step TS-01.1"
+          ],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": "R4",
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks Hannah, this is known issue MIA-090; Safari support is planned for v2.4. Please use Chrome or Edge for testing.",
+        "explanation": "Same symptom as known issue MIA-090: SSO sign-in loops on Safari; R4 limits this release to Chrome and Edge.",
+        "confidence_self": 93
+      },
+      "costUsd": 0.0449968,
+      "latencyMs": 4360
+    },
+    {
+      "ref": "IMP-21",
+      "expected": [
+        "add_to_ideas"
+      ],
+      "got": "add_to_ideas",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.9,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "idea",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step passed",
+            "show similar past enquiries",
+            "reuse approved response wording"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [
+          {
+            "target": "IDEA-01",
+            "relation": "related",
+            "why": "Also about reusing wording, but saved personal snippets, not past responses."
+          }
+        ],
+        "suggested_action": "add_to_ideas",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Show similar past enquiries and their approved responses",
+          "summary": "When drafting a response, show similar past enquiries and the approved responses sent, so specialists can reuse approved wording.",
+          "steps_to_reproduce": [
+            "Open an enquiry",
+            "Generate or edit a draft response",
+            "Look for similar past enquiries and approved responses"
+          ],
+          "expected": "Similar past enquiries and their approved responses are suggested for reuse.",
+          "actual": "No view of similar past enquiries or their responses is available.",
+          "severity": null
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Priya, we have logged your suggestion to show similar past enquiries and approved responses as {ticket}.",
+        "explanation": "Step passed; the tester suggests a new feature. IDEA-01 covers personal snippets, not reuse of past approved responses.",
+        "confidence_self": 80
+      },
+      "costUsd": 0.0587128,
+      "latencyMs": 5815
+    },
+    {
+      "ref": "IMP-22",
+      "expected": [
+        "add_to_ideas"
+      ],
+      "got": "add_to_ideas",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.95,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "idea",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step passed",
+            "keyboard shortcut request",
+            "next/previous comment navigation"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "add_to_ideas",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Keyboard shortcuts to move between review comments",
+          "summary": "Reviewers would like keyboard shortcuts to jump to the next or previous comment on a draft, to speed up medical review.",
+          "steps_to_reproduce": [
+            "Open a draft in review as reviewer",
+            "Add several comments",
+            "Try to move between comments using the keyboard"
+          ],
+          "expected": "Shortcuts move to the next or previous comment.",
+          "actual": "No keyboard shortcuts exist; comments must be navigated by scrolling or clicking.",
+          "severity": null
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks James, the step passed and your suggestion for next/previous comment shortcuts has been logged as {ticket}.",
+        "explanation": "Step passed; the tester suggests a new feature (comment navigation shortcuts) that matches no existing idea.",
+        "confidence_self": 90
+      },
+      "costUsd": 0.052220800000000005,
+      "latencyMs": 4408
+    },
+    {
+      "ref": "IMP-23",
+      "expected": [
+        "link_to_ticket:IDEA-01"
+      ],
+      "got": "link_to_ticket:IDEA-01",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.97,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "idea",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step passed",
+            "wants saved snippets",
+            "standard closing paragraph"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": "IDEA-01",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "saved standard paragraphs",
+            "usual closing statement",
+            "step TS-04.2"
+          ],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks Tom. This matches an existing idea, IDEA-01 (reusable snippets for standard paragraphs), so we have added your request to it.",
+        "explanation": "Request for saved snippets for the closing paragraph matches IDEA-01 almost word for word; the step itself passed.",
+        "confidence_self": 93
+      },
+      "costUsd": 0.0442648,
+      "latencyMs": 3688
+    },
+    {
+      "ref": "IMP-24",
+      "expected": [
+        "add_to_ideas"
+      ],
+      "got": "add_to_ideas",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.94,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "idea",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step passed",
+            "patient-friendly version request",
+            "for patient enquiries"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [
+          {
+            "target": "IDEA-01",
+            "relation": "related",
+            "why": "Also a drafting convenience idea, but about reusable snippets."
+          }
+        ],
+        "suggested_action": "add_to_ideas",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Patient-friendly version of draft responses",
+          "summary": "Offer an option to produce a plain-language, patient-friendly version of the AI draft for enquiries from patients.",
+          "steps_to_reproduce": [
+            "Open an enquiry from a patient",
+            "Generate a draft",
+            "Note there is no patient-friendly version option"
+          ],
+          "expected": "Option to generate a plain-language version of the response.",
+          "actual": "Drafts are written in one style only.",
+          "severity": null
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Aoife, we have logged your suggestion for a patient-friendly version of responses as {ticket}.",
+        "explanation": "Step passed; the tester suggests a new patient-friendly draft option, which no existing idea covers.",
+        "confidence_self": 88
+      },
+      "costUsd": 0.054072800000000004,
+      "latencyMs": 5178
+    },
+    {
+      "ref": "IMP-25",
+      "expected": [
+        "add_to_ideas"
+      ],
+      "got": "add_to_ideas",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.93,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "idea",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "which step",
+            "postal sending requested",
+            "reason: HCPs ask letters"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "add_to_ideas",
+        "rule_id": "R5",
+        "draft_ticket": {
+          "title": "Option to send responses to HCPs by post",
+          "summary": "Some HCPs still request letters; add a way to produce and record postal responses. R5 says postal letters are not part of this release.",
+          "steps_to_reproduce": [
+            "Open an approved response",
+            "Go to send options (TS-06.5)",
+            "Note only email sending is available"
+          ],
+          "expected": "Option to send or record the response as a postal letter.",
+          "actual": "Only email sending is available.",
+          "severity": null
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Marek. Postal letters are not part of this release (email only), so we have logged your request as idea {ticket} for a future version.",
+        "explanation": "Request for postal sending, which rule R5 places outside this release; no existing idea covers it.",
+        "confidence_self": 85
+      },
+      "costUsd": 0.0502128,
+      "latencyMs": 4642
+    },
+    {
+      "ref": "IMP-26",
+      "expected": [
+        "answer"
+      ],
+      "got": "answer",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.91,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "not_a_bug",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "which step",
+            "off-label statement appended",
+            "not requested by tester"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "answer",
+        "rule_id": "R2",
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks, Hannah. This is by design: when an enquiry concerns an off-label use, the draft automatically ends with the standard off-label statement.",
+        "explanation": "Rule R2 says off-label enquiries automatically get the standard off-label statement appended; behaviour matches design.",
+        "confidence_self": 85
+      },
+      "costUsd": 0.042984800000000004,
+      "latencyMs": 2887
+    },
+    {
+      "ref": "IMP-27",
+      "expected": [
+        "ask_tester"
+      ],
+      "got": "ask_tester",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.93,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "insufficient",
+          "known": [
+            "step TS-05.2",
+            "marked Fail"
+          ],
+          "missing": [
+            "what actually happened",
+            "form opened or not",
+            "which fields were empty"
+          ]
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [
+          {
+            "target": "MIA-103",
+            "relation": "related",
+            "why": "Same safety referral form, but deadline issue is step TS-05.3."
+          }
+        ],
+        "suggested_action": "ask_tester",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": "After clicking 'Create safety referral', did the form not open at all, or did it open with the patient and event fields empty or wrong?",
+        "tester_reply": "Daniel, after clicking 'Create safety referral', did the form not open at all, or did it open with the patient and event fields empty or wrong?",
+        "explanation": "\"Doesn't work\" gives no symptom; no existing ticket covers TS-05.2, and safety referral problems could be critical, so clarify first.",
+        "confidence_self": 85
+      },
+      "costUsd": 0.047932800000000005,
+      "latencyMs": 4344
+    },
+    {
+      "ref": "IMP-28",
+      "expected": [
+        "acknowledge"
+      ],
+      "got": "acknowledge",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.98,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "praise",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-04.1 passed",
+            "draft generation worked",
+            "faster than old process"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "acknowledge",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks, James. Noted that draft generation worked well and quickly for you.",
+        "explanation": "Positive confirmation that TS-04.1 passed, with no problem or request to act on.",
+        "confidence_self": 95
+      },
+      "costUsd": 0.0395488,
+      "latencyMs": 2297
+    },
+    {
+      "ref": "IMP-29",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.86,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "partial",
+          "known": [
+            "step TS-06.4",
+            "Approve button cut off",
+            "laptop screen"
+          ],
+          "missing": [
+            "screen size or zoom level",
+            "browser used",
+            "whether approval was possible"
+          ]
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Approve button cut off at bottom of screen on laptops",
+          "summary": "On the reviewer approval screen, the Approve button is partly hidden at the bottom of the screen on a laptop display. Screen size, zoom level and whether the button can still be reached are not yet known.",
+          "steps_to_reproduce": [
+            "Sign in as reviewer on a laptop",
+            "Open a draft that is 'In review'",
+            "Go to the approval area",
+            "Look for the Approve button at the bottom of the screen"
+          ],
+          "expected": "The Approve button is fully visible and usable; approving sets status to 'Approved' and enables 'Send'.",
+          "actual": "The Approve button is cut off at the bottom of the screen.",
+          "severity": "medium"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks, Priya. This is logged as {ticket}; it would help to know your browser, zoom level and whether you could still click Approve.",
+        "explanation": "New layout defect on the approval screen with no matching ticket; severity set to medium pending whether approval was fully blocked.",
+        "confidence_self": 72
+      },
+      "costUsd": 0.0662088,
+      "latencyMs": 6767
+    },
+    {
+      "ref": "IMP-30",
+      "expected": [
+        "create_ticket"
+      ],
+      "got": "create_ticket",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": false,
+      "confidence": 0.9,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "bug",
+        "evidence": {
+          "quality": "partial",
+          "known": [
+            "Word export affected",
+            "tables lose formatting",
+            "PDF export fine"
+          ],
+          "missing": [
+            "how the tables look",
+            "which response"
+          ]
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "create_ticket",
+        "rule_id": null,
+        "draft_ticket": {
+          "title": "Word export loses table formatting",
+          "summary": "When an approved response is exported to Word, table formatting is lost. PDF export of the same response is correct.",
+          "steps_to_reproduce": [
+            "Open an approved response containing a table",
+            "Export the response to Word",
+            "Open the Word document and compare tables with the on-screen response"
+          ],
+          "expected": "Formatting, tables and citations are kept in the Word export (TS-07.1).",
+          "actual": "Tables in the Word export lose their formatting.",
+          "severity": "medium"
+        },
+        "follow_up_question": null,
+        "tester_reply": "Thanks Tom. We have logged the Word export table formatting problem as {ticket}; the PDF export result is noted as working.",
+        "explanation": "Defect is in Word export (TS-07.1 expects tables kept), reported under TS-07.2; no existing ticket covers export formatting.",
+        "confidence_self": 80
+      },
+      "costUsd": 0.0524528,
+      "latencyMs": 5098
+    },
+    {
+      "ref": "IMP-31",
+      "expected": [
+        "link_to_ticket:MIA-092"
+      ],
+      "got": "link_to_ticket:MIA-092",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.98,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "known_issue",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-03.1 search results",
+            "dates in MM/DD/YYYY",
+            "example 10/28/2026"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": "MIA-092",
+          "relation": "exact_duplicate",
+          "shared_signals": [
+            "Document list dates in US format",
+            "Same step TS-03.1",
+            "MM/DD/YYYY instead of UK/IE locale"
+          ],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "link_to_ticket",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks Sofia. This is a known issue, MIA-092; the date format fix is planned for v2.4.",
+        "explanation": "Same symptom as known issue MIA-092: reference search list shows dates in MM/DD/YYYY at TS-03.1.",
+        "confidence_self": 95
+      },
+      "costUsd": 0.0456408,
+      "latencyMs": 2952
+    },
+    {
+      "ref": "IMP-32",
+      "expected": [
+        "acknowledge"
+      ],
+      "got": "acknowledge",
+      "correct": true,
+      "categoryCorrect": true,
+      "evidenceCorrect": true,
+      "confidence": 0.98,
+      "agreeing": 3,
+      "suggestion": {
+        "category": "praise",
+        "evidence": {
+          "quality": "complete",
+          "known": [
+            "step TS-02.3",
+            "product and category correct",
+            "marked Pass"
+          ],
+          "missing": []
+        },
+        "match": {
+          "target": null,
+          "relation": "none",
+          "shared_signals": [],
+          "differences": []
+        },
+        "other_candidates": [],
+        "suggested_action": "acknowledge",
+        "rule_id": null,
+        "draft_ticket": null,
+        "follow_up_question": null,
+        "tester_reply": "Thanks, Aoife. Noted that product and category were detected correctly for TS-02.3.",
+        "explanation": "Plain confirmation that TS-02.3 worked as expected; nothing to act on.",
+        "confidence_self": 96
+      },
+      "costUsd": 0.0399008,
+      "latencyMs": 2310
+    }
+  ]
+}

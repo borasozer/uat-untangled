@@ -1,0 +1,359 @@
+{
+  "_about": "Fictional sample data. MedInfo Assist, its products (Zentrava, Corvalix), people and enquiries are invented for the demo. 'truth' holds ground-truth labels used only for evaluation. Reports marked demo_only are examples for the demo queue (deliberately ambiguous ones, the same new bug described three ways, a report of a known issue) and are not part of the measured set.",
+  "cycle": {
+    "id": "mia-2-3-c3",
+    "name": "UAT Cycle 3",
+    "app_name": "MedInfo Assist v2.3",
+    "app_description": "Internal tool for the Medical Information team. Specialists log enquiries from healthcare professionals (HCPs), search approved reference documents, generate an AI draft response with citations, route it for medical review, and send it. Possible adverse events must be detected and referred to Safety within 24 hours.",
+    "starts_on": "2026-10-26",
+    "ends_on": "2026-11-06"
+  },
+  "app_rules": [
+    { "id": "R1", "rule": "Every response must be approved by a medical reviewer before it can be sent. There is no way to skip review (by design, Medical Information SOP)." },
+    { "id": "R2", "rule": "When an enquiry concerns an unapproved (off-label) use, the draft automatically ends with the standard off-label statement (by design)." },
+    { "id": "R3", "rule": "Draft generation may take up to 15 seconds. Anything under 15 seconds meets the requirement." },
+    { "id": "R4", "rule": "Supported browsers for this release are Chrome and Edge. Safari support is planned for v2.4." },
+    { "id": "R5", "rule": "Responses are sent by email from the tool. Postal letters are not part of this release." }
+  ],
+  "people": [
+    { "id": "T1", "name": "Priya Nair", "role": "tester", "team": "Medical Information, UK" },
+    { "id": "T2", "name": "Tom Hughes", "role": "tester", "team": "Medical Information, UK" },
+    { "id": "T3", "name": "Aoife Byrne", "role": "tester", "team": "Medical Information, Ireland" },
+    { "id": "T4", "name": "Daniel Okafor", "role": "tester", "team": "Pharmacovigilance" },
+    { "id": "T5", "name": "Sofia Martins", "role": "tester", "team": "Medical Information, Team Lead" },
+    { "id": "T6", "name": "Dr James Whitfield", "role": "tester", "team": "Medical Review" },
+    { "id": "T7", "name": "Hannah Clarke", "role": "tester", "team": "Medical Information, UK (new joiner)" },
+    { "id": "T8", "name": "Marek Nowak", "role": "tester", "team": "Quality & Compliance" },
+    { "id": "M1", "name": "Grace Liu", "role": "manager", "team": "UAT Manager" },
+    { "id": "D1", "name": "Ravi Patel", "role": "developer", "team": "MedInfo Assist development team" }
+  ],
+  "scripts": [
+    {
+      "id": "TS-01", "title": "Sign in and enquiry inbox", "area": "Inbox", "sort": 1,
+      "steps": [
+        { "step_no": 1, "instruction": "Sign in with single sign-on (SSO).", "expected": "You land on the Enquiry Inbox within 5 seconds." },
+        { "step_no": 2, "instruction": "Filter the inbox by Product = Zentrava.", "expected": "Only Zentrava enquiries are listed and the count updates." },
+        { "step_no": 3, "instruction": "Select the 'Assigned to me' view.", "expected": "Only enquiries assigned to you are shown." },
+        { "step_no": 4, "instruction": "Open an enquiry, then return to the inbox.", "expected": "Your filters and view are kept." }
+      ]
+    },
+    {
+      "id": "TS-02", "title": "Log a new enquiry from email", "area": "Intake", "sort": 2,
+      "steps": [
+        { "step_no": 1, "instruction": "Click 'New enquiry' > 'Import from email' and choose test email EML-07.", "expected": "The enquiry form opens pre-filled." },
+        { "step_no": 2, "instruction": "Check the extracted HCP details (title, name, institution, country).", "expected": "Fields match the email signature." },
+        { "step_no": 3, "instruction": "Check the detected product and enquiry category.", "expected": "Product = Corvalix; Category = Dosing." },
+        { "step_no": 4, "instruction": "Save the enquiry.", "expected": "The enquiry gets a reference number (MI-xxxxx) and appears in the inbox." }
+      ]
+    },
+    {
+      "id": "TS-03", "title": "Search approved reference documents", "area": "Search", "sort": 3,
+      "steps": [
+        { "step_no": 1, "instruction": "From the enquiry, open 'Find references' and search 'renal impairment dosing'.", "expected": "Relevant approved documents are listed, most relevant first." },
+        { "step_no": 2, "instruction": "Filter by Region = Ireland.", "expected": "Only documents approved for Ireland are shown." },
+        { "step_no": 3, "instruction": "Open the top document.", "expected": "The PDF opens in the side viewer within 3 seconds." },
+        { "step_no": 4, "instruction": "Attach two documents to the enquiry.", "expected": "Both appear under 'Attached references'." }
+      ]
+    },
+    {
+      "id": "TS-04", "title": "Generate an AI draft response", "area": "AI draft", "sort": 4,
+      "steps": [
+        { "step_no": 1, "instruction": "Click 'Generate draft'.", "expected": "A draft response appears within 15 seconds." },
+        { "step_no": 2, "instruction": "Check the draft uses only the attached references.", "expected": "Every factual statement has a citation [n] to an attached reference." },
+        { "step_no": 3, "instruction": "Click a citation.", "expected": "The reference opens at the cited page and the passage is highlighted." },
+        { "step_no": 4, "instruction": "Edit the draft: delete one paragraph and add a sentence.", "expected": "Edits are saved and citations renumber automatically." },
+        { "step_no": 5, "instruction": "Leave the draft open for 15 minutes, then continue editing.", "expected": "Your work is still there and you can keep editing." }
+      ]
+    },
+    {
+      "id": "TS-05", "title": "Adverse event detection and safety referral", "area": "Safety", "sort": 5,
+      "steps": [
+        { "step_no": 1, "instruction": "Import test email EML-11, which mentions a side effect.", "expected": "A red 'Possible adverse event' banner appears." },
+        { "step_no": 2, "instruction": "Click 'Create safety referral'.", "expected": "The referral form opens with patient and event fields pre-filled from the enquiry." },
+        { "step_no": 3, "instruction": "Check the reporting deadline.", "expected": "The deadline shows 24 hours from receipt, in your local time." },
+        { "step_no": 4, "instruction": "Submit the referral.", "expected": "A referral ID (SR-xxxxx) is shown and the enquiry status is 'AE referred'." }
+      ]
+    },
+    {
+      "id": "TS-06", "title": "Medical review and approval", "area": "Review", "sort": 6,
+      "steps": [
+        { "step_no": 1, "instruction": "Submit the draft for medical review.", "expected": "Status is 'In review' and the reviewer is notified." },
+        { "step_no": 2, "instruction": "As reviewer, add two comments on the draft.", "expected": "Comments are anchored to the highlighted text." },
+        { "step_no": 3, "instruction": "As author, address the comments and edit the draft.", "expected": "Comments stay visible until they are resolved." },
+        { "step_no": 4, "instruction": "As reviewer, approve the response.", "expected": "Status is 'Approved' and 'Send' becomes available." },
+        { "step_no": 5, "instruction": "Send the response to the HCP.", "expected": "Status is 'Closed - responded'." }
+      ]
+    },
+    {
+      "id": "TS-07", "title": "Export and audit trail", "area": "Records", "sort": 7,
+      "steps": [
+        { "step_no": 1, "instruction": "Export the approved response to Word.", "expected": "Formatting, tables and citations are kept." },
+        { "step_no": 2, "instruction": "Export the approved response to PDF.", "expected": "The PDF matches the on-screen response." },
+        { "step_no": 3, "instruction": "Open the audit trail for the enquiry.", "expected": "Every action shows who did it, what changed and when." }
+      ]
+    }
+  ],
+  "tickets": [
+    {
+      "key": "MIA-090", "kind": "bug", "origin": "known_issue", "cluster": "K-SSO-SAFARI",
+      "title": "SSO sign-in loops on Safari",
+      "summary": "On Safari (macOS), the SSO sign-in page redirects back to itself and the user never reaches the inbox. Chrome and Edge work.",
+      "step_id": "TS-01.1", "severity": "medium", "status": "planned",
+      "status_note": "Known before this cycle. Safari support is planned for v2.4; use Chrome or Edge for testing."
+    },
+    {
+      "key": "MIA-091", "kind": "bug", "origin": "known_issue", "cluster": "K-PDF-SLOW",
+      "title": "PDF viewer slow for documents over 50 pages",
+      "summary": "Large reference PDFs (over 50 pages) take 15-30 seconds to open in the side viewer.",
+      "step_id": "TS-03.3", "severity": "low", "status": "planned",
+      "status_note": "Known before this cycle. Viewer upgrade scheduled for v2.4."
+    },
+    {
+      "key": "MIA-092", "kind": "bug", "origin": "known_issue", "cluster": "K-DATE-US",
+      "title": "Document list shows dates in US format (MM/DD/YYYY)",
+      "summary": "The 'Last updated' column in reference search results uses MM/DD/YYYY instead of the user's locale.",
+      "step_id": "TS-03.1", "severity": "low", "status": "planned",
+      "status_note": "Known before this cycle. Locale fix planned for v2.4."
+    },
+    {
+      "key": "MIA-101", "kind": "bug", "origin": "cycle", "cluster": "B-DRAFT-LONG",
+      "title": "Draft generation fails for long enquiries",
+      "summary": "For enquiries longer than about 1,500 characters, 'Generate draft' either spins indefinitely, shows 'Something went wrong', or returns a draft that stops mid-sentence. Short enquiries are fine.",
+      "step_id": "TS-04.1",
+      "steps_to_reproduce": ["Open a long enquiry (about 2,000 characters, several questions), e.g. MI-20417", "Click 'Generate draft'", "Wait"],
+      "expected": "A complete draft appears within 15 seconds.",
+      "actual": "Spinner never stops, or an error appears, or the draft is cut off.",
+      "severity": "high", "status": "in_progress", "created_by": "M1", "source_ref": "FB-001",
+      "assignee": "D1", "picked_up_at": "2026-10-27T09:30:00Z"
+    },
+    {
+      "key": "MIA-102", "kind": "bug", "origin": "cycle", "cluster": "B-CITE-PAGE",
+      "title": "Citations open the reference at page 1, not the cited page",
+      "summary": "Clicking a citation [n] opens the correct document but at page 1, with no highlight, instead of the cited page and passage.",
+      "step_id": "TS-04.3",
+      "steps_to_reproduce": ["Generate a draft with attached references", "Click citation [2]"],
+      "expected": "The reference opens at the cited page with the passage highlighted.",
+      "actual": "The reference opens at page 1 and nothing is highlighted.",
+      "severity": "medium", "status": "open", "created_by": "M1", "source_ref": "FB-004"
+    },
+    {
+      "key": "MIA-103", "kind": "bug", "origin": "cycle", "cluster": "B-AE-DEADLINE",
+      "title": "Safety referral deadline is calculated in US Eastern time",
+      "summary": "The 24-hour reporting deadline on safety referrals is 5 hours later than it should be for UK and Ireland users, consistent with US Eastern time being used.",
+      "step_id": "TS-05.3",
+      "steps_to_reproduce": ["Import EML-11 received at 10:47 UK time", "Create a safety referral", "Check the deadline"],
+      "expected": "Due 10:47 tomorrow (24 hours from receipt, local time).",
+      "actual": "Due 15:47 tomorrow.",
+      "severity": "high", "status": "open", "created_by": "M1", "source_ref": "FB-006"
+    },
+    {
+      "key": "MIA-104", "kind": "bug", "origin": "cycle", "cluster": "B-REGION",
+      "title": "Region filter 'Ireland' still shows UK-only documents",
+      "summary": "Filtering reference search by Region = Ireland still lists documents approved only for the UK.",
+      "step_id": "TS-03.2",
+      "steps_to_reproduce": ["Search 'renal impairment dosing'", "Filter by Region = Ireland"],
+      "expected": "Only Ireland-approved documents are listed.",
+      "actual": "Results 3 and 4 are UK-only SmPCs.",
+      "severity": "medium", "status": "open", "created_by": "M1", "source_ref": "FB-007"
+    },
+    {
+      "key": "MIA-105", "kind": "bug", "origin": "cycle", "cluster": "B-COMMENTS",
+      "title": "Reviewer comments disappear after the author edits the draft",
+      "summary": "Unresolved reviewer comments vanish for both author and reviewer once the author edits the draft.",
+      "step_id": "TS-06.3",
+      "steps_to_reproduce": ["As reviewer, add two comments", "As author, edit a paragraph", "Look for the comments"],
+      "expected": "Comments stay visible until resolved.",
+      "actual": "Both comments are gone for author and reviewer.",
+      "severity": "high", "status": "open", "created_by": "M1", "source_ref": "FB-008"
+    },
+    {
+      "key": "IDEA-01", "kind": "idea", "origin": "cycle", "cluster": "I-TEMPLATES",
+      "title": "Reusable snippets for standard paragraphs",
+      "summary": "Let specialists save their own standard paragraphs (for example the usual closing statement) and insert them into drafts.",
+      "step_id": "TS-04.2", "status": "open", "created_by": "M1", "source_ref": "FB-012"
+    },
+    {
+      "key": "IDEA-02", "kind": "idea", "origin": "cycle", "cluster": "I-EXPIRY",
+      "title": "Show when reference documents are due for re-approval",
+      "summary": "Show the re-approval or expiry date of each reference document so specialists avoid citing something about to expire.",
+      "step_id": "TS-03.1", "status": "open", "created_by": "M1", "source_ref": "FB-013"
+    }
+  ],
+  "feedback": [
+    {
+      "ref": "FB-001", "tester": "T1", "step": "TS-04.1", "result": "fail", "at": "2026-10-26T10:12:00Z",
+      "text": "Clicked Generate draft on MI-20417 (long enquiry from a hospital pharmacist, about 2,000 characters with several questions). The spinner kept going for over 2 minutes and no draft appeared. Shorter enquiries work fine. Expected a draft within 15 seconds.",
+      "decided": { "status": "ticketed", "ticket": "MIA-101", "relation": "origin", "message": "Thanks Priya. This is now ticket MIA-101; you can follow it from here." },
+      "truth": { "category": "bug", "cluster": "B-DRAFT-LONG", "relation": "origin", "evidence": "complete" }
+    },
+    {
+      "ref": "FB-002", "tester": "T3", "step": "TS-04.1", "result": "fail", "at": "2026-10-26T14:40:00Z",
+      "text": "Generate draft just spins forever on the long enquiry, had to refresh.",
+      "decided": { "status": "linked", "ticket": "MIA-101", "relation": "exact_duplicate", "message": "Thanks Aoife. Priya reported the same problem, so we added your report to MIA-101. Two reports raise its priority." },
+      "truth": { "category": "bug", "cluster": "B-DRAFT-LONG", "relation": "exact_duplicate", "evidence": "partial" }
+    },
+    {
+      "ref": "FB-003", "tester": "T2", "step": "TS-04.1", "result": "fail", "at": "2026-10-27T09:05:00Z",
+      "text": "Got 'Something went wrong. Please try again.' when generating a draft for a long multi-part question. Tried 3 times, same error. Short ones are fine.",
+      "decided": { "status": "linked", "ticket": "MIA-101", "relation": "different_aspect", "message": "Thanks Tom. Your error message is another symptom of MIA-101 (long enquiries), so we added it there. It helps the developers find the cause." },
+      "truth": { "category": "bug", "cluster": "B-DRAFT-LONG", "relation": "different_aspect", "evidence": "complete" }
+    },
+    {
+      "ref": "FB-004", "tester": "T1", "step": "TS-04.3", "result": "fail", "at": "2026-10-26T11:30:00Z",
+      "text": "Clicked citation [2] in the draft - the PDF opened on page 1 instead of page 14 where the renal dosing table is. Nothing was highlighted.",
+      "decided": { "status": "ticketed", "ticket": "MIA-102", "relation": "origin", "message": "Thanks Priya. This is now ticket MIA-102." },
+      "truth": { "category": "bug", "cluster": "B-CITE-PAGE", "relation": "origin", "evidence": "complete" }
+    },
+    {
+      "ref": "FB-005", "tester": "T7", "step": "TS-04.3", "result": "fail", "at": "2026-10-27T15:20:00Z",
+      "text": "the reference links dont take you to the right place in the document, you have to scroll to find it",
+      "decided": { "status": "linked", "ticket": "MIA-102", "relation": "exact_duplicate", "message": "Thanks Hannah. This matches MIA-102, so we added your report to it." },
+      "truth": { "category": "bug", "cluster": "B-CITE-PAGE", "relation": "exact_duplicate", "evidence": "partial" }
+    },
+    {
+      "ref": "FB-006", "tester": "T4", "step": "TS-05.3", "result": "fail", "at": "2026-10-27T10:00:00Z",
+      "text": "Safety referral deadline shows 'Due 15:47 tomorrow' but the email came in at 10:47 today UK time, so 24h should be 10:47 tomorrow. Looks like it's 5 hours out - US Eastern time?",
+      "decided": { "status": "ticketed", "ticket": "MIA-103", "relation": "origin", "message": "Thanks Daniel. Ticket MIA-103 created and marked high severity." },
+      "truth": { "category": "bug", "cluster": "B-AE-DEADLINE", "relation": "origin", "evidence": "complete" }
+    },
+    {
+      "ref": "FB-007", "tester": "T3", "step": "TS-03.2", "result": "fail", "at": "2026-10-27T11:15:00Z",
+      "text": "Filtered by Region = Ireland but the 3rd and 4th results are UK SmPCs (marked 'UK only' in the document header).",
+      "decided": { "status": "ticketed", "ticket": "MIA-104", "relation": "origin", "message": "Thanks Aoife. This is now ticket MIA-104." },
+      "truth": { "category": "bug", "cluster": "B-REGION", "relation": "origin", "evidence": "complete" }
+    },
+    {
+      "ref": "FB-008", "tester": "T6", "step": "TS-06.3", "result": "fail", "at": "2026-10-28T16:02:00Z",
+      "text": "Added two comments as reviewer. After Priya edited the draft, both comments vanished from her view and mine. They were not resolved.",
+      "decided": { "status": "ticketed", "ticket": "MIA-105", "relation": "origin", "message": "Thank you James. This is now ticket MIA-105." },
+      "truth": { "category": "bug", "cluster": "B-COMMENTS", "relation": "origin", "evidence": "complete" }
+    },
+    {
+      "ref": "FB-009", "tester": "T1", "step": "TS-06.3", "result": "fail", "at": "2026-10-28T16:30:00Z",
+      "text": "My reviewer's comments disappeared after I changed the second paragraph, so I couldn't see what James asked for.",
+      "decided": { "status": "linked", "ticket": "MIA-105", "relation": "exact_duplicate", "message": "Thanks Priya. James saw the same thing from the reviewer side; your report is now part of MIA-105." },
+      "truth": { "category": "bug", "cluster": "B-COMMENTS", "relation": "exact_duplicate", "evidence": "complete" }
+    },
+    {
+      "ref": "FB-010", "tester": "T5", "step": "TS-01.1", "result": "fail", "at": "2026-10-26T09:10:00Z",
+      "text": "Using Safari on my Mac, the sign-in page keeps redirecting back to itself. Works in Chrome.",
+      "decided": { "status": "linked", "ticket": "MIA-090", "relation": "exact_duplicate", "message": "Thanks Sofia. This is a known issue (MIA-090): Safari support comes in v2.4. Please use Chrome or Edge for this cycle." },
+      "truth": { "category": "known_issue", "cluster": "K-SSO-SAFARI", "relation": "exact_duplicate", "evidence": "complete" }
+    },
+    {
+      "ref": "FB-011", "tester": "T2", "step": "TS-03.3", "result": "fail", "at": "2026-10-27T13:00:00Z",
+      "text": "Opening the 120-page product monograph took about 25 seconds in the viewer.",
+      "decided": { "status": "linked", "ticket": "MIA-091", "relation": "exact_duplicate", "message": "Thanks Tom. Slow opening of large PDFs is a known issue (MIA-091), fixed in v2.4." },
+      "truth": { "category": "known_issue", "cluster": "K-PDF-SLOW", "relation": "exact_duplicate", "evidence": "complete" }
+    },
+    {
+      "ref": "FB-012", "tester": "T7", "step": "TS-04.2", "result": "pass", "at": "2026-10-27T16:10:00Z",
+      "text": "It would save a lot of time if I could save my own standard paragraphs (e.g. the usual closing statement) and insert them into drafts.",
+      "decided": { "status": "idea", "ticket": "IDEA-01", "relation": "origin", "message": "Great idea, Hannah. It is now in the ideas backlog as IDEA-01, so it won't get lost." },
+      "truth": { "category": "idea", "cluster": "I-TEMPLATES", "relation": "origin", "evidence": "complete" }
+    },
+    {
+      "ref": "FB-013", "tester": "T5", "step": "TS-03.1", "result": "pass", "at": "2026-10-28T10:20:00Z",
+      "text": "It would help to see when a reference document is due for re-approval, so we don't cite something about to expire.",
+      "decided": { "status": "idea", "ticket": "IDEA-02", "relation": "origin", "message": "Thanks Sofia. Added to the ideas backlog as IDEA-02." },
+      "truth": { "category": "idea", "cluster": "I-EXPIRY", "relation": "origin", "evidence": "complete" }
+    },
+    {
+      "ref": "FB-014", "tester": "T8", "step": "TS-06.1", "result": "fail", "at": "2026-10-28T11:45:00Z",
+      "text": "Why can't I send a response straight away without medical review? For simple ones it slows us down.",
+      "decided": { "status": "answered", "message": "Good question, Marek. Every response needs medical review before sending; that is required by the Medical Information SOP, so the tool can't skip it. We've noted that simple responses feel slow." },
+      "truth": { "category": "question", "cluster": "R1", "relation": null, "evidence": "complete" }
+    },
+    {
+      "ref": "FB-015", "tester": "T2", "step": "TS-04.1", "result": "pass", "at": "2026-10-28T12:30:00Z",
+      "text": "Draft took about 12 seconds to appear. Bit slow?",
+      "decided": { "status": "answered", "message": "Thanks Tom. The target for this release is up to 15 seconds, so 12 seconds passes. We've noted that it feels slow." },
+      "truth": { "category": "not_a_bug", "cluster": "R3", "relation": null, "evidence": "complete" }
+    },
+    {
+      "ref": "FB-016", "tester": "T7", "step": "TS-04.2", "result": "fail", "at": "2026-10-28T14:00:00Z",
+      "text": "draft is weird",
+      "decided": { "status": "needs_info", "question": "Thanks Hannah. What looked weird about the draft? For example, a wrong fact, a missing citation, or the tone. If you have the enquiry number (MI-...), that helps too." },
+      "truth": { "category": "bug", "cluster": null, "relation": null, "evidence": "insufficient" }
+    },
+    {
+      "ref": "FB-017", "tester": "T3", "step": "TS-03.2", "result": "fail", "at": "2026-10-29T09:30:00Z",
+      "text": "Region filter isn't working properly for Ireland",
+      "decided": { "status": "linked", "ticket": "MIA-104", "relation": "exact_duplicate", "message": "Thanks Aoife. Added to MIA-104." },
+      "truth": { "category": "bug", "cluster": "B-REGION", "relation": "exact_duplicate", "evidence": "partial" }
+    },
+    {
+      "ref": "FB-018", "tester": "T4", "step": "TS-05.3", "result": "fail", "at": "2026-10-29T10:10:00Z",
+      "text": "The countdown on the referral says 28h 50m remaining right after creating it. Should be under 24h.",
+      "decided": { "status": "linked", "ticket": "MIA-103", "relation": "different_aspect", "message": "Thanks Daniel. The countdown is wrong for the same reason as the deadline in MIA-103, so we added it there." },
+      "truth": { "category": "bug", "cluster": "B-AE-DEADLINE", "relation": "different_aspect", "evidence": "complete" }
+    },
+    {
+      "ref": "FB-019", "tester": "T1", "step": "TS-04.3", "result": "fail", "at": "2026-10-29T11:00:00Z",
+      "text": "Citations: clicking [4] opens the right document but not at the right page.",
+      "decided": { "status": "linked", "ticket": "MIA-102", "relation": "exact_duplicate", "message": "Thanks Priya. Added to MIA-102." },
+      "truth": { "category": "bug", "cluster": "B-CITE-PAGE", "relation": "exact_duplicate", "evidence": "complete" }
+    },
+    {
+      "ref": "FB-020", "tester": "T6", "step": "TS-04.1", "result": "fail", "at": "2026-10-30T09:40:00Z",
+      "text": "Generated a draft for a long enquiry with 4 questions - the draft stops mid-sentence after question 2: '...the recommended dose in moderate renal impairment is'",
+      "decided": { "status": "linked", "ticket": "MIA-101", "relation": "different_aspect", "message": "Thank you James. A cut-off draft is another symptom of MIA-101 (long enquiries); your example is attached to it." },
+      "truth": { "category": "bug", "cluster": "B-DRAFT-LONG", "relation": "different_aspect", "evidence": "complete" }
+    },
+    {
+      "ref": "FB-021", "tester": "T2", "step": "TS-07.3", "result": "fail", "at": "2026-10-30T14:15:00Z",
+      "text": "In the audit trail for MI-20431, the 'Approved' entry shows user = 'system' instead of Dr Whitfield. For GxP we need the actual approver recorded.",
+      "truth": { "category": "bug", "cluster": "B-AUDIT-SYSTEM", "relation": "origin", "evidence": "complete", "severity": "high" }
+    },
+    {
+      "ref": "FB-022", "tester": "T5", "step": "TS-04.1", "result": "fail", "at": "2026-10-30T15:00:00Z",
+      "text": "Generate draft never finishes for MI-20460 (it's a long one, pasted from a letter).",
+      "truth": { "category": "bug", "cluster": "B-DRAFT-LONG", "relation": "exact_duplicate", "evidence": "partial" }
+    },
+    {
+      "ref": "FB-023", "tester": "T7", "step": "TS-05.1", "result": "fail", "at": "2026-10-30T15:40:00Z",
+      "text": "nothing happened",
+      "truth": { "category": "bug", "cluster": null, "relation": null, "evidence": "insufficient" }
+    },
+    {
+      "ref": "FB-024", "tester": "T6", "step": "TS-06.4", "result": "fail", "at": "2026-10-30T16:20:00Z",
+      "text": "On my 13-inch laptop the Approve button isn't visible - it's below the bottom of the screen and the page doesn't scroll. Had to zoom out to 80% to click it.",
+      "truth": { "category": "bug", "cluster": "B-APPROVE-HIDDEN", "relation": "origin", "evidence": "complete", "severity": "medium" }
+    },
+    {
+      "ref": "FB-025", "tester": "T1", "step": "TS-04.2", "result": "pass", "at": "2026-10-30T16:45:00Z",
+      "text": "Could the tool also produce a plain-English version of the response for when a patient (not an HCP) asks?",
+      "truth": { "category": "idea", "cluster": "I-PLAIN-LANG", "relation": "origin", "evidence": "complete" }
+    },
+    {
+      "ref": "FB-026", "tester": "T3", "step": "TS-04.3", "result": "fail", "at": "2026-10-30T17:05:00Z",
+      "text": "Clicked citation [3] in the draft for MI-20475. The right PDF opened at the right page, but the highlighted passage is a different paragraph from the one the sentence cites.",
+      "truth": { "category": "bug", "cluster": "B-CITE-HIGHLIGHT", "relation": "origin", "evidence": "complete", "related": "B-CITE-PAGE" },
+      "demo_only": true
+    },
+    {
+      "ref": "FB-027", "tester": "T4", "step": "TS-05.3", "result": "fail", "at": "2026-10-30T17:20:00Z",
+      "text": "The reporting deadline for MI-20491 changed from 09:10 tomorrow to 14:10 tomorrow after I refreshed the page.",
+      "truth": { "category": "bug", "cluster": "B-AE-DEADLINE", "relation": "different_aspect", "evidence": "partial" },
+      "demo_only": true
+    },
+    {
+      "ref": "FB-028", "tester": "T6", "step": "TS-07.3", "result": "fail", "at": "2026-10-30T17:35:00Z",
+      "text": "I approved MI-20431 myself this morning, but its history says it was approved by 'system'. My name isn't anywhere on it.",
+      "truth": { "category": "bug", "cluster": "B-AUDIT-SYSTEM", "relation": "exact_duplicate", "evidence": "complete" },
+      "demo_only": true
+    },
+    {
+      "ref": "FB-029", "tester": "T8", "step": null, "result": null, "at": "2026-10-30T17:50:00Z",
+      "text": "Compliance check: every approval I looked at in the audit log is under 'system' (MI-20433, MI-20438). We can't sign the cycle off without named approvers.",
+      "truth": { "category": "bug", "cluster": "B-AUDIT-SYSTEM", "relation": "exact_duplicate", "evidence": "complete" },
+      "demo_only": true
+    },
+    {
+      "ref": "FB-030", "tester": "T4", "step": "TS-01.1", "result": "fail", "at": "2026-10-30T18:05:00Z",
+      "text": "Can't get in on Safari: after the single sign-on screen it sends me straight back to sign in, over and over.",
+      "truth": { "category": "known_issue", "cluster": "K-SSO-SAFARI", "relation": "exact_duplicate", "evidence": "complete" },
+      "demo_only": true
+    }
+  ]
+}
