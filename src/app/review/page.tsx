@@ -1,6 +1,5 @@
 import { ensureFreshDemo } from "@/lib/demo";
 import { getPeople, getQueue, getRules, getTicketQuotes, getTickets } from "@/lib/queries";
-import { MANAGER_ID } from "@/lib/decide";
 import { ReviewDesk } from "./review-desk";
 
 /**
@@ -30,13 +29,11 @@ export default async function ReviewPage({ searchParams }: { searchParams: Promi
     getTicketQuotes(1),
     searchParams,
   ]);
-  const manager = people.find((p) => p.id === MANAGER_ID);
   return (
     <ReviewDesk
       items={items}
       rules={rules}
       initialRef={ref}
-      manager={manager ? { name: manager.name, team: manager.team } : null}
       tickets={tickets.map((t) => ({
         id: t.id,
         key: t.key,

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition, type ReactNode } from "react";
 import { answerFollowUpAction, checkEvidenceAction, retestAction, submitFeedbackAction } from "@/app/actions";
 import { Pill } from "@/components/badges";
 import { StepPicker } from "@/components/step-picker";
@@ -14,6 +14,7 @@ import { Check, ChevronDown, Cross, Lines, Speech } from "@/components/ui/icons"
 import { InfoTip } from "@/components/ui/info-tip";
 import { LinkArrow } from "@/components/ui/link-arrow";
 import { Segmented } from "@/components/ui/segmented";
+import { Tip } from "@/components/ui/tip";
 import { firstName, firstSentence, formatDay, formatSpan, formatWhen, TICKET_STATUS_LABEL } from "@/lib/labels";
 import {
   GROUP_TITLE,
@@ -147,7 +148,8 @@ export function TesterApp({
 
   if (!me) return <p className="app-container py-6">No testers found. Use Start the demo over at the bottom of the page.</p>;
   const name = firstName(me.name);
-  const managerName = manager ? `${manager}, UAT manager` : "The UAT manager";
+  // By role on the cards ("UAT manager: …"); the name is in the note, so a first look is not a puzzle of who is who.
+  const managerName = manager ? <ByRole role="UAT manager" name={manager} /> : "The UAT manager";
   const busy = stage.kind === "checking" || stage.kind === "sending";
   const waiting = mine.filter(yourTurn);
   const asked = mine.filter((f) => f.status === "needs_info").length;
@@ -537,7 +539,7 @@ function ReportsBox({
   className,
 }: {
   mine: MyFeedback[];
-  manager: string;
+  manager: ReactNode;
   names: Record<string, string>;
   onAnswered: (ref: string) => void;
   className: string;
@@ -649,7 +651,7 @@ function ReportCard({
   onAnswered,
 }: {
   f: MyFeedback;
-  manager: string;
+  manager: ReactNode;
   names: Record<string, string>;
   open: boolean;
   onToggle: () => void;
@@ -657,7 +659,7 @@ function ReportCard({
   onAnswered: (ref: string) => void;
 }) {
   const label = reportLabel(f);
-  const next = nextLine(f, names);
+  const next = nextLine(f);
   const turn = yourTurn(f);
   // For these the reply is the outcome itself, so it is never hidden.
   const replyIsOutcome = (f.status === "answered" || f.status === "acknowledged") && !!f.tester_message;
@@ -732,7 +734,8 @@ function ReportCard({
           {f.reopened?.note && <p>Reopened: &ldquo;{f.reopened.note}&rdquo;</p>}
           {f.fix && (
             <p>
-              Fixed by {(f.fix.fixedBy && names[f.fix.fixedBy]) || "the developer"}, {formatWhen(f.fix.fixedAt)}
+              Fixed by <ByRole role="the developer" name={f.fix.fixedBy ? (names[f.fix.fixedBy] ?? null) : null} />,{" "}
+              {formatWhen(f.fix.fixedAt)}
               {f.fix.note && <>: &ldquo;{f.fix.note}&rdquo;</>}
             </p>
           )}
@@ -748,17 +751,17 @@ function ReportCard({
 }
 
 /** The UAT manager asked one question: answer it here. */
-function Question({ f, manager, onAnswered }: { f: MyFeedback; manager: string; onAnswered: (ref: string) => void }) {
+function Question({ f, manager, onAnswered }: { f: MyFeedback; manager: ReactNode; onAnswered: (ref: string) => void }) {
   const [answer, setAnswer] = useState("");
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   return (
     <div className="mx-3.5 mb-2.5 rounded-md bg-amber-50 p-2.5">
+      {/* Above the label, not in it: the role can take focus for its note, and a click on the question still goes to
+          the answer box. */}
+      <span className="block text-xs text-amber-900">{manager} asks</span>
       <label className="grid gap-1.5">
-        <span className="text-amber-950">
-          <span className="block text-xs text-amber-900">{manager} asks</span>
-          {f.follow_up_question}
-        </span>
+        <span className="text-amber-950">{f.follow_up_question}</span>
         <textarea
           value={answer}
           onChange={(e) => setAnswer(e.target.value)}
@@ -791,6 +794,16 @@ function Question({ f, manager, onAnswered }: { f: MyFeedback; manager: string; 
   );
 }
 
+/** A person by role ("UAT manager", "the developer"), their name in a note on hover or keyboard focus when known. */
+function ByRole({ role, name }: { role: string; name: string | null }) {
+  if (!name) return <>{role}</>;
+  return (
+    <Tip reach text={name}>
+      <span className="cursor-help underline decoration-slate-400 decoration-dotted underline-offset-[3px]">{role}</span>
+    </Tip>
+  );
+}
+
 /** The ticket is fixed: ask this tester to run the step again and say whether it works now. */
 function Retest({
   f,
@@ -809,7 +822,6 @@ function Retest({
   const [error, setError] = useState<string | null>(null);
   const fix = f.fix!;
   const step = f.step ? `step ${f.step.id}` : "what you tested";
-  const developer = fixedBy ? firstName(fixedBy) : "The developer";
 
   function send(works: boolean) {
     setError(null);
@@ -826,12 +838,12 @@ function Retest({
         <span className="font-medium">{f.ticket!.key} is fixed.</span> Please run {step} again and tell us.
       </p>
       <p className="mt-0.5 text-xs text-slate-600">
-        {fixedBy ?? "The developer"}, {formatWhen(fix.fixedAt)}
+        <ByRole role="The developer" name={fixedBy} />, {formatWhen(fix.fixedAt)}
         {fix.note && <>: &ldquo;{fix.note}&rdquo;</>}
       </p>
       <label className="mt-2 grid gap-1">
         <span className={`text-xs ${broken ? "font-medium text-slate-900" : "text-slate-600"}`}>
-          {broken ? `What happened this time? ${developer} needs one line to act on it.` : "Anything to add? (optional)"}
+          {broken ? "What happened this time? The developer needs one line to act on it." : "Anything to add? (optional)"}
         </span>
         <textarea
           ref={noteRef}

@@ -35,21 +35,21 @@ New here? **Tour**, at the top right, walks through the four views in 14 short s
 
 The header switches between four views: **Overview**, **Tester**, **Manager** and **Developer**. There is no sign-in; each view shows one person's side of the same test cycle.
 
-- **New report** (tester). A small box says what is being tested (the app, the cycle and its dates). The tester writes what happened in their own words. The test step is optional: a list of the test scripts, each step with what should happen, lets them pick it and say whether it worked. If they skip it, the quick check that runs before sending suggests the step ("Was this test step TS-04.3: Click a citation?"), and it is saved only if the tester says yes. The same check looks for missing evidence: if the report cannot be acted on, the tester gets one specific question, such as "Did the banner not appear, or did the import not start?". They can always skip it and send, and the check gives up after 12 seconds. "Your reports" is a box of its own, in four groups (Your turn, Waiting for the UAT manager, On a ticket, Done). Each card says where the report stands ("Not read yet", "New bug MIA-101", "Fixed: please check") and what happens next ("Ravi is fixing it · you + 3 other testers"); a click shows the step, the manager's reply and the ticket. A question to answer or a fix to retest is always open.
+- **New report** (tester). A small box says what is being tested (the app, the cycle and its dates). The tester writes what happened in their own words. The test step is optional: a list of the test scripts, each step with what should happen, lets them pick it and say whether it worked. If they skip it, the quick check that runs before sending suggests the step ("Was this test step TS-04.3: Click a citation?"), and it is saved only if the tester says yes. The same check looks for missing evidence: if the report cannot be acted on, the tester gets one specific question, such as "Did the banner not appear, or did the import not start?". They can always skip it and send, and the check gives up after 12 seconds. "Your reports" is a box of its own, in four groups (Your turn, Waiting for the UAT manager, On a ticket, Done). Each card says where the report stands ("Not read yet", "New bug MIA-101", "Fixed: please check") and what happens next ("The developer is fixing it · you + 3 other testers"); a click shows the step, the manager's reply and the ticket. A question to answer or a fix to retest is always open.
 - **Review** (UAT manager). Reports come one at a time ("Report 2 of 10"). Each one comes with a suggestion:
   - the outcome in plain words: Same bug, Other symptom, Already known, Thin evidence, Good idea, New bug, Works as designed, A question, Nothing to fix;
   - **Why flagged**: facts the app knows for certain first (same test step as the ticket, other reports in the queue that describe the same problem), then what the AI read in the words; the ticket's own card shows how many reports and testers it already has;
   - a confidence figure with a bar and how many runs agree; the (i) beside it says how the figure was worked out and how often suggestions in that range were right on labelled data, and a line under the suggestion appears only when the figure needs a closer look;
   - **Overrule in one click**: the most likely alternatives, one click each.
 
-  After a decision, the next report about the same problem opens by itself. The approve button says what it will do ("Approve: add to MIA-101"), and the decision shows what approving creates and the message the tester will read, with the real ticket number. A change to the AI's suggestion is recorded and says so. There is deliberately no "approve all" button, and nothing is created until a person approves.
+  After a decision, the next report about the same problem opens by itself. The approve button says what it will do ("Approve: add to MIA-101"), and the decision shows what approving creates and the message the tester will read, with the real ticket number. Both are changed where they are shown: a click on the ticket card opens its fields, and the message (or the question for the tester) is typed straight into its bubble. A change to the AI's suggestion is recorded and says so. There is deliberately no "approve all" button, and nothing is created until a person approves.
 - **Import.** A test run exported as CSV is analysed row by row, including rows marked Pass, which often hide bugs or ideas. An uploaded file is checked first: the columns found, and what will not be understood (testers not in the cycle, unknown test steps, unreadable dates), before anything is created or sent to the AI. When several rows describe the same new problem, the first one proposes the ticket and the others link to it. When it finishes, a summary says what the AI suggests ("32 rows → 6 new problems (14 rows) · 3 for existing tickets · …"); nothing is created until a person decides each row in Review. A row whose analysis fails can be tried again.
-- **Tickets** (developer). One ticket per problem, most severe first, with every tester report as evidence and the decision behind each. A **For Jira** box fills Jira's own fields (summary, issue type, priority, environment, component, labels, and a plain-text description with steps, test data, the testers' words and, once fixed, the retest result): a click on a field copies it, "Copy all" copies them all; nothing is sent to Jira. The developer picks a ticket up and marks it fixed; every tester who reported it is asked to retest, once each, and "Still broken" asks for one line on what happened. When all of them say it works, the ticket shows "Confirmed by every tester". Nothing closes or reopens by itself.
+- **Tickets** (developer). One ticket per problem, most severe first, with every tester report as evidence and the decision behind each. A ticket page says which report it came from; its steps to reproduce, with expected and actual, open from one line under the summary. A **For Jira** box fills Jira's own fields (summary, issue type, priority, environment, component, labels, and a plain-text description with steps, test data, the testers' words and, once fixed, the retest result): a click on a field copies it, "Copy all" copies them all; nothing is sent to Jira. The developer picks a ticket up and marks it fixed; every tester who reported it is asked to retest, once each, and "Still broken" asks for one line on what happened. When all of them say it works, the ticket shows "Confirmed by every tester". Nothing closes or reopens by itself.
 - **Insights.** One sentence for the whole cycle. Day by day: when reports came in and what each became, with each outcome's share. Where the problems are, by test script, with the tickets they joined. At each confidence level, how often the AI was right on the labelled data (and on reports never used to tune it), and how often the manager kept its suggestion in this demo.
 
 ## How it's built
 
-**How it's built →**, at the top right of every page, opens the same picture in the app, follows one sample report (FB-021) from the tester's words to a fix, and shows why to trust a suggestion: 56 of 57 right on the labelled samples, 15 of 15 on reports never used for tuning.
+**How it's built →**, at the top right of every page, has three tabs. **The parts** is the picture below, each part clickable. **Follow one report** takes sample report FB-021 in six steps from the tester's words to a fix, each with the piece of the screen where it happens. **Why trust it**: the AI shows its reasons; its record is measured, 56 of 57 right on the labelled samples (all 56 at 85% or more; the one miss was below 85%, where Review shows the figure amber) and 15 of 15 on reports never used for tuning; and a person decides every report.
 
 ```mermaid
 flowchart LR
@@ -59,7 +59,7 @@ flowchart LR
   S[Next.js server on Vercel] -->|report + context| C[Claude Opus 5.5: 3 runs]
   C -->|checked answers| S
   S <-->|save, read| DB[(Supabase Postgres: 12 tables)]
-  S -.->|before every AI call| G[Spend limits: ai_usage]
+  S -.->|before every AI call| G[Guardrails: spend limits in ai_usage]
 ```
 
 The browser talks only to the Next.js server; the database key and the Anthropic key stay there. The 12 tables, in five groups: test plan (`cycles`, `scripts`, `steps`, `app_rules`, `people`), reports (`feedback`, `batches`), AI (`analyses`, `ai_usage`), decisions (`decisions`) and work (`tickets`, `ticket_events`).
@@ -140,7 +140,7 @@ Pages start the shared demo over when it has been left changed and idle (see abo
 | `npm run eval:step` | Measures how often the quick check suggests the right test step when the tester picks none (uses API credit, about half a cent per report) |
 | `npm run eval:holdout` | Measures accuracy on the 15 held-out reports and writes `data/holdout.json`; the calibration table is left alone (about $1.10) |
 | `npm run check:batch` | Compares the latest import with its labels |
-| `npm test` | Unit tests for the retest loop, buckets, CSV import, the shared demo, calibration, the tester's report cards, ticket numbers and the step suggestion (no database or API) |
+| `npm test` | Unit tests for the retest loop, buckets, CSV import, the shared demo, calibration, the tester's report cards, ticket numbers, the step suggestion and the figures in How it's built (no database or API) |
 | `npm run smoke` | End-to-end test of the decision flow (resets the data) |
 | `npm run snapshot` | Saves the current suggestions so a reset restores them without API calls |
 
@@ -175,7 +175,7 @@ Elsewhere:
 - `src/app/insights/page.tsx`: the cycle's trends and how far to trust the AI.
 - The importer: `src/app/import/importer.tsx` → `importCsvAction` → `src/lib/importer.ts` (with `import-plan.ts` and `csv.ts`). Each row is then analysed through `src/app/api/analyse/route.ts`, one request per row and four at a time, so the screen can show progress.
 - The shared demo: `src/lib/demo.ts` and `src/lib/seed.ts`.
-- The guided tour (`src/components/tour/`) and the "How it's built" window (`src/components/how-its-built.tsx`).
+- The guided tour (`src/components/tour/`) and the "How it's built" window (`src/components/how-its-built.tsx`, its figures from `src/lib/architecture-facts.ts`).
 - The unit tests sit next to what they test (`src/lib/*.test.ts`, `src/lib/ai/*.test.ts`).
 
 ## Built with

@@ -47,7 +47,6 @@ const report = (over: Partial<MyFeedback> = {}): MyFeedback =>
   }) as MyFeedback;
 
 const fix = { fixedAt: "2026-11-06T10:00:00Z", fixedBy: "D1", note: null, passed: [], failed: [] };
-const names = { D1: "Ravi Patel" };
 
 describe("reportGroup", () => {
   it("puts what the tester has to do first", () => {
@@ -86,35 +85,35 @@ describe("reportLabel", () => {
 
 describe("nextLine", () => {
   it("says what happens next and who else reported it", () => {
-    assert.equal(nextLine(report({ othersOnTicket: 1 }), names), "Waiting for a developer · you + 1 other tester");
+    assert.equal(nextLine(report({ othersOnTicket: 1 })), "Waiting for a developer · you + 1 other tester");
     assert.equal(
-      nextLine(report({ othersOnTicket: 3, ticket: ticket({ status: "in_progress", assignee_id: "D1" }) }), names),
-      "Ravi is fixing it · you + 3 other testers",
+      nextLine(report({ othersOnTicket: 3, ticket: ticket({ status: "in_progress", assignee_id: "D1" }) })),
+      "The developer is fixing it · you + 3 other testers",
     );
-    assert.equal(nextLine(report(), names), "Waiting for a developer · only you so far");
+    assert.equal(nextLine(report()), "Waiting for a developer · only you so far");
   });
 
   it("treats a known issue as known", () => {
     const known = ticket({ key: "MIA-090", origin: "known_issue", status_note: "Known before this cycle." });
-    assert.equal(nextLine(report({ ticket: known }), names), "Known before testing · you confirm it still happens");
+    assert.equal(nextLine(report({ ticket: known })), "Known before testing · you confirm it still happens");
   });
 
   it("leaves the line out where the card shows the question, the retest or the reply", () => {
-    assert.equal(nextLine(report({ status: "needs_info", ticket: null }), names), null);
-    assert.equal(nextLine(report({ status: "ticketed", fix }), names), null);
-    assert.equal(nextLine(report({ status: "answered", ticket: null }), names), null);
+    assert.equal(nextLine(report({ status: "needs_info", ticket: null })), null);
+    assert.equal(nextLine(report({ status: "ticketed", fix })), null);
+    assert.equal(nextLine(report({ status: "answered", ticket: null })), null);
   });
 
   it("thanks the tester once an answer to the manager's question is back with the manager", () => {
     const answered = report({ status: "awaiting_review", ticket: null, follow_up_answer: "On page 1.", managerAsked: true });
-    assert.equal(nextLine(answered, names), "Thanks for your answer. The UAT manager will reply here.");
+    assert.equal(nextLine(answered), "Thanks for your answer. The UAT manager will reply here.");
     assert.equal(reportLabel(answered).text, "Answer sent");
   });
 
   it("does not take the automatic check's question before sending for one from the manager", () => {
     const fresh = report({ status: "new", ticket: null, follow_up_question: "Which page?", follow_up_answer: "Page 1." });
     assert.equal(reportLabel(fresh).text, "Not read yet");
-    assert.equal(nextLine(fresh, names), "The UAT manager will reply here.");
+    assert.equal(nextLine(fresh), "The UAT manager will reply here.");
   });
 });
 
@@ -146,7 +145,7 @@ describe("every state of a report", () => {
       report({ ticket: ticket({ status: "in_progress", assignee_id: "D1" }), reopened: { at: "2026-11-06T12:00:00Z", note: null } }),
       "ticket",
       "Reopened: MIA-101",
-      "Ravi is on it again · only you so far",
+      "The developer is on it again · only you so far",
     ],
     [
       "confirmed by every tester",
@@ -182,7 +181,7 @@ describe("every state of a report", () => {
     it(what, () => {
       assert.equal(reportGroup(f), group);
       assert.equal(reportLabel(f).text, label);
-      assert.equal(nextLine(f, names), line);
+      assert.equal(nextLine(f), line);
     });
   }
 });

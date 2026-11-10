@@ -143,7 +143,7 @@ export const STEPS: TourStep[] = [
     sides: ["bottom", "right"],
     icon: "developer",
     title: "Where a ticket comes from",
-    body: "A ticket made in testing starts from one tester's report, approved by a person. The AI drafts its title and summary for developers; the manager can edit them before approving.",
+    body: "A ticket made in testing starts from one tester's report, approved by the UAT manager. The AI drafts its title, summary and steps to reproduce for developers; the manager can edit them before approving.",
   },
   {
     path: "/tickets/MIA-101",

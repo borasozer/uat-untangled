@@ -143,7 +143,7 @@ export default async function Home() {
       ),
     },
     {
-      title: "Manager decides",
+      title: "UAT manager decides",
       role: "manager",
       value: count(["new", "awaiting_review"]),
       label: "waiting for review",

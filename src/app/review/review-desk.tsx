@@ -127,21 +127,16 @@ const TICKET_TOKEN = "[new ticket number]";
 /** What a decision led to, with links to see it from the tester's and the developers' side. */
 export type Outcome = { text: string; links: { href: string; label: string }[] };
 
-/** The person who decides in this demo. */
-export type Manager = { name: string; team: string } | null;
-
 /** `items` is every report not yet decided, for both tabs; which tab, bucket and report are open is kept here. */
 export function ReviewDesk({
   items,
   tickets,
   rules,
-  manager,
   initialRef,
 }: {
   items: QueueItem[];
   tickets: TicketOption[];
   rules: Rule[];
-  manager: Manager;
   /** A report to open first, for example one a tester has just sent. */
   initialRef?: string;
 }) {
@@ -385,7 +380,6 @@ export function ReviewDesk({
               position={{ at: position, of: list.length }}
               tickets={tickets}
               rules={rules}
-              manager={manager}
               onMove={move}
               onDecided={onDecided}
               onOpenRef={(ref) => {
@@ -538,7 +532,6 @@ function ItemView({
   position,
   tickets,
   rules,
-  manager,
   onMove,
   onDecided,
   onOpenRef,
@@ -548,7 +541,6 @@ function ItemView({
   position: { at: number; of: number };
   tickets: TicketOption[];
   rules: Rule[];
-  manager: Manager;
   onMove: (delta: number) => void;
   onDecided: (outcome: Outcome) => void;
   onOpenRef: (ref: string) => void;
@@ -582,7 +574,6 @@ function ItemView({
             item={item}
             tickets={tickets}
             rules={rules}
-            name={name}
             onOpenRef={onOpenRef}
             onOverrule={(o) => {
               setDecideAnyway(true);
@@ -595,7 +586,6 @@ function ItemView({
         <DecisionForm
           item={item}
           tickets={tickets}
-          manager={manager}
           overrule={overrule}
           onMove={onMove}
           onDecided={onDecided}
@@ -691,8 +681,8 @@ function StepResult({ result }: { result: "pass" | "fail" }) {
 function WaitingForTester({ item, name, onDecideAnyway }: { item: QueueItem; name: string; onDecideAnyway?: () => void }) {
   return (
     <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-950">
-      <p className="font-medium">Waiting for {name}&apos;s answer.</p>
-      <p className="mt-1">Once {name} replies, the AI reviews the report again and it comes back to To review.</p>
+      <p className="font-medium">Waiting for the tester&apos;s answer.</p>
+      <p className="mt-1">Once they reply, the AI reviews the report again and it comes back to To review.</p>
       <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2">
         {item.tester && (
           <Link href={`/tester?as=${item.tester.id}`} className="font-medium text-accent hover:underline">
@@ -838,14 +828,12 @@ function Suggestion({
   item,
   tickets,
   rules,
-  name,
   onOpenRef,
   onOverrule,
 }: {
   item: QueueItem;
   tickets: TicketOption[];
   rules: Rule[];
-  name: string;
   onOpenRef: (ref: string) => void;
   onOverrule: (o: Omit<Overrule, "n">) => void;
 }) {
@@ -860,7 +848,7 @@ function Suggestion({
   const pct = (v: number) => `${Math.round(v * 100)}%`;
   const asks = a.suggested_action === "ask_tester";
   const bucket = bucketFor(a, target);
-  const { title, action } = bucketHeadline(bucket, a.suggested_action === "link_to_ticket" ? targetKey : null, name);
+  const { title, action } = bucketHeadline(bucket, a.suggested_action === "link_to_ticket" ? targetKey : null);
   const others = alternatives(item, tickets, targetKey);
   // Runs that chose the same outcome agree, even if only some noticed a nearby ticket (that is in Why flagged).
   const sameRuns = new Set(analysis.samples.map((s) => headline(s))).size === 1;
@@ -1106,14 +1094,12 @@ const APPROVE_GUARD_MS = 900;
 function DecisionForm({
   item,
   tickets,
-  manager,
   overrule,
   onMove,
   onDecided,
 }: {
   item: QueueItem;
   tickets: TicketOption[];
-  manager: Manager;
   /** The latest one-click overrule from the suggestion panel. */
   overrule: Overrule | null;
   onMove: (delta: number) => void;
@@ -1135,13 +1121,17 @@ function DecisionForm({
   });
   // What the decision will create shows as it will look; Edit turns it into the fields, in the same place.
   const [editing, setEditing] = useState(false);
-  // The tester's message is edited where it is shown, not in the form above.
-  const [editingMessage, setEditingMessage] = useState(false);
   function choose(act: Action) {
     setAction(act);
     setEditing(false);
-    setEditingMessage(false);
   }
+  // The preview card opens its fields when clicked, as Edit does; a click on a control inside it (the relation choice)
+  // stays that control's, and selecting text to copy it is not a request to edit.
+  const editOnClick = (e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).closest("button, a, input, label, select, fieldset, [role='radio'], [role='radiogroup']")) return;
+    if (window.getSelection()?.toString()) return;
+    setEditing(true);
+  };
   // Overruling should be one click: if the AI's match is not a ticket, start from the ticket it also considered.
   const [linkKey, setLinkKey] = useState(
     aiTargetIsTicket ? aiTarget : (a.other_candidates.find((c) => tickets.some((t) => t.key === c.target))?.target ?? ""),
@@ -1259,10 +1249,10 @@ function DecisionForm({
       }
       const what =
         action === "ask_tester"
-          ? `Question sent to ${name}.`
+          ? `${item.ref}: question sent to the tester.`
           : r.data.ticketKey
-            ? `${item.ref} → ${r.data.ticketKey}. ${name} has been told.`
-            : `${item.ref} closed. ${name} has been told.`;
+            ? `${item.ref} → ${r.data.ticketKey}. The tester has been told.`
+            : `${item.ref} closed. The tester has been told.`;
       // Links to both sides of the decision: what the tester sees, and the ticket the developers get.
       const links = [
         ...(r.data.ticketKey ? [{ href: `/tickets/${r.data.ticketKey}`, label: `Open ${r.data.ticketKey}` }] : []),
@@ -1314,16 +1304,18 @@ function DecisionForm({
   const approveLabel = pending ? "Saving…" : approveText;
   // Said under the decision only when it matters: what is missing, or that the choice differs from the AI's.
   const status = invalid ?? (matchesAi ? null : "Changed from the AI · recorded.");
-  const Name = item.tester ? name : "The tester";
-  const reader = item.tester ? `${name}, the tester, will read` : "The tester will read";
+  // The tester by role, not by name: on a first look, names make it hard to see who does what (the report names them).
+  const reader = "The tester will read";
   const steps = draft.steps_to_reproduce.filter((st) => st.trim());
-  // With nothing to show yet, the fields stay open.
+  // With nothing to show yet, the fields stay open; once the manager types in one, it stays open until Done (the
+  // first letter must not close it, as it would if "empty" alone kept it open).
+  const editDraft = (d: TicketDraft) => {
+    setDraft(d);
+    setEditing(true);
+  };
   const forced =
-    (action === "link_to_ticket" && !chosen) ||
-    (action === "ask_tester" && !question.trim()) ||
-    ((action === "create_ticket" || action === "add_to_ideas") && !draft.title.trim());
+    (action === "link_to_ticket" && !chosen) || ((action === "create_ticket" || action === "add_to_ideas") && !draft.title.trim());
   const showFields = editing || forced;
-  const showMessageField = editingMessage || !message.trim();
   const isIdea = chosen?.kind === "idea";
 
   const caption = (() => {
@@ -1335,7 +1327,7 @@ function DecisionForm({
       case "add_to_ideas":
         return "The idea you will keep";
       case "ask_tester":
-        return `The question ${Name} will get`;
+        return "The question the tester will get";
       default:
         return "No ticket";
     }
@@ -1382,7 +1374,7 @@ function DecisionForm({
                     // Keys 1-6 choose too; the number is only in the hint, as on the screen it reads as a step.
                     const key = ACTIONS.indexOf(act) + 1;
                     return (
-                      <Tip key={act} text={`${ACTION_HINT[act](name)} (key ${key})`}>
+                      <Tip key={act} text={`${ACTION_HINT[act]("the tester")} (key ${key})`}>
                         <button
                           role="radio"
                           aria-checked={on}
@@ -1412,7 +1404,8 @@ function DecisionForm({
           <div className="mt-3">
             <p className="mb-1.5 flex items-baseline justify-between text-xs font-medium text-slate-500">
               <span>{caption}</span>
-              {canEdit && (!forced || editing) && (
+              {action === "ask_tester" && <EditHint />}
+              {canEdit && action !== "ask_tester" && (!forced || editing) && (
                 <button onClick={() => setEditing(!editing)} className="font-medium text-accent hover:underline">
                   {editing ? "Done" : "Edit"}
                 </button>
@@ -1421,9 +1414,9 @@ function DecisionForm({
 
             {action === "create_ticket" &&
               (showFields ? (
-                <TicketFields draft={draft} setDraft={setDraft} bug />
+                <TicketFields draft={draft} setDraft={editDraft} bug />
               ) : (
-                <div className={CARD}>
+                <div onClick={editOnClick} className={CARD_EDIT}>
                   <p className="flex flex-wrap items-center gap-x-2 text-xs text-slate-600">
                     <span className="font-mono text-[12.5px] text-slate-900">{nextBug}</span>
                     <Severity value={draft.severity ?? "medium"} />
@@ -1485,7 +1478,7 @@ function DecisionForm({
                   </Row>
                 </div>
               ) : (
-                <div className={CARD}>
+                <div onClick={editOnClick} className={CARD_EDIT}>
                   <p className="flex flex-wrap items-center gap-x-1.5 text-xs text-slate-600">
                     <Link
                       href={`/tickets/${chosen.key}`}
@@ -1523,9 +1516,9 @@ function DecisionForm({
 
             {action === "add_to_ideas" &&
               (showFields ? (
-                <TicketFields draft={draft} setDraft={setDraft} />
+                <TicketFields draft={draft} setDraft={editDraft} />
               ) : (
-                <div className={CARD}>
+                <div onClick={editOnClick} className={CARD_EDIT}>
                   <p className="text-xs text-slate-600">
                     <span className="font-mono text-[12.5px] text-slate-900">{nextIdea}</span> · ideas backlog · for the
                     product team
@@ -1537,26 +1530,19 @@ function DecisionForm({
 
             {action === "ask_tester" && (
               <>
-                {showFields ? (
-                  <TextBox
-                    lines={4}
-                    aria-label={`The question ${Name} will get`}
-                    value={question}
-                    onChange={(e) => setQuestion(e.target.value)}
-                    rows={2}
-                  />
-                ) : (
-                  <div className={BUBBLE}>
-                    <span className="block text-xs text-slate-600">
-                      {manager ? `${manager.name}, UAT manager, asks` : "The UAT manager asks"}
-                    </span>
-                    {question}
-                  </div>
-                )}
+                {/* Written where it is shown: the bubble is the field, so nothing changes look on a click. */}
+                <textarea
+                  aria-label="The question the tester will get"
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                  rows={2}
+                  placeholder="One short question about what is missing"
+                  className={BUBBLE_FIELD}
+                />
                 <NextSteps
                   steps={[
-                    `${Name} gets the question`,
-                    `${Name} answers in a line`,
+                    "The tester gets the question",
+                    "The tester answers in a line",
                     "The AI reviews it again, then it comes back here",
                   ]}
                 />
@@ -1566,9 +1552,9 @@ function DecisionForm({
             {(action === "answer" || action === "acknowledge") && (
               <NextSteps
                 steps={[
-                  action === "answer" ? `${Name} gets your explanation, below` : `${Name} gets a thank-you, below`,
+                  action === "answer" ? "The tester gets your explanation, below" : "The tester gets a thank-you, below",
                   action === "answer" ? "The report closes, explained" : "The report closes: nothing to fix",
-                  `${Name} sees it under Your reports`,
+                  "The tester sees it under Your reports",
                 ]}
               />
             )}
@@ -1578,39 +1564,24 @@ function DecisionForm({
         <div
           className={`grid gap-2 border-t border-slate-200 bg-slate-50 px-4 py-2.5 text-sm ${action === "ask_tester" && !status && !otherTicket && !error ? "max-lg:hidden" : ""}`}
         >
-          {action !== "ask_tester" &&
-            (showMessageField ? (
-              <div className="grid gap-1">
-                <p className="flex items-baseline justify-between text-meta">
-                  <label htmlFor={`message-${item.id}`} className="text-slate-600">
-                    {reader}
-                  </label>
-                  {message.trim() && (
-                    <button onClick={() => setEditingMessage(false)} className="font-medium text-accent hover:underline">
-                      Done
-                    </button>
-                  )}
-                </p>
-                <TextBox
-                  lines={4}
-                  id={`message-${item.id}`}
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  autoFocus={editingMessage}
-                  rows={2}
-                />
-              </div>
-            ) : (
-              <div className={BUBBLE}>
-                <span className="flex items-baseline justify-between text-xs text-slate-600">
-                  <span>{reader}</span>
-                  <button onClick={() => setEditingMessage(true)} className="font-medium text-accent hover:underline">
-                    Edit
-                  </button>
-                </span>
-                {message}
-              </div>
-            ))}
+          {/* The message is written in its bubble: no Edit and Done, and nothing changes look when it is clicked. Its
+              caption sits above it, as "The ticket you will create" does above the ticket. */}
+          {action !== "ask_tester" && (
+            <div>
+              <p className="mb-1.5 flex items-baseline justify-between text-xs font-medium text-slate-500">
+                <label htmlFor={`message-${item.id}`}>{reader}</label>
+                <EditHint />
+              </p>
+              <textarea
+                id={`message-${item.id}`}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                rows={2}
+                placeholder="What the tester will read"
+                className={BUBBLE_FIELD}
+              />
+            </div>
+          )}
           {otherTicket && (
             <p className="text-meta text-amber-800">
               Check the message: it mentions {otherTicket}, not {linkKey}.
@@ -1653,9 +1624,14 @@ function DecisionForm({
 /** A card showing what a decision will create: a ticket, the ticket a report joins, or an idea. */
 const CARD =
   "rounded-lg border border-box-line bg-white px-3 py-2.5 text-[13.5px] text-slate-800 shadow-[0_1px_2px_rgba(15,23,42,0.05)]";
+/** The same card when a click on it opens its fields, as its Edit does. */
+const CARD_EDIT = `${CARD} cursor-pointer transition-colors hover:border-accent/45`;
 
 /** A message as the person will read it. */
 const BUBBLE = "rounded-[0.625rem] border border-accent/20 bg-accent-soft px-3 py-2 text-sm leading-[1.3125rem] text-slate-900";
+
+/** The same bubble as a field: it grows with its text (up to four lines, then scrolls) and shows it can be typed in. */
+const BUBBLE_FIELD = `${BUBBLE} block w-full min-w-0 resize-none field-sizing-content max-h-[calc(4lh_+_1rem)] cursor-text hover:border-accent/45 focus-visible:border-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent placeholder:text-slate-400 max-sm:text-base`;
 
 /** The fields of a new ticket, or of a new idea (title and summary only). */
 function TicketFields({
@@ -1732,6 +1708,16 @@ function TicketFields({
         </>
       )}
     </div>
+  );
+}
+
+/** Beside a field written where it is shown: "click to edit", or "tap" on a touch screen. */
+function EditHint() {
+  return (
+    <span className="font-normal text-slate-400">
+      <span className="pointer-coarse:hidden">click</span>
+      <span className="hidden pointer-coarse:inline">tap</span> to edit
+    </span>
   );
 }
 

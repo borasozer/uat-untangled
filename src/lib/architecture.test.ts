@@ -32,7 +32,7 @@ test("the followed report comes from the saved sample data", () => {
   assert.ok(journey.runs.every((r) => r.self >= 0 && r.self <= 100));
   assert.ok(journey.agreeing >= 1 && journey.agreeing <= journey.runs.length);
   assert.ok(journey.confidence > 0 && journey.confidence <= 1);
-  assert.ok(journey.tester && journey.manager && journey.developer);
+  assert.match(journey.ticketKey, /^[A-Z]+-\d+$/);
   assert.match(journey.reply, /\{ticket\}/);
   assert.ok(journey.followers.every((ref) => /^FB-\d+$/.test(ref) && ref !== journey.ref));
 });
@@ -40,4 +40,7 @@ test("the followed report comes from the saved sample data", () => {
 test("the trust figures are the measured ones", () => {
   const { trust } = architectureFacts();
   for (const m of [trust.measured, trust.holdout]) assert.ok(m.n > 0 && m.correct >= 0 && m.correct <= m.n);
+  // The split at 85% covers every measured report: no range straddles it.
+  assert.equal(trust.sure.n + trust.doubtful.n, trust.measured.n);
+  assert.equal(trust.sure.correct + trust.doubtful.correct, trust.measured.correct);
 });

@@ -1,5 +1,5 @@
 import type { Tone } from "@/components/badges";
-import { firstName, TICKET_STATUS_LABEL } from "./labels";
+import { TICKET_STATUS_LABEL } from "./labels";
 import type { getTesterFeedback } from "./queries";
 
 /** One of the tester's own reports, with where it has got to. */
@@ -69,7 +69,7 @@ export function reportLabel(f: MyFeedback): { text: string; tone: Tone } {
  * One short line under the tester's words: what happens next, and who else reported it. Null where the card shows
  * something better instead (a question to answer, a retest, or the manager's reply when that reply is the outcome).
  */
-export function nextLine(f: MyFeedback, names: Record<string, string>): string | null {
+export function nextLine(f: MyFeedback): string | null {
   if (f.status === "new" || f.status === "awaiting_review") {
     return answerSent(f) ? "Thanks for your answer. The UAT manager will reply here." : "The UAT manager will reply here.";
   }
@@ -86,9 +86,9 @@ export function nextLine(f: MyFeedback, names: Record<string, string>): string |
       : t.origin === "known_issue"
         ? "you confirm it still happens"
         : "only you so far";
-  const developer = (t.assignee_id && names[t.assignee_id] && firstName(names[t.assignee_id])) || null;
+  // The developer by role, as the UAT manager is: a first-time visitor does not know who Ravi is.
   let what: string;
-  if (f.reopened) what = `${developer ?? "The developer"} is on it again`;
+  if (f.reopened) what = "The developer is on it again";
   else if (f.fix) {
     if (f.confirmed) return "Every tester says it works now.";
     const othersBroken = f.fix.failed.length - (f.retest && !f.retest.works ? 1 : 0);
@@ -98,7 +98,7 @@ export function nextLine(f: MyFeedback, names: Record<string, string>): string |
     else if (f.notYet > 0) what = `${f.notYet} more tester${f.notYet === 1 ? "" : "s"} still to retest`;
     else what = "Fixed";
   } else if (t.origin === "known_issue") what = "Known before testing";
-  else if (t.status === "in_progress") what = `${developer ?? "A developer"} is fixing it`;
+  else if (t.status === "in_progress") what = "The developer is fixing it";
   else if (t.status === "open") what = "Waiting for a developer";
   else what = TICKET_STATUS_LABEL[t.status];
   return `${what} · ${who}`;

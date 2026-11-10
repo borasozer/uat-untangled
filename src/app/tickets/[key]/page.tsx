@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Pill, TicketStatusBadge } from "@/components/badges";
 import { BoxHeader } from "@/components/ui/box-header";
-import { Check, Clock, Cross, NumberedList, Speech } from "@/components/ui/icons";
+import { Check, ChevronDown, Clock, Cross, Speech } from "@/components/ui/icons";
 import { Severity } from "@/components/ui/severity";
 import type { Action } from "@/lib/ai/schema";
 import { ensureFreshDemo } from "@/lib/demo";
@@ -16,10 +16,11 @@ import { JiraFields, type JiraField } from "./jira-fields";
 
 /**
  * One ticket, for the developer (opened from Tickets; Review, Insights and the tester's reports link here too). The
- * header says where it came from; then the steps to reproduce, every tester's report with the decision behind it (and
- * whether the AI's suggestion was kept), and the ticket's history. Beside them: the Developer box (DevPanel, for bugs
- * found in this cycle) and For Jira (JiraFields), filled by jiraFields() below from the same data. The page only reads,
- * after the shared demo's idle check; DevPanel's buttons write, through server actions.
+ * header says where it came from, with the steps to reproduce folded under it; then every tester's report with the
+ * decision behind it (and whether the AI's suggestion was kept), and the ticket's history. Beside them: the Developer
+ * box (DevPanel, for bugs found in this cycle) and For Jira (JiraFields), filled by jiraFields() below from the same
+ * data.
+ * The page only reads, after the shared demo's idle check; DevPanel's buttons write, through server actions.
  *
  * EvidenceCard: one tester's report on this ticket, with its decision and, after a fix, a "still broken" retest.
  * testDataOf: the enquiry and test-email numbers the testers mention.
@@ -54,6 +55,13 @@ export default async function TicketPage({ params }: { params: Promise<{ key: st
   const url = `${h.get("x-forwarded-proto") ?? "https"}://${h.get("x-forwarded-host") ?? h.get("host")}/tickets/${ticket.key}`;
   const testers = countTesters(reports);
   const name = (id: string | null) => people.find((p) => p.id === id)?.name ?? "Someone";
+  // The UAT manager and the developer by role in the history and on the cards (their names are in the header and the
+  // Developer box); a tester by name, since many testers report.
+  const role = (id: string | null) => {
+    const p = people.find((x) => x.id === id);
+    return p?.role === "manager" ? "the UAT manager" : p?.role === "developer" ? "the developer" : (p?.name ?? "someone");
+  };
+  const Role = (id: string | null) => role(id).replace(/^./, (c) => c.toUpperCase());
   const origin = reports.find((r) => r.relation === "origin");
   const originDecision = origin ? decisions.find((d) => d.feedback_id === origin.id) : undefined;
   const isBug = ticket.kind === "bug";
@@ -62,14 +70,14 @@ export default async function TicketPage({ params }: { params: Promise<{ key: st
   const testerNames = [...new Set(reports.map((r) => r.tester?.name).filter((n): n is string => !!n))];
   const steps = ticket.steps_to_reproduce.filter(Boolean);
   const showSteps = isBug && (!!step || steps.length > 0);
-  // With numbered steps, the test step (which one of them restates) sits quietly in the box's band; on its own (a known
-  // issue has no steps) it stays in the box, as the only way to reproduce it.
+  // With numbered steps, the test step (which one of them restates) sits quietly beside the steps line; on its own (a
+  // known issue has no steps) it goes inside, as the only way to reproduce it.
   const stepInBand = !!step && steps.length > 0;
-  // Where the ticket came from, once, in the header: the report and the person who approved it. Known issues say "known".
-  const from =
-    !known && origin
-      ? `From report ${origin.ref}, approved by ${originDecision ? name(originDecision.decided_by) : "the UAT manager"}`
-      : null;
+  // Actual: the ticket's own, or the reports below; a known issue with neither says only what is expected.
+  const hasActual = !!ticket.actual || reports.length > 0;
+  // Where the ticket came from, once, in the header: the report and who approved it, by role (the name is in the note:
+  // a first-time reader should not have to work out who is who). Known issues say "known".
+  const from = !known && origin ? { ref: origin.ref, by: originDecision ? name(originDecision.decided_by) : null } : null;
   // The status note is for testers ("Fixed, waiting for the testers to retest."); here the developer's box shows the state.
   const statusNote = ticket.status_note && ![FIXED_NOTE, REOPENED_NOTE].includes(ticket.status_note) ? ticket.status_note : null;
   const testData = testDataOf(data);
@@ -102,11 +110,11 @@ export default async function TicketPage({ params }: { params: Promise<{ key: st
       .filter((d) => d.action !== "link_to_ticket")
       .map((d) => {
         const report = reports.find((r) => r.id === d.feedback_id);
-        return { at: d.decided_at, text: `${name(d.decided_by)} ${ACTION_DONE[d.action as Action]?.did ?? d.action} ${report?.ref ?? "a report"}` };
+        return { at: d.decided_at, text: `${Role(d.decided_by)} ${ACTION_DONE[d.action as Action]?.did ?? d.action} ${report?.ref ?? "a report"}` };
       }),
     ...events.map((e) => {
       const report = reports.find((r) => r.id === e.feedback_id);
-      const who = name(e.by_id);
+      const who = Role(e.by_id);
       const note = e.note ? `: "${e.note}"` : "";
       const text =
         e.kind === "picked_up"
@@ -144,78 +152,98 @@ export default async function TicketPage({ params }: { params: Promise<{ key: st
               {known && <Pill>Known before testing</Pill>}
               <TicketStatusBadge status={ticket.status} kind={ticket.kind} />
               {confirmed && <Pill>Confirmed by every tester</Pill>}
-              {from && <span className="text-meta text-slate-500 sm:ml-auto">{from}</span>}
+              {from && (
+                <span className="text-meta text-slate-500 sm:ml-auto">
+                  From report {from.ref}, approved by{" "}
+                  {from.by ? (
+                    <Tip reach text={from.by}>
+                      <span className="cursor-help underline decoration-slate-400 decoration-dotted underline-offset-[3px]">
+                        the UAT manager
+                      </span>
+                    </Tip>
+                  ) : (
+                    "the UAT manager"
+                  )}
+                </span>
+              )}
             </div>
             <h1 className="mt-1.5 text-title font-semibold text-slate-900">{ticket.title}</h1>
             <p className="mt-2 text-slate-700">{ticket.summary}</p>
             {statusNote && <p className="mt-2 text-sm text-slate-600">{statusNote}</p>}
-          </header>
-
-          {showSteps && (
-            <section aria-labelledby="repro" className={BOX}>
-              <BoxHeader
-                icon={<NumberedList />}
-                title="Steps to reproduce"
-                titleId="repro"
-                // Where the testers found it, and the enquiries and test emails they mention (to open the same data); in the
-                // band, so they cost no room. A phone keeps the test data: the step is in the steps and in For Jira too.
-                end={
-                  (stepInBand || testData.length > 0) && (
-                    <Tip
-                      reach
-                      text={[stepInBand && `Test step ${step.id}: ${step.instruction}`, testData.length > 0 && `Test data: ${testData.join(", ")}`]
-                        .filter(Boolean)
-                        .join(" · ")}
-                    >
-                      <span className="min-w-0 truncate text-meta text-slate-600">
-                        {stepInBand && (
-                          <span className={testData.length > 0 ? "max-sm:hidden" : ""}>
-                            Test step <span className="font-mono text-slate-800">{step.id}</span>
-                            {/* The instruction for screen readers too, beside the note shown on hover or focus. */}
-                            <span className="sr-only">: {step.instruction}</span>
-                            {testData.length > 0 && <span className="text-slate-400"> · </span>}
-                          </span>
-                        )}
-                        {testData.length > 0 && (
-                          <>
-                            Test data: <span className="font-mono text-slate-800">{testData.join(", ")}</span>
-                          </>
-                        )}
-                      </span>
-                    </Tip>
-                  )
-                }
-              />
-              <div className="grid gap-4 p-4 md:grid-cols-2">
-                <div>
-                  {step && !stepInBand && (
-                    <p className="text-slate-600">
-                      Test step <span className="font-mono">{step.id}</span>: {step.instruction}
-                    </p>
-                  )}
-                  {steps.length > 0 && (
-                    <ol className="mt-2 list-decimal space-y-0.5 pl-5 text-slate-800 first:mt-0">
-                      {steps.map((s, i) => (
-                        <li key={i}>{s}</li>
-                      ))}
-                    </ol>
-                  )}
-                </div>
-                <dl className="grid content-start gap-2">
-                  <div>
-                    <dt className="font-semibold text-slate-900">Expected</dt>
-                    <dd className="text-slate-700">{ticket.expected ?? step?.expected ?? "Not stated"}</dd>
-                  </div>
-                  {(ticket.actual || reports.length > 0) && (
+            {/* Steps to reproduce, folded into the ticket: one line that says what is inside and where the testers
+                found it (the step, and the enquiries and test emails they mention), opened with a click. A separate box
+                made the page read as one more thing to work out on a first look. */}
+            {showSteps && (
+              <div className="relative mt-3 border-t border-slate-100 pt-2.5">
+                <details className="group">
+                  <summary className="flex cursor-pointer list-none flex-wrap items-baseline gap-x-2 gap-y-1 text-sm sm:pr-[calc(50%+1rem)] [&::-webkit-details-marker]:hidden">
+                    <span className="inline-flex items-center gap-1.5 font-medium text-accent group-hover:underline">
+                      <ChevronDown className="h-4 w-4 self-center transition-transform group-open:rotate-180" />
+                      Steps to reproduce
+                    </span>
+                    <span className="text-meta text-slate-500">
+                      {steps.length > 0 ? `${steps.length} step${steps.length === 1 ? "" : "s"} · ` : ""}expected
+                      {hasActual ? " and actual" : ""}
+                    </span>
+                  </summary>
+                  <div className="mt-3 grid gap-4 md:grid-cols-2">
                     <div>
-                      <dt className="font-semibold text-slate-900">Actual</dt>
-                      <dd className="text-slate-700">{ticket.actual ?? "See the reports below"}</dd>
+                      {step && !stepInBand && (
+                        <p className="text-slate-600">
+                          Test step <span className="font-mono">{step.id}</span>: {step.instruction}
+                        </p>
+                      )}
+                      {steps.length > 0 && (
+                        <ol className="mt-2 list-decimal space-y-0.5 pl-5 text-slate-800 first:mt-0">
+                          {steps.map((s, i) => (
+                            <li key={i}>{s}</li>
+                          ))}
+                        </ol>
+                      )}
                     </div>
-                  )}
-                </dl>
+                    <dl className="grid content-start gap-2">
+                      <div>
+                        <dt className="font-semibold text-slate-900">Expected</dt>
+                        <dd className="text-slate-700">{ticket.expected ?? step?.expected ?? "Not stated"}</dd>
+                      </div>
+                      {hasActual && (
+                        <div>
+                          <dt className="font-semibold text-slate-900">Actual</dt>
+                          <dd className="text-slate-700">{ticket.actual ?? "See the reports below"}</dd>
+                        </div>
+                      )}
+                    </dl>
+                  </div>
+                </details>
+                {/* Beside the line but outside it, so a click on the test data (or selecting it to copy) does not
+                    open or close the steps. On a phone it goes under the line. */}
+                {(stepInBand || testData.length > 0) && (
+                  <Tip
+                    reach
+                    text={[stepInBand && `Test step ${step.id}: ${step.instruction}`, testData.length > 0 && `Test data: ${testData.join(", ")}`]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  >
+                    <span className="mt-1 block truncate text-meta text-slate-600 sm:absolute sm:top-2.5 sm:right-0 sm:mt-0 sm:max-w-[50%]">
+                      {stepInBand && (
+                        <span className={testData.length > 0 ? "max-sm:hidden" : ""}>
+                          Test step <span className="font-mono text-slate-800">{step.id}</span>
+                          {/* The instruction for screen readers too, beside the note shown on hover or focus. */}
+                          <span className="sr-only">: {step.instruction}</span>
+                          {testData.length > 0 && <span className="text-slate-400"> · </span>}
+                        </span>
+                      )}
+                      {testData.length > 0 && (
+                        <>
+                          Test data: <span className="font-mono text-slate-800">{testData.join(", ")}</span>
+                        </>
+                      )}
+                    </span>
+                  </Tip>
+                )}
               </div>
-            </section>
-          )}
+            )}
+          </header>
 
           {/* The reports sit in one box, on grey, like a tester's own list of reports. */}
           <section aria-labelledby="evidence" data-tour="evidence" className={BOX}>
@@ -252,7 +280,7 @@ export default async function TicketPage({ params }: { params: Promise<{ key: st
                       decision={decisions.find((d) => d.feedback_id === r.id)}
                       retest={retestOf(r)}
                       afterFix={afterFix(r)}
-                      who={name}
+                      who={role}
                     />
                   </li>
                 ))}
@@ -316,7 +344,7 @@ function EvidenceCard({
 }: {
   report: Data["reports"][number];
   kind: "bug" | "idea";
-  /** The step the "Steps to reproduce" box already names: a card only shows a different one. */
+  /** The step the ticket's header already names (beside Steps to reproduce): a card only shows a different one. */
   ticketStep: string | null;
   decision: Data["decisions"][number] | undefined;
   retest: { works: boolean; at: string; note: string | null } | null;

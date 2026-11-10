@@ -34,8 +34,16 @@ export type ArchitectureFacts = {
   /** Independent AI runs per report. */
   samples: number;
   budgets: { dayUsd: number; totalUsd: number; visitorHourUsd: number };
-  /** How often the AI was right: on the labelled samples (also used to tune it), and on reports never used for tuning. */
-  trust: { measured: { n: number; correct: number }; holdout: { n: number; correct: number } };
+  /**
+   * How often the AI was right: on the labelled samples (also used to tune it), the same samples split at 85% (sure:
+   * 85% or more; doubtful: below, where Review shows the figure amber), and on reports never used for tuning.
+   */
+  trust: {
+    measured: { n: number; correct: number };
+    sure: { n: number; correct: number };
+    doubtful: { n: number; correct: number };
+    holdout: { n: number; correct: number };
+  };
   /** One sample report, followed from the tester's words to a fix. Steps 1 and 2 are its saved record. */
   journey: {
     ref: string;
@@ -43,16 +51,10 @@ export type ArchitectureFacts = {
     submittedAt: string;
     text: string;
     result: "pass" | "fail" | null;
-    tester: string;
-    manager: string;
-    developer: string;
     /** Each run's outcome and its own estimate (0 to 100) that a person will agree. */
     runs: { action: Action; self: number }[];
-    /** The outcome the runs agreed on, and the ticket that looked close but was not the same. */
-    action: Action;
+    /** The ticket that looked close but was not the same, if the AI named one. */
     nearMiss: string | null;
-    /** The AI's one-line reason. */
-    why: string;
     /** Waiting reports the AI says describe the same problem: they join this one's ticket. */
     followers: string[];
     agreeing: number;
@@ -60,8 +62,10 @@ export type ArchitectureFacts = {
     confidence: number;
     latencyMs: number;
     costUsd: number | null;
-    /** The ticket the AI drafted, if it suggested one. */
-    draft: { title: string; severity: string | null } | null;
+    /** The ticket the AI drafted, with how many steps to reproduce it has. */
+    draft: { title: string; severity: string | null; steps: number };
+    /** The key the ticket gets if it is the first new bug after the demo starts over (MIA-106), as in the video. */
+    ticketKey: string;
     /** The reply the AI drafted; {ticket} is filled in when a person approves. */
     reply: string;
   };

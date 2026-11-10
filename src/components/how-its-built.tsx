@@ -4,10 +4,13 @@ import Link from "next/link";
 import { useEffect, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from "react";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle, Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { TABLE_GROUPS, TABLE_NOTE, type ArchitectureFacts } from "@/lib/architecture";
-import { ACTION_LABEL, firstName } from "@/lib/labels";
+import { ACTION_LABEL, bucketHeadline } from "@/lib/labels";
+import { Agreement, Confidence, ConfidenceBar } from "./badges";
+import { button } from "./ui/button";
 import { SteadyLabel } from "./ui/busy-label";
 import { LinkArrow } from "./ui/link-arrow";
 import { ROLE_ICONS, ROLE_PATHS } from "./ui/role-icons";
+import { Tip } from "./ui/tip";
 
 /**
  * "How it's built": the parts of the app as a drawing, one real sample report followed from the tester's words to a fix,
@@ -29,7 +32,7 @@ export function HowItsBuilt({
   const [tab, setTab] = useState(0);
   const [part, setPart] = useState<PartId>(startPart);
   const [table, setTable] = useState<string | null>(null);
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
   const [playing, setPlaying] = useState(false);
   // Each tab's own height. Every tab gets the tallest one, so switching tabs never resizes the window.
   const [heights, setHeights] = useState<Record<string, number>>({});
@@ -55,7 +58,6 @@ export function HowItsBuilt({
     setPlaying(false);
     onClose();
   };
-  const tester = firstName(facts.journey.tester);
 
   return (
     <Dialog open={open} onClose={close} className="relative z-50">
@@ -114,7 +116,7 @@ export function HowItsBuilt({
               <TabPanel>
                 <div ref={measure("journey")}>
                   <p className="text-meta text-slate-500">
-                    One sample report, from {tester}&apos;s words to a fix. Press play, or click a step.
+                    What happens to one sample report, {facts.journey.ref}, from the tester&apos;s words to a fix. Press Play, or click a step.
                   </p>
                   <Journey
                     facts={facts}
@@ -134,7 +136,7 @@ export function HowItsBuilt({
               </TabPanel>
               <TabPanel>
                 <div ref={measure("trust")}>
-                  <p className="text-meta text-slate-500">How far to trust a suggestion, measured.</p>
+                  <p className="text-meta text-slate-500">Three things to know before you trust a suggestion.</p>
                   <Trust facts={facts} onLeave={close} />
                 </div>
               </TabPanel>
@@ -163,7 +165,7 @@ function partsOf(f: ArchitectureFacts): Record<PartId, Part> {
     people: {
       title: "People",
       icon: "person",
-      one: "Testers report what went wrong. A manager decides what each report becomes. A developer fixes the tickets.",
+      one: "Testers report what went wrong. The UAT manager decides what each report becomes. A developer fixes the tickets.",
       chips: ["Next.js 16", "React 19", "Tailwind CSS 4", "Headless UI"],
       more: [
         "Seven pages: Overview, New report, Review, Tickets, one ticket, Import, Insights.",
@@ -203,7 +205,7 @@ function partsOf(f: ArchitectureFacts): Record<PartId, Part> {
       ],
     },
     guard: {
-      title: "Guard rails",
+      title: "Guardrails",
       icon: "shield",
       one: "Nothing changes until a person approves it. AI spending has hard limits.",
       chips: [
@@ -463,7 +465,7 @@ function Drawing({
 
       <Hit id="guard" label={label("guard")} on={part === "guard"} onSelect={onPart}>
         <Frame box={g.guard.box} on={part === "guard"} />
-        <Text at={g.guard.title} size={15} weight={600}>Guard rails</Text>
+        <Text at={g.guard.title} size={15} weight={600}>Guardrails</Text>
         {(
           [
             ["shield", "A person approves"],
@@ -546,155 +548,145 @@ function Glyph({ name, x, y, size }: { name: IconName; x: number; y: number; siz
 
 /* ======================================== One report ======================================== */
 
-type StationState = "done" | "now" | "next";
-/** One step of the journey: its circle and title on the line, and below, its body and the table it is saved in. */
-type Station = { icon: IconName; title: string; sub: string; state: StationState; table: string; note: string; body: ReactNode };
+/**
+ * One step of the sample report: its circle and title on the line, what happens, where it is saved, and the piece of
+ * the screen it happens on.
+ */
+type Station = { icon: IconName; title: string; sub: string; what: string; table: string; note: string; piece: ReactNode };
 
 /** How many steps stationsOf returns: Play stops at the last. Journey's sm:grid-cols-6 assumes the same number. */
 const STATION_COUNT = 6;
-const STATE_TEXT: Record<StationState, string> = { done: "Saved", now: "Waiting in Review now", next: "After a manager approves it" };
 
 /**
- * The six steps of the sample report: two done, the decision waiting in Review, three that follow approval.
- * Built from the sample files, not the live demo, so it reads the same after someone decides that report.
+ * The six steps of the sample report, told as one story by role: what happens at each and how it looks on the screen
+ * where it happens. Built from the sample files, not the live demo, so it reads the same after someone decides that
+ * report; the ticket key is the one it gets as the first new bug after the demo starts over, as in the video.
  */
 function stationsOf(f: ArchitectureFacts): Station[] {
   const j = f.journey;
-  const tester = firstName(j.tester), manager = firstName(j.manager), developer = firstName(j.developer);
   const day = new Date(j.submittedAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
-  const percent = Math.round(j.confidence * 100);
-  const [before, after] = j.reply.split("{ticket}");
+  const key = j.ticketKey;
+  const title = j.draft.title;
+  const failed = j.result === "fail";
   return [
     {
       icon: "bubble",
-      title: `${tester} reports`,
-      sub: `${day} · ${j.step}`,
-      state: "done",
+      title: "Tester reports",
+      sub: `Tester's page · ${day}`,
+      what: `The tester ${failed && j.step ? `marks step ${j.step} failed and ` : ""}says what they saw, in their own words.`,
       table: "feedback",
       note: j.ref,
-      body: (
-        <>
-          <p className="max-w-2xl rounded-2xl rounded-bl-sm bg-slate-100 px-3.5 py-2.5 text-[0.9375rem] leading-6 text-slate-900">“{j.text}”</p>
-          <p className="mt-1.5 text-meta text-slate-500">
-            {j.tester}, tester{j.result === "fail" ? " · step marked failed" : ""}
-          </p>
-        </>
+      piece: (
+        <div className={`${PIECE} px-3 py-2`}>
+          <p className="rounded-2xl rounded-bl-sm bg-slate-100 px-3 py-2 text-meta text-slate-900">“{j.text}”</p>
+          <p className="mt-1 text-xs text-slate-500">Tester{failed ? " · step marked failed" : ""}</p>
+        </div>
       ),
     },
     {
       icon: "runs",
       title: `Claude reads it ×${j.runs.length}`,
-      sub: `${(j.latencyMs / 1000).toFixed(1)} s${j.costUsd === null ? "" : ` · $${j.costUsd.toFixed(2)}`}`,
-      state: "done",
+      sub: `Server · ${(j.latencyMs / 1000).toFixed(1)} s${j.costUsd === null ? "" : ` · $${j.costUsd.toFixed(2)}`}`,
+      what: `${j.runs.length} separate AI runs read it on the server. The figure combines how many agree and how sure they say they are.`,
       table: "analyses",
       note: `${j.runs.length} runs`,
-      body: (
-        <>
-          <div className="flex flex-wrap items-center gap-2.5">
-            {j.runs.map((r, i) => (
-              <div key={i} className="rounded-lg border border-slate-200 px-2.5 py-1.5 text-center text-meta text-slate-700">
-                {ACTION_LABEL[r.action]}
-                <b className="block text-[0.9375rem] font-semibold text-slate-900 tabular-nums">{r.self}%</b>
-              </div>
-            ))}
-            <span aria-hidden className="text-lg text-slate-400">→</span>
-            <div>
-              <div className="text-[2rem] leading-9 font-semibold text-accent tabular-nums">{percent}%</div>
-              <div className="text-xs text-slate-500">
-                {j.agreeing} of {j.runs.length} agree
-              </div>
+      piece: (
+        <div className={`${PIECE} flex flex-wrap items-center gap-2 px-3 py-2.5`}>
+          {j.runs.map((r, i) => (
+            <div key={i} className="rounded-lg border border-slate-200 px-2 py-1 text-center text-xs text-slate-700">
+              {ACTION_LABEL[r.action]}
+              <b className="block text-[0.9375rem] font-semibold text-slate-900 tabular-nums">{r.self}%</b>
+            </div>
+          ))}
+          <span aria-hidden className="text-slate-400">
+            →
+          </span>
+          <div>
+            <div className="text-[1.75rem] leading-8 font-semibold text-accent tabular-nums">{Math.round(j.confidence * 100)}%</div>
+            <div className="text-xs text-slate-500">
+              {j.agreeing} of {j.runs.length} agree
             </div>
           </div>
-          <p className="mt-2.5 max-w-3xl text-meta text-slate-600">
-            {j.nearMiss && j.agreeing === j.runs.length && j.action === "create_ticket"
-              ? `${j.nearMiss} looked close. All ${j.runs.length} runs saw a different fault.`
-              : `Why: ${j.why}`}
-          </p>
-        </>
+        </div>
       ),
     },
     {
       icon: "decide",
-      title: `${manager} decides`,
-      sub: "waiting now",
-      state: "now",
+      title: "UAT manager decides",
+      sub: "Review",
+      what: "The UAT manager sees the suggestion and why, and can change anything. Nothing happens until they approve.",
       table: "decisions",
-      note: "1 row",
-      body: (
-        <>
-          <div className="inline-flex items-center gap-3 rounded-lg border border-slate-200 px-3 py-2.5">
-            <div>
-              <div className="text-xs text-slate-500">Suggested</div>
-              <div className="font-semibold text-slate-900">{ACTION_LABEL[j.action]}</div>
-            </div>
-            <span className="rounded-md bg-white px-2.5 py-1 text-sm font-medium text-accent-fill inset-ring-[1.5px] inset-ring-accent">Approve</span>
-            <span className="text-sm text-slate-500">or another outcome</span>
-          </div>
-          <p className="mt-2.5 text-meta text-slate-600">One report at a time. No “approve all”.</p>
-        </>
+      note: "the AI's choice and theirs",
+      piece: (
+        <div className={`${PIECE} overflow-hidden`}>
+          <SuggestionPiece j={j} />
+          <ApproveBar />
+        </div>
       ),
     },
     {
       icon: "ticket",
       title: "Ticket opened",
-      sub: "drafted by Claude",
-      state: "next",
+      sub: `Tickets · ${key}`,
+      what: `The ticket Claude drafted is created, with steps, expected and actual.${
+        j.followers.length > 0
+          ? ` ${list(j.followers)} ${j.followers.length === 1 ? "describes the same bug and joins" : "describe the same bug and join"} it.`
+          : ""
+      }`,
       table: "tickets",
       note: "1 row",
-      body: j.draft && (
-        <>
-          <div className="inline-block max-w-xl rounded-lg border border-l-[3px] border-slate-200 border-l-accent px-3.5 py-2.5">
-            <div className="text-meta text-slate-500">New ticket · bug{j.draft.severity ? ` · ${j.draft.severity}` : ""}</div>
-            <div className="mt-0.5 font-semibold text-slate-900">{j.draft.title}</div>
-          </div>
-          <p className="mt-2.5 text-meta text-slate-600">
-            With steps, expected and actual; {manager} can edit it first.
-            {j.followers.length > 0 &&
-              ` ${list(j.followers)} ${j.followers.length === 1 ? "describes the same bug and joins" : "describe the same bug and join"} it next.`}
+      piece: (
+        <div className={`${PIECE} border-l-[3px] border-l-accent px-3 py-2`}>
+          <p className="text-xs text-slate-500">
+            <span className="font-mono text-slate-900">{key}</span> · bug{j.draft.severity ? ` · ${j.draft.severity}` : ""}
           </p>
-        </>
+          <p className="mt-0.5 text-sm font-semibold text-slate-900">{title}</p>
+          {j.draft.steps > 0 && (
+            <p className="mt-0.5 text-xs text-slate-600">
+              Steps to reproduce · {j.draft.steps} steps · expected and actual
+            </p>
+          )}
+        </div>
       ),
     },
     {
       icon: "mail",
-      title: `${tester} hears back`,
-      sub: "on the tester's page",
-      state: "next",
+      title: "Tester hears back",
+      sub: "Tester's page",
+      what: "The tester sees what became of their report, with the ticket number.",
       table: "feedback",
       note: "tester_message",
-      body: (
-        <>
-          <p className="max-w-2xl rounded-2xl rounded-br-sm bg-accent-soft px-3.5 py-2.5 text-[0.9375rem] leading-6 text-slate-900">
-            {before}
-            {after !== undefined && (
-              <>
-                <span className="rounded border border-dashed border-accent/50 px-1 text-accent">ticket number</span>
-                {after}
-              </>
-            )}
+      piece: (
+        <div className={`${PIECE} px-3 py-2`}>
+          <p className="rounded-md bg-slate-50 px-2.5 py-1.5 text-meta text-slate-800">
+            <span className="text-slate-500">UAT manager:</span> {j.reply.replaceAll("{ticket}", key)}
           </p>
-          <p className="mt-1.5 text-meta text-slate-500">Sent when {manager} approves; the number is filled in then.</p>
-        </>
+          <p className="mt-1.5 truncate text-xs text-slate-600">
+            <span className="font-mono text-accent">{key}</span> <span className="text-slate-800">{title}</span> · open
+          </p>
+        </div>
       ),
     },
     {
       icon: "wrench",
       title: "Fixed, retested",
-      sub: `${developer}, then ${tester}`,
-      state: "next",
+      sub: "Developer, then tester",
+      what: "The developer picks it up and marks it fixed; everyone who reported it is asked to retest. Still broken? The developer sees it and reopens it.",
       table: "ticket_events",
       note: "a row each",
-      body: (
-        <>
-          <div className="flex flex-wrap items-center gap-2 text-sm">
-            <span className="rounded-full border border-slate-200 px-3 py-1">{developer} picks it up</span>
-            <span aria-hidden className="text-slate-400">→</span>
-            <span className="rounded-full border border-slate-200 px-3 py-1">{developer} marks it fixed</span>
-            <span aria-hidden className="text-slate-400">→</span>
-            <span className="rounded-full border border-green-300 bg-green-50 px-3 py-1 text-green-800">{tester}: works now</span>
+      piece: (
+        <div className={`${PIECE} px-3 py-2`}>
+          <div className="rounded-md bg-amber-50 p-2.5 text-meta">
+            <p className="text-slate-900">
+              <span className="font-medium">{key} is fixed.</span> Please run {j.step ? `step ${j.step}` : "what you tested"} again and
+              tell us.
+            </p>
+            <p aria-hidden className="mt-2 flex gap-2">
+              <span className={button("secondary", "sm")}>It works now</span>
+              <span className={button("secondary", "sm")}>Still broken</span>
+            </p>
           </div>
-          <p className="mt-2.5 text-meta text-slate-600">Still broken? {developer} sees it and reopens. Nothing closes by itself.</p>
-        </>
+        </div>
       ),
     },
   ];
@@ -705,13 +697,11 @@ function list(items: string[]): string {
   return items.length < 2 ? items.join("") : `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
 }
 
-const CIRCLE: Record<StationState, string> = {
-  done: "border-slate-700 text-slate-700",
-  now: "border-amber-600 text-amber-700",
-  next: "border-dashed border-slate-300 text-slate-400",
-};
-
-/** The second tab: the steps in a row (a column on a phone), Play, and the chosen step's detail below. */
+/**
+ * The second tab: the steps in a row (a column on a phone), Play, and below, the chosen step. The chosen step is blue,
+ * the steps before it dark with the line up to it filled, the steps after it light: the story so far, not the demo's
+ * state.
+ */
 function Journey({
   facts,
   step,
@@ -726,156 +716,248 @@ function Journey({
   onPlay: () => void;
 }) {
   const stations = stationsOf(facts);
-  const s = stations[step];
   return (
     <div className="mt-3">
       <div className="rounded-lg border border-slate-200 px-3 pt-4 pb-2 sm:px-2">
-        <ol className="relative grid gap-y-2 sm:grid-cols-6" aria-label="Steps">
+        <ol className="grid gap-y-2 sm:grid-cols-6" aria-label="Steps">
           {stations.map((st, i) => {
-            const nextDone = stations[i + 1]?.state === "done";
+            const here = i === step;
+            const line = i < step ? "border-slate-600" : "border-slate-200";
             return (
               <li key={st.title} className="relative">
                 {i < stations.length - 1 && (
                   <>
-                    <span aria-hidden className={`absolute top-8 right-[calc(-50%+2rem)] left-[calc(50%+2rem)] hidden border-t sm:block ${nextDone ? "border-slate-500" : "border-dashed border-slate-300"}`} />
-                    <span aria-hidden className={`absolute top-[3.75rem] left-8 h-4 border-l sm:hidden ${nextDone ? "border-slate-500" : "border-dashed border-slate-300"}`} />
+                    <span aria-hidden className={`absolute top-8 right-[calc(-50%+2rem)] left-[calc(50%+2rem)] hidden border-t-[1.5px] transition-colors duration-500 sm:block ${line}`} />
+                    <span aria-hidden className={`absolute top-[3.75rem] left-8 h-4 border-l-[1.5px] transition-colors duration-500 sm:hidden ${line}`} />
                   </>
                 )}
                 <button
                   type="button"
                   onClick={() => onStep(i)}
-                  aria-current={i === step ? "step" : undefined}
-                  className="flex w-full items-center gap-3 rounded-lg p-1 text-left outline-none focus-visible:bg-slate-50 sm:flex-col sm:gap-1.5 sm:text-center"
+                  aria-current={here ? "step" : undefined}
+                  className="group flex w-full items-center gap-3 rounded-lg p-1 text-left outline-none focus-visible:bg-slate-50 sm:flex-col sm:gap-1.5 sm:text-center"
                 >
-                  <span className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-[1.5px] bg-white transition-[outline-color] ${CIRCLE[st.state]} ${i === step ? "outline-[1.5px] outline-offset-4 outline-accent outline-solid" : "outline-transparent"}`}>
+                  <span
+                    className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-[1.5px] transition-colors duration-300 ${
+                      here
+                        ? "border-accent bg-accent-soft text-accent outline-[1.5px] outline-offset-4 outline-accent outline-solid"
+                        : i < step
+                          ? "border-slate-700 bg-white text-slate-700 group-hover:border-accent"
+                          : "border-slate-300 bg-white text-slate-400 group-hover:border-accent"
+                    }`}
+                  >
                     <Icon name={st.icon} className="h-7 w-7" />
                   </span>
                   <span>
-                    <span className={`block text-sm font-semibold ${st.state === "next" ? "text-slate-500" : "text-slate-900"}`}>{st.title}</span>
-                    <span className={`block text-xs ${st.state === "now" ? "text-amber-800" : "text-slate-500"}`}>{st.sub}</span>
+                    {/* One line each on a wide screen, so the row keeps its height. */}
+                    <span className={`block text-sm font-semibold lg:whitespace-nowrap ${i <= step ? "text-slate-900" : "text-slate-500"}`}>
+                      {st.title}
+                    </span>
+                    <span className={`block text-xs lg:whitespace-nowrap ${i <= step ? "text-slate-600" : "text-slate-500"}`}>{st.sub}</span>
                   </span>
                 </button>
               </li>
             );
           })}
-          <span
-            aria-hidden
-            className="pointer-events-none absolute top-0 hidden h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-fill transition-[left] duration-700 ease-in-out motion-reduce:transition-none sm:block"
-            style={{ left: `${((step + 0.5) / stations.length) * 100}%` }}
-          />
         </ol>
       </div>
       <div className="mt-3 flex items-center gap-3">
+        {/* One width for both words, so the button does not change size as it is pressed. */}
         <button
           type="button"
           onClick={onPlay}
-          className={`rounded-md border px-3 py-1 text-sm font-medium ${playing ? "border-accent bg-white text-accent" : "border-accent bg-white text-accent-fill inset-ring inset-ring-accent hover:bg-accent-soft"}`}
+          className="w-[4.75rem] rounded-md bg-white py-1 text-center text-sm font-medium text-accent-fill inset-ring-[1.5px] inset-ring-accent hover:bg-accent-soft"
         >
           {playing ? "Stop" : "▶ Play"}
         </button>
-        <span className={`text-meta ${s.state === "now" ? "text-amber-800" : "text-slate-500"}`} aria-live="polite">
-          {step + 1} of {stations.length} · {STATE_TEXT[s.state]}
+        <span className="text-meta text-slate-500" aria-live="polite">
+          Step {step + 1} of {stations.length} · {stations[step].title}
         </span>
       </div>
-      {/* One height for every step, so nothing below moves while it plays. */}
-      <div className="mt-3 grid gap-3 rounded-lg border border-slate-200 p-4 sm:h-40 sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-5">
-        <div>{s.body}</div>
-        <p className="font-mono text-xs leading-5 text-slate-500 sm:text-right">
-          saved in <span className="text-slate-800">{s.table}</span>
-          <br />
-          {s.note}
-        </p>
+      {/* Every step is drawn in the same place and only the chosen one shows, so the box is as tall as the tallest step
+          at any width and nothing below it moves while it plays. */}
+      <div className="mt-3 grid grid-cols-[minmax(0,1fr)] rounded-lg border border-slate-200 px-4 py-3">
+        {stations.map((st, i) => (
+          <div
+            key={st.title}
+            aria-hidden={i !== step}
+            className={`col-start-1 row-start-1 grid grid-cols-[minmax(0,1fr)] items-center gap-x-6 gap-y-3 md:grid-cols-[minmax(0,1fr)_20rem] lg:grid-cols-[minmax(0,1fr)_27rem] ${
+              i === step ? "" : "invisible"
+            }`}
+          >
+            <div>
+              <p className="text-sm text-slate-700">{st.what}</p>
+              <p className="mt-1.5 text-xs text-slate-500">
+                Saved in <code className="rounded bg-slate-100 px-1.5 py-px font-mono text-slate-800">{st.table}</code> · {st.note}
+              </p>
+            </div>
+            <div className="min-w-0">{st.piece}</div>
+          </div>
+        ))}
       </div>
+    </div>
+  );
+}
+
+/* ======================================== Pieces of the screens ======================================== */
+
+/**
+ * The box a piece of a screen is drawn in (Review, the tester's page, a ticket): a picture, not a working control, so
+ * nothing in it reacts to the pointer. Its words are read out; its look-alike buttons are hidden from screen readers.
+ */
+const PIECE = "pointer-events-none rounded-lg border border-box-line bg-white shadow-box";
+
+/** Review's suggestion for the sample report (a new bug), in small: how sure, the runs that agree, and Why flagged. */
+function SuggestionPiece({ j }: { j: ArchitectureFacts["journey"] }) {
+  const head = bucketHeadline("new_bug", null);
+  // The first line Review's Why flagged gives for a new bug.
+  const flagged = j.nearMiss ? `Nearest ticket ${j.nearMiss}, but the AI reads a different problem` : "No existing ticket describes this";
+  return (
+    <div className="px-3 py-2">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <p className="font-semibold text-slate-900">
+          {head.title}
+          {head.action && <span className="text-sm font-normal text-slate-700"> · {head.action}</span>}
+        </p>
+        <span className="ml-auto flex items-center gap-2 text-meta text-slate-700">
+          <Confidence value={j.confidence} />
+          <ConfidenceBar value={j.confidence} />
+          <Agreement agreeing={j.agreeing} samples={j.runs.length} />
+        </span>
+      </div>
+      <p className="mt-1.5 rounded-md bg-slate-50 px-2.5 py-1 text-meta text-slate-800">
+        <span className="font-medium text-slate-900">Why flagged</span> – {flagged}
+      </p>
+    </div>
+  );
+}
+
+/**
+ * Review's bar with Approve and Skip, in small. `beside`: on a narrow screen the bar drops its own background and Skip,
+ * so it can sit beside the ticket and keep the row short.
+ */
+function ApproveBar({ beside = false }: { beside?: boolean }) {
+  return (
+    <div
+      aria-hidden
+      className={`flex items-center gap-3 border-t border-slate-200 bg-slate-50 px-3 py-1.5 text-meta ${
+        beside ? "max-md:border-0 max-md:bg-transparent max-md:p-0" : ""
+      }`}
+    >
+      <span className={button("primary", "sm")}>Approve: new ticket</span>
+      <span className={`ml-auto text-slate-600 ${beside ? "max-md:hidden" : ""}`}>Skip for now</span>
     </div>
   );
 }
 
 /* ======================================== Why trust it ======================================== */
 
-/** One dot per labelled report: filled when the AI was right, hollow when it was not. */
-function Dots({ n, correct }: { n: number; correct: number }) {
+/**
+ * The third tab: three points, each a bold line, a short note and the piece of Review that shows it. The figures are
+ * real: the sample report's suggestion, confidence and drafted ticket, the measured results split at 85%, and the
+ * held-out count. onLeave closes the window as the link opens Insights.
+ */
+function Trust({ facts, onLeave }: { facts: ArchitectureFacts; onLeave: () => void }) {
+  const { measured, sure, doubtful, holdout } = facts.trust;
+  const j = facts.journey;
+  // How sure it was, as Review draws it: the bars are pictures of a sure and a doubtful figure, not the figures.
+  const groups = [
+    { label: "85% sure or more", picture: 0.95, amber: false, ...sure },
+    { label: "Below 85%, shown amber", picture: 0.75, amber: true, ...doubtful },
+  ].filter((g) => g.n > 0);
+
   return (
-    <div aria-hidden className="mt-2 flex flex-wrap gap-[3px]">
-      {Array.from({ length: n }, (_, i) => (
-        <span key={i} className={`h-2 w-2 rounded-full ${i < correct ? "bg-accent-fill" : "border border-slate-400 bg-white"}`} />
-      ))}
+    <div className="mt-3 grid gap-2">
+      <TrustPoint
+        icon="reasons"
+        title="It shows its reasons"
+        note={`Facts first (same test step or script), then what the AI read. The dots: how many of ${j.runs.length} AI runs agree.`}
+      >
+        <div className={PIECE}>
+          <SuggestionPiece j={j} />
+        </div>
+      </TrustPoint>
+
+      <TrustPoint
+        icon="target"
+        title="Its track record is measured"
+        link={
+          <Link href="/insights#how-sure" onClick={onLeave} className="text-meta font-medium text-accent hover:underline">
+            See how sure is sure
+            <LinkArrow />
+          </Link>
+        }
+        note={
+          <>
+            {measured.correct} of {measured.n} right on our samples, also used to tune it; {holdout.correct} of {holdout.n} on{" "}
+            <Tip reach text="Written by a separate AI agent that never saw the AI's instructions or our samples; never used for tuning.">
+              <span className="cursor-help underline decoration-slate-400 decoration-dotted underline-offset-[3px]">unseen reports</span>
+            </Tip>
+            . Not yet tested on real data.
+          </>
+        }
+      >
+        <div className={`${PIECE} px-3 py-2`}>
+          <p className="text-xs font-medium text-slate-500">The {measured.n} samples, by how sure it was</p>
+          {groups.map((g) => (
+            <p key={g.label} className="mt-1 flex items-center gap-2.5 text-meta">
+              <ConfidenceBar value={g.picture} />
+              <span className={g.amber ? "font-medium text-amber-800" : "text-slate-800"}>{g.label}</span>
+              <span className="ml-auto whitespace-nowrap text-slate-700 tabular-nums">
+                {g.correct} of {g.n} right
+              </span>
+            </p>
+          ))}
+        </div>
+      </TrustPoint>
+
+      <TrustPoint
+        icon="decide"
+        title="A person decides every report"
+        note="One report at a time, no approve-all. The AI changes nothing by itself; every decision is recorded."
+      >
+        {/* As in Review, Approve sits in a bar below; on a narrow screen it moves beside the ticket to save height. */}
+        <div className={`${PIECE} overflow-hidden max-md:flex max-md:items-center max-md:pr-3`}>
+          <div className="min-w-0 px-3 py-1.5 max-md:flex-1">
+            <p className="truncate text-xs font-medium text-slate-500">The ticket you will create</p>
+            <p className="truncate text-meta font-semibold text-slate-900">{j.draft.title}</p>
+          </div>
+          <ApproveBar beside />
+        </div>
+      </TrustPoint>
     </div>
   );
 }
 
 /**
- * The third tab. The figures are real: the sample report's confidence and agreeing runs, the measured and held-out
- * results. The rest is fixed example text. onLeave closes the window as the link opens Insights.
+ * One point of Why trust it: icon, bold line and note on the left, the piece of Review on the right. Below 768 px the
+ * piece goes under the note and the icon beside the bold line, so the three points stay within the window's height.
  */
-function Trust({ facts, onLeave }: { facts: ArchitectureFacts; onLeave: () => void }) {
-  const { measured, holdout } = facts.trust;
-  const { runs, agreeing, confidence } = facts.journey;
-  const card = "flex flex-col rounded-lg border border-slate-200 p-4";
-  const head = (icon: IconName, title: string) => (
-    <div className="flex items-center gap-2.5">
-      <Icon name={icon} className="h-6 w-6 text-accent" />
-      <h3 className="font-semibold text-slate-900">{title}</h3>
-    </div>
-  );
+function TrustPoint({
+  icon,
+  title,
+  note,
+  link,
+  children,
+}: {
+  icon: IconName;
+  title: string;
+  note: ReactNode;
+  link?: ReactNode;
+  children: ReactNode;
+}) {
   return (
-    <div className="mt-3 grid gap-4 sm:grid-cols-3">
-      <div className={card}>
-        {head("reasons", "Shows its reasons")}
-        <div className="mt-3 rounded-lg border border-slate-200 px-3 py-2.5 text-meta">
-          <p className="text-xs font-semibold text-slate-500">Why flagged</p>
-          <p className="mt-1 text-slate-700">✓ Facts first: same test step or script</p>
-          <p className="text-slate-700">✓ Then what the AI read in the words</p>
-          <div className="mt-2 flex items-center gap-2">
-            <span className="h-1.5 flex-1 rounded-full bg-slate-100">
-              <span className="block h-1.5 rounded-full bg-accent-fill" style={{ width: `${Math.round(confidence * 100)}%` }} />
-            </span>
-            <span className="text-xs text-slate-600 tabular-nums">
-              {agreeing} of {runs.length} runs agree
-            </span>
-          </div>
+    <section className="grid grid-cols-[minmax(0,1fr)] items-center gap-x-6 gap-y-2 rounded-lg border border-slate-200 px-4 py-2 md:grid-cols-[minmax(0,1fr)_20rem] md:gap-y-2.5 md:py-2.5 lg:grid-cols-[minmax(0,1fr)_27rem]">
+      <div className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-x-3">
+        <Icon name={icon} className="h-6 w-6 text-accent" />
+        <div className="flex min-h-6 flex-wrap items-baseline gap-x-3">
+          <h3 className="font-semibold text-slate-900">{title}</h3>
+          {link}
         </div>
-        <p className="mt-3 text-meta text-slate-600">Every suggestion says why, and how sure it is.</p>
+        <p className="mt-0.5 text-meta text-slate-600 max-md:col-span-2 md:col-start-2">{note}</p>
       </div>
-
-      <div className={card}>
-        {head("target", "Measured, not guessed")}
-        <p className="mt-3">
-          <span className="text-3xl font-semibold text-slate-900 tabular-nums">
-            {measured.correct} of {measured.n}
-          </span>{" "}
-          <span className="text-sm text-slate-600">right on our samples</span>
-        </p>
-        <Dots n={measured.n} correct={measured.correct} />
-        <p className="mt-3">
-          <span className="text-3xl font-semibold text-slate-900 tabular-nums">
-            {holdout.correct} of {holdout.n}
-          </span>{" "}
-          <span className="text-sm text-slate-600">on unseen reports</span>
-        </p>
-        <Dots n={holdout.n} correct={holdout.correct} />
-        <p className="mt-3 text-meta text-slate-600">
-          The {measured.n} also tuned the AI; the {holdout.n}, written by a separate AI agent, never did. Not yet tested on real data.
-        </p>
-      </div>
-
-      <div className={card}>
-        {head("decide", "No “approve all”")}
-        <div className="mt-3 rounded-lg border border-slate-200 px-3 py-2.5 text-meta">
-          <p className="text-xs text-slate-500">Report 2 of 10</p>
-          <div className="mt-1.5 flex items-center gap-2">
-            <span className="rounded-md bg-white px-2.5 py-1 text-sm font-medium text-accent-fill inset-ring-[1.5px] inset-ring-accent">Approve</span>
-            <span className="text-sm text-slate-500">or another outcome</span>
-          </div>
-        </div>
-        <p className="mt-3 text-meta text-slate-600">
-          A person decides each report. The AI changes nothing by itself; every change is recorded.
-        </p>
-        <Link href="/insights" onClick={onLeave} className="mt-auto pt-3 text-meta font-medium text-accent hover:underline">
-          See how sure is sure
-          <LinkArrow />
-        </Link>
-      </div>
-    </div>
+      <div className="min-w-0">{children}</div>
+    </section>
   );
 }
 

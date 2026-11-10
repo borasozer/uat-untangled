@@ -45,16 +45,17 @@ describe("bucketLine", () => {
 
 describe("bucketHeadline", () => {
   it("puts the bucket first, then what to do", () => {
-    assert.deepEqual(bucketHeadline("new_bug", null, "Tom"), { title: "New bug", action: "open a ticket" });
-    assert.deepEqual(bucketHeadline("same_bug", "MIA-101", "Sofia"), { title: "Same bug", action: "add to MIA-101" });
-    assert.deepEqual(bucketHeadline("already_known", "MIA-090", "Daniel"), { title: "Already known", action: "link MIA-090" });
-    assert.deepEqual(bucketHeadline("thin_evidence", null, "Hannah"), { title: "Thin evidence", action: "ask Hannah first" });
-    assert.deepEqual(bucketHeadline("idea", null, "Priya"), { title: "Good idea", action: "keep it as an idea" });
-    assert.deepEqual(bucketHeadline("nothing_to_fix", null, "Tom"), { title: "Nothing to fix", action: "thank Tom" });
+    assert.deepEqual(bucketHeadline("new_bug", null), { title: "New bug", action: "open a ticket" });
+    assert.deepEqual(bucketHeadline("same_bug", "MIA-101"), { title: "Same bug", action: "add to MIA-101" });
+    assert.deepEqual(bucketHeadline("already_known", "MIA-090"), { title: "Already known", action: "link MIA-090" });
+    assert.deepEqual(bucketHeadline("thin_evidence", null), { title: "Thin evidence", action: "ask the tester first" });
+    assert.deepEqual(bucketHeadline("idea", null), { title: "Good idea", action: "keep it as an idea" });
+    assert.deepEqual(bucketHeadline("by_design", null), { title: "Works as designed", action: "explain to the tester" });
+    assert.deepEqual(bucketHeadline("nothing_to_fix", null), { title: "Nothing to fix", action: "thank the tester" });
   });
 
   it("names a pending report as the match, with nothing to add to yet", () => {
-    assert.deepEqual(bucketHeadline("same_bug", "FB-021", "Tom"), { title: "Same bug as FB-021", action: null });
+    assert.deepEqual(bucketHeadline("same_bug", "FB-021"), { title: "Same bug as FB-021", action: null });
   });
 });
 

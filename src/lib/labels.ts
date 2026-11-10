@@ -135,9 +135,10 @@ export function bucketLine(bucket: Bucket, key?: string | null): string {
 
 /**
  * The AI's suggestion as a headline: the bucket, then what to do about it ("New bug" · "open a ticket", "Thin
- * evidence" · "ask Hannah first"). The words a UAT manager sorts by come first.
+ * evidence" · "ask the tester first"). The words a UAT manager sorts by come first; the tester by role, as in the
+ * decision beside it.
  */
-export function bucketHeadline(bucket: Bucket, key: string | null | undefined, name: string): { title: string; action: string | null } {
+export function bucketHeadline(bucket: Bucket, key: string | null | undefined): { title: string; action: string | null } {
   if (isReportRef(key) && (bucket === "same_bug" || bucket === "other_symptom" || bucket === "idea")) {
     return { title: bucketLine(bucket, key), action: null };
   }
@@ -150,14 +151,14 @@ export function bucketHeadline(bucket: Bucket, key: string | null | undefined, n
     case "already_known":
       return { title: BUCKET_LABEL[bucket], action: key ? `link ${key}` : "link the known issue" };
     case "thin_evidence":
-      return { title: BUCKET_LABEL[bucket], action: `ask ${name} first` };
+      return { title: BUCKET_LABEL[bucket], action: "ask the tester first" };
     case "idea":
       return { title: BUCKET_LABEL[bucket], action: key ? `add to ${key}` : "keep it as an idea" };
     case "by_design":
     case "question":
-      return { title: BUCKET_LABEL[bucket], action: `explain to ${name}` };
+      return { title: BUCKET_LABEL[bucket], action: "explain to the tester" };
     case "nothing_to_fix":
-      return { title: BUCKET_LABEL[bucket], action: `thank ${name}` };
+      return { title: BUCKET_LABEL[bucket], action: "thank the tester" };
   }
 }
 

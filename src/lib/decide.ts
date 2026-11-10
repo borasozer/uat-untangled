@@ -17,7 +17,7 @@ import type { Feedback, Severity, Ticket } from "./types";
  */
 
 /** The UAT manager in the sample cycle. There is no sign-in, so every decision is recorded as theirs. */
-export const MANAGER_ID = "M1";
+const MANAGER_ID = "M1";
 
 /** The ticket as approved in Review: the AI's draft_ticket or the report's own words, after the manager's edits. */
 export type TicketDraft = {
