@@ -4,6 +4,8 @@ Triage for user acceptance testing (UAT) feedback. Testers write what went wrong
 
 **Live demo:** https://uat-untangled.vercel.app
 
+**Video walkthrough (4.5 min):** https://youtu.be/jbAACIenUBQ
+
 Everything in the demo is fictional: "MedInfo Assist" is a made-up tool that drafts answers to medical information enquiries, and all people, products and reports are invented.
 
 ![Review: one report, the AI's suggestion with its reasons and confidence, and the manager's decision](docs/review.png)
