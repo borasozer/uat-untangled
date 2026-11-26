@@ -101,9 +101,9 @@ The held-out check is a small step past that. Fifteen new reports (`data/sample/
 
 The demo is public, so every AI call the website makes is written to a spend ledger (`ai_usage`) with its cost. Before each call, the app checks three budgets:
 
-- the last 24 hours: $10 by default ($20 on the live demo);
-- all time: $60;
-- the same visitor in the last hour: $6 by default ($10 on the live demo).
+- the last 24 hours: $10 by default ($1 on the live demo);
+- all time: $60 by default ($35 on the live demo);
+- the same visitor in the last hour: $6 by default ($0.50 on the live demo).
 
 A failed call still counts, at a cautious estimate, so a bug that keeps retrying stops when it reaches the budget. Other safeguards:
 
