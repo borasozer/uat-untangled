@@ -15,9 +15,17 @@ import "./globals.css";
  * runs in the browser.
  */
 
+const DESCRIPTION = "UAT feedback triage. The AI suggests, a person decides each report.";
+
+/** The live address, so a shared link's preview (opengraph-image.png beside this file) has a full URL. */
+const SITE = "https://uat-untangled.vercel.app";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE),
   title: { default: "Untangle", template: "%s · Untangle" },
-  description: "UAT feedback triage. The AI suggests, a person decides each report.",
+  description: DESCRIPTION,
+  openGraph: { type: "website", siteName: "Untangle", title: "Untangle", description: DESCRIPTION },
+  twitter: { card: "summary_large_image" },
 };
 
 /** The code, in a public repository. */
